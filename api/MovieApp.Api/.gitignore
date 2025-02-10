@@ -1,0 +1,67 @@
+# .NET Core build files
+bin/
+obj/
+out/
+
+# Visual Studio specific
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider specific
+.idea/
+*.sln.iml
+
+# ASP.NET Core Secrets
+secrets.json
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+**/logs/
+**/*.log
+**/*.tlog
+**/*.out
+
+# NuGet Packages
+*.nupkg
+packages/
+project.lock.json
+artifacts/
+
+# Database
+App_Data/
+
+# Build results
+*.dll
+*.pdb
+*.exe
+*.app
+*.dmg
+*.ipa
+*.js.map
+*.wasm
+*.symbols.nupkg
+
+# Publish
+publish/
+wwwroot/
+
+# Generated files
+Generated_Code/
+ServiceFabricBackup/
+
+# MacOS
+.DS_Store
+
+# Linux
+*.pid
