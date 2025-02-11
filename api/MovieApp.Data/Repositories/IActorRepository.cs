@@ -9,8 +9,6 @@ namespace MovieApp.Data.Repositories
 {
     public interface IActorRepository
     {
-
-        //get actor by id
-        Task<ActorDataModel> getActorAsync(int id);
+        Task<Actor> GetActorAsync(int id);
     }
 }

@@ -13,6 +13,6 @@ namespace MovieApp.Data
     {
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options) { }
 
-        public DbSet<ActorDataModel> Actors { get; set; }
+        public DbSet<Actor> Actors { get; set; }
     }
 }
