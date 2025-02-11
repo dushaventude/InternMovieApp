@@ -10,5 +10,7 @@ namespace MovieApp.Data.Repositories
     public interface IActorRepository
     {
         Task<Actor> GetActorAsync(int id);
+        Task<bool> DeleteAsync(Actor actor);
+        Task<Actor> UpdateActorAsync(Actor actor);  // New method for updating
     }
 }
