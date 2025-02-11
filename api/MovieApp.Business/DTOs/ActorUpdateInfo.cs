@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace MovieApp.Data.Entities
+namespace MovieApp.Business.DTOs
 {
-    public class Actor
+    public class ActorUpdateInfo
     {
-        [Key]
-        [JsonIgnore]
-        public int Id { get; set; }
-
         public string Name { get; set; }
         public string? Gender { get; set; }
         public string? Country { get; set; }
