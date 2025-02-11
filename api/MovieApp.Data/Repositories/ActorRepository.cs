@@ -13,9 +13,7 @@ namespace MovieApp.Data.Repositories
     {
         private readonly MovieDbContext _movieDbContext;
 
-        public ActorRepository()
-        {
-        }
+       
 
         public ActorRepository(MovieDbContext movieDbContext)
         {
