@@ -10,5 +10,6 @@ namespace MovieApp.Business.Services
     public interface IActorService
     {
         Task<ActorInfo> GetActorById(int id);
+        Task<ActorInfo> AddActor(ActorInfo actorInfo);
     }
 }

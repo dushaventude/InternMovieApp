@@ -37,5 +37,23 @@ namespace MovieApp.Business.Services
                 return null;
             }
         }
-    }
-}
+        public async Task<ActorInfo> AddActor(ActorInfo actorInfo)
+        {
+            tvar actor = new ActorInfo
+            {
+                Name = actorInfo.Name
+                Gender = actorInfo.Gender,
+                Country = actorInfo.Country,
+            };
+
+            var addedActor = await _actorRepository.AddActorAsync(actor);
+            if (addedActor != null) {
+                return new ActorInfo
+                {
+                    Id = addedActor.Id,
+                    Name = addedActor.Name,
+                    Gender = addedActor.Gender,
+                    Country = addedActor.Country,
+                };
+            }
+            return null;

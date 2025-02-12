@@ -21,5 +21,15 @@ namespace MovieApp.Api.Controllers
         {
             return await _actorService.GetActorById(id);
         }
+
+        [HttpPost]
+        public async Task<ActorInfo> AddActor(ActorInfo actorInfo)
+        {
+            var addedActor = await _actorService.AddActor(actorInfo);
+            if (addedActor != null)
+            {
+                return addedActor;
+            }
+        }
     }
 }

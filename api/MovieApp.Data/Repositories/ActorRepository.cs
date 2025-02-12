@@ -25,5 +25,12 @@ namespace MovieApp.Data.Repositories
             var actor = await _movieDbContext.Actors.FirstOrDefaultAsync(u => u.Id == id);
             return actor;
         }
+
+        public async Task<Actor> AddActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Add(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return actor;
+        }
     }
 }

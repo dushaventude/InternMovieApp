@@ -10,5 +10,6 @@ namespace MovieApp.Data.Repositories
     public interface IActorRepository
     {
         Task<Actor> GetActorAsync(int id);
+        Task<Actor> AddActorAsync(Actor actor);
     }
 }
