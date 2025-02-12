@@ -11,5 +11,6 @@ namespace MovieApp.Data.Repositories
     {
         Task<Actor> GetActorAsync(int id);
         Task<Actor> AddActorAsync(Actor actor);
+       
     }
 }

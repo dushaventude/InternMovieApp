@@ -23,13 +23,15 @@ namespace MovieApp.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActorInfo> AddActor(ActorInfo actorInfo)
+        public async Task<ActionResult<ActorInfo>> AddActor(ActorInfo actorInfo)
         {
-            var addedActor = await _actorService.AddActor(actorInfo);
-            if (addedActor != null)
+            var addedActor = await _actorService.AddActorAsync(actorInfo);
+            if (addedActor == null)
             {
-                return addedActor;
+                return BadRequest("Failed to add actor.");
             }
+            return CreatedAtAction(nameof(GetActorById), new { id = addedActor.Id }, addedActor);
         }
+
     }
 }
