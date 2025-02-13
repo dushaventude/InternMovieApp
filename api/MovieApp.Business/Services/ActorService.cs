@@ -27,10 +27,10 @@ namespace MovieApp.Business.Services
                 var actor = await _actorRepository.GetActorAsync(id);
                 if (actor == null)
                 {
-                    return null; // Actor not found
+                    return null; 
                 }
 
-                // Use AutoMapper to map Actor to ActorInfo
+                
                 var actorInfo = _mapper.Map<ActorInfo>(actor);
                 return actorInfo;
             }
@@ -45,13 +45,13 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                // Use AutoMapper to map CreateActorInfo to Actor
+                
                 var actor = _mapper.Map<Actor>(createActorInfo);
 
                 var addedActor = await _actorRepository.AddActorAsync(actor);
                 if (addedActor != null)
                 {
-                    // Use AutoMapper to map Actor to ActorInfo
+                    
                     return _mapper.Map<ActorInfo>(addedActor);
                 }
                 return null;
