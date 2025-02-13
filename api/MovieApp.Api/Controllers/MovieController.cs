@@ -16,6 +16,16 @@ namespace MovieApp.Api.Controllers
             _movieService = movieService;
         }
 
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] int Id)
+        {
+            var movie = await _movieService.GetById(Id);
+
+            if (movie == null) return NotFound("Movie not Found");
+
+            return Ok(movie);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMovieDto movieDto)
         {
@@ -31,7 +41,6 @@ namespace MovieApp.Api.Controllers
         [HttpPut("{Id}")]
         public async Task<IActionResult> Update(int Id, [FromBody] UpdateMovieDto movieDto)
         {
-            Console.WriteLine(Id);
             var updatedMovie = await _movieService.UpdateMovie(Id, movieDto);
             if (updatedMovie == null)
             {

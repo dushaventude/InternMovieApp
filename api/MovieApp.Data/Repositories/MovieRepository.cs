@@ -23,6 +23,16 @@ namespace MovieApp.Data.Repositories
             return movieModel;
         }
 
+        public async Task<Movie?> GetMovieByIdAsync(int Id)
+        {
+            var movie = await _context.Movies.FindAsync(Id);
+            if (movie == null)
+            {
+                return null;
+            }
+            return movie;
+        }
+
         public async Task<Movie?> UpdateMovieAsync(int Id, Movie movieModel)
         {
             var existingMovie = await _context.Movies.FindAsync(Id);

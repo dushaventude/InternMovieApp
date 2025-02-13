@@ -10,6 +10,7 @@ namespace MovieApp.Business.Services
 {
     public interface IMovieService
     {
+        Task<Movie> GetById(int id);
         Task<CreateMovieDto> CreateMovie(CreateMovieDto movieDto);
         Task<UpdateMovieDto?> UpdateMovie(int Id,UpdateMovieDto movieDto);
     }

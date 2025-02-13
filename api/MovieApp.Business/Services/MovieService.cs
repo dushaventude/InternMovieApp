@@ -28,6 +28,14 @@ namespace MovieApp.Business.Services
             return _mapper.Map<CreateMovieDto>(createdMovie);
         }
 
+        public async Task<Movie> GetById(int Id)
+        {
+            var movie = await _movieRepository.GetMovieByIdAsync(Id);
+            if (movie == null) return null;
+
+            return movie;
+        }
+
         public async Task<UpdateMovieDto?> UpdateMovie(int Id,UpdateMovieDto movieModel)
         {
             var movie = _mapper.Map<Movie>(movieModel);
