@@ -20,8 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieApp.Business\MovieApp.Business.csproj" />
-    <ProjectReference Include="..\MovieApp.Data\MovieApp.Data.csproj" />
+    <ProjectReference Include="..\MovieApp.Api\MovieApp.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

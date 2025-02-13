@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApp.Data.Entities
+namespace MovieApp.Business.DTOs.MovieDtos
 {
-    public class Movie
+    public class CreateMovieDto
     {
-        [Key]
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Photo { get; set; } = string.Empty;
