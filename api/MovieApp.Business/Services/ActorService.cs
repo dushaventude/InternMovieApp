@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using MovieApp.Business.DTOs;
+using MovieApp.Data.Entities;
 using MovieApp.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using AutoMapper;
 using System.Threading.Tasks;
 
 namespace MovieApp.Business.Services
@@ -12,10 +10,14 @@ namespace MovieApp.Business.Services
     public class ActorService : IActorService
     {
         private readonly IActorRepository _actorRepository;
+        private readonly ILogger<ActorService> _logger;
+        private readonly IMapper _mapper;
 
-        public ActorService(IActorRepository actorRepository)
+        public ActorService(IActorRepository actorRepository, ILogger<ActorService> logger, IMapper mapper)
         {
-            this._actorRepository = actorRepository;
+            _actorRepository = actorRepository;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<ActorInfo> GetActorById(int id)
@@ -23,19 +25,44 @@ namespace MovieApp.Business.Services
             try
             {
                 var actor = await _actorRepository.GetActorAsync(id);
+                if (actor == null)
+                {
+                    return null; // Actor not found
+                }
 
-                //TODO: AutoMapper configuration
-                var actorInfo = new ActorInfo();
-                actorInfo.Id = actor.Id;
-                actorInfo.Name = actor.Name;
-
+                // Use AutoMapper to map Actor to ActorInfo
+                var actorInfo = _mapper.Map<ActorInfo>(actor);
                 return actorInfo;
             }
             catch (Exception ex)
             {
-                //TODO: Error Logs
+                _logger.LogError(ex, "Error occurred while fetching actor with ID: {Id}", id);
                 return null;
             }
         }
+
+        public async Task<ActorInfo> AddActorAsync(CreateActorInfo createActorInfo)
+        {
+            try
+            {
+                // Use AutoMapper to map CreateActorInfo to Actor
+                var actor = _mapper.Map<Actor>(createActorInfo);
+
+                var addedActor = await _actorRepository.AddActorAsync(actor);
+                if (addedActor != null)
+                {
+                    // Use AutoMapper to map Actor to ActorInfo
+                    return _mapper.Map<ActorInfo>(addedActor);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding actor: {CreateActorInfo}", createActorInfo);
+                return null;
+            }
+        }
+
+       
     }
 }

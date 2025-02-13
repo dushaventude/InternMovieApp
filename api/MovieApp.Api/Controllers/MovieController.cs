@@ -1,6 +1,8 @@
+
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs.MovieDtos;
+
 using MovieApp.Business.Services;
 
 namespace MovieApp.Api.Controllers
@@ -38,6 +40,26 @@ namespace MovieApp.Api.Controllers
                 return BadRequest();
             }
             return Ok(updatedMovie);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMovie(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid movie ID");
+            }
+
+            var result = await _movieService.DeleteMovieAsync(id);
+            if (result)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound($"Movie with ID {id} not found");
+            }
         }
     }
 }

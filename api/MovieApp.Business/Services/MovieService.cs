@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MovieApp.Business.DTOs.MovieDtos;
 using MovieApp.Data.Entities;
+
+using Microsoft.Extensions.Logging;
+
 using MovieApp.Data.Repositories;
 
 namespace MovieApp.Business.Services
@@ -14,11 +18,14 @@ namespace MovieApp.Business.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<MovieService> _logger;
 
-        public MovieService(IMovieRepository movieRepository,IMapper mapper)
+
+        public MovieService(IMovieRepository movieRepository,IMapper mapper,ILogger<MovieService> logger)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
+            _logger = logger;
         }
         public async Task<CreateMovieDto> CreateMovie(CreateMovieDto movieModel)
         {
@@ -37,5 +44,27 @@ namespace MovieApp.Business.Services
             
             return _mapper.Map<UpdateMovieDto>(updatedMovie);
         }
+
+        public async Task<bool> DeleteMovieAsync(int id)
+        {
+            try
+            {
+                var movie = await _movieRepository.GetMovieByIdAsync(id);
+                if (movie == null)
+                {
+                    _logger.LogWarning("Movie with ID {MovieId} not found", id);
+                    return false;
+                }
+
+                await _movieRepository.DeleteMovieAsync(movie);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting movie with ID {MovieId}", id);
+                return false;
+            }
+        }
     }
 }
+
