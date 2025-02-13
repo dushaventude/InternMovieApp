@@ -11,5 +11,7 @@ namespace MovieApp.Business.Services
     {
         Task<ActorInfo> GetActorById(int id);
         Task<ActorInfo> AddActorAsync(ActorInfo actorInfo);
+
+       
     }
 }

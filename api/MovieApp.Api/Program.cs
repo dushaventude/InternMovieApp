@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MovieApp.Business.Services;
 using MovieApp.Data;
 using MovieApp.Data.Repositories;
+using MovieApp.Business;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddDbContext<MovieDbContext>(options =>
 {
@@ -19,6 +22,8 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
 
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieService, MovieService>();
 
 
 

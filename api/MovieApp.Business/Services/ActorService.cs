@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using MovieApp.Business.DTOs;
 using MovieApp.Data.Entities;
 using MovieApp.Data.Repositories;
@@ -14,6 +15,7 @@ namespace MovieApp.Business.Services
     {
         private readonly IActorRepository _actorRepository;
         private readonly ILogger<ActorService> _logger;
+        private readonly IMapper _mapper;
 
         public ActorService(IActorRepository actorRepository)
         {
@@ -43,25 +45,12 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                // Map ActorInfo to Actor
-                var actor = new Actor
-                {
-                    Name = actorInfo.Name,
-                    Gender = actorInfo.Gender,
-                    Country = actorInfo.Country
-                };
-
+                var actor = _mapper.Map<Actor>(actorInfo);
                 var addedActor = await _actorRepository.AddActorAsync(actor);
+
                 if (addedActor != null)
                 {
-                    // Map Actor to ActorInfo
-                    return new ActorInfo
-                    {
-                        Id = addedActor.Id,
-                        Name = addedActor.Name,
-                        Gender = addedActor.Gender,
-                        Country = addedActor.Country
-                    };
+                    return _mapper.Map<ActorInfo>(addedActor);
                 }
                 return null;
             }
@@ -71,6 +60,7 @@ namespace MovieApp.Business.Services
                 return null;
             }
         }
+
     }
 }
 
