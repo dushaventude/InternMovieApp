@@ -16,10 +16,10 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDbConnection"));
 });
-
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
-
+builder.Services.AddLogging();
 
 
 var app = builder.Build();

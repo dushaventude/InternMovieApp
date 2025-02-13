@@ -11,7 +11,6 @@ namespace MovieApp.Data.Entities
     public class Actor
     {
         [Key]
-        [JsonIgnore]
         public int Id { get; set; }
 
         public string Name { get; set; }

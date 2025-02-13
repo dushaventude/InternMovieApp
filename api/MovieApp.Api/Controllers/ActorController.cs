@@ -3,6 +3,8 @@ using MovieApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs;
 using MovieApp.Business.Services;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace MovieApp.Api.Controllers
 {
@@ -11,10 +13,13 @@ namespace MovieApp.Api.Controllers
     public class ActorController : ControllerBase
     {
         private readonly IActorService _actorService;
+        private readonly IMapper _mapper;
 
-        public ActorController(IActorService actorService)
+        public ActorController(IActorService actorService, IMapper mapper)
         {
             this._actorService = actorService;
+            this._mapper = mapper;
+
         }
 
         [HttpGet]
@@ -27,10 +32,16 @@ namespace MovieApp.Api.Controllers
         public async Task<IActionResult> DeleteActorById(int id)
         {
             var result = await _actorService.DeleteActorById(id);
-            if (!result) return NotFound();
-            return NoContent();
+            if (result == false)
+            {
+                return NotFound("Actor Not Found"); 
+            }
+            else
+            {
+                return NoContent();
+            }
+            
         }
-
         [HttpPut]
         public async Task<IActionResult> UpdateActor(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
         {
@@ -39,13 +50,12 @@ namespace MovieApp.Api.Controllers
                 return BadRequest("Invalid actor data");
             }
 
-            var actor = new Actor
-            {
-                Id = id,  // The Id comes from the route parameter
-                Name = actorUpdateInfo.Name,
-                Gender = actorUpdateInfo.Gender,
-                Country = actorUpdateInfo.Country
-            };
+            var actor = _mapper.Map<Actor>(actorUpdateInfo);
+            actor.Id = id;
+            actor.Name = actorUpdateInfo.Name;
+            actor.Gender = actorUpdateInfo.Gender;
+            actor.Country = actorUpdateInfo.Country;
+            
 
             var updatedActor = await _actorService.UpdateActorAsync(actor);
 

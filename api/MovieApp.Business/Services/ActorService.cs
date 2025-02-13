@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging;
 using MovieApp.Business.DTOs;
 using MovieApp.Data.Entities;
 using MovieApp.Data.Repositories;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -15,10 +17,14 @@ namespace MovieApp.Business.Services
     public class ActorService : IActorService
     {
         private readonly IActorRepository _actorRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public ActorService(IActorRepository actorRepository)
+        public ActorService(IActorRepository actorRepository, IMapper mapper, ILogger<ActorService> logger)
         {
             this._actorRepository = actorRepository;
+            this._mapper = mapper;
+            this._logger = logger;
         }
 
         public async Task<ActorInfo> GetActorById(int id)
@@ -26,19 +32,20 @@ namespace MovieApp.Business.Services
             try
             {
                 var actor = await _actorRepository.GetActorAsync(id);
+                if (actor == null)
+                {
+                    return null;
+                }
 
                 //TODO: AutoMapper configuration
-                var actorInfo = new ActorInfo();
-                actorInfo.Id = actor.Id;
-                actorInfo.Name = actor.Name;
-                actorInfo.Gender = actor.Gender;
-                actorInfo.Country = actor.Country;
+                var actorInfo = _mapper.Map<ActorInfo>(actor);
 
                 return actorInfo;
             }
             catch (Exception ex)
             {
                 //TODO: Error Logs
+                _logger.LogError($"Error fetching actor with ID {id}: {ex.Message}");
                 return null;
             }
         }
@@ -53,25 +60,20 @@ namespace MovieApp.Business.Services
         }
         public async Task<ActorInfo> UpdateActorAsync(Actor actor)
         {
-            var actorEntity = new Actor
+            try
             {
-                Id = actor.Id,
-                Name = actor.Name,
-                Gender = actor.Gender,
-                Country = actor.Country
-            };
-
-            var updatedActor = await _actorRepository.UpdateActorAsync(actorEntity);
-
-            if (updatedActor == null) return null;
-
-            return new ActorInfo
+                var updatedActor = await _actorRepository.UpdateActorAsync(actor);
+                if (updatedActor == null)
+                {
+                    return null;
+                }
+                return _mapper.Map<ActorInfo>(updatedActor);
+            }
+            catch (Exception ex)
             {
-                Id = updatedActor.Id,
-                Name = updatedActor.Name,
-                Gender = updatedActor.Gender,
-                Country = updatedActor.Country
-            };
+                throw new Exception("An error occurred while updating the actor.", ex);
+            }
+           
         }
     }
 }
