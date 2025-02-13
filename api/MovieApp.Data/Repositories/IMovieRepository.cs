@@ -7,14 +7,9 @@ using MovieApp.Data.Entities;
 
 namespace MovieApp.Data.Repositories
 {
-    public interface IActorRepository
+    public interface IMovieRepository
     {
-        Task<Actor> GetActorAsync(int id);
-        Task<Actor> AddActorAsync(Actor actor);
-
-        
-
-        
-       
+        Task DeleteMovieAsync(Movie movie);
+        Task<Movie?> GetMovieByIdAsync(int id);
     }
 }

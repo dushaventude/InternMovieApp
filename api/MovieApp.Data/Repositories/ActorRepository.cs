@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -25,5 +26,14 @@ namespace MovieApp.Data.Repositories
             var actor = await _movieDbContext.Actors.FirstOrDefaultAsync(u => u.Id == id);
             return actor;
         }
+
+        public async Task<Actor> AddActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Add(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return actor;
+        }
+
+        
     }
 }
