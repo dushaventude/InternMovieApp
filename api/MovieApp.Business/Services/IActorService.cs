@@ -10,7 +10,7 @@ namespace MovieApp.Business.Services
     public interface IActorService
     {
         Task<ActorInfo> GetActorById(int id);
-        Task<ActorInfo> AddActorAsync(ActorInfo actorInfo);
+        Task<ActorInfo> AddActorAsync(CreateActorInfo createActorInfo);
 
        
     }

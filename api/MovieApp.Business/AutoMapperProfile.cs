@@ -13,12 +13,11 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
-            // Mapping from Actor to ActorInfo
-            CreateMap<Actor, ActorInfo>();
 
-            // Mapping from ActorInfo to Actor
+            CreateMap<Actor, ActorInfo>();
             CreateMap<ActorInfo, Actor>();
-               
+            CreateMap<CreateActorInfo, Actor>();
+
         }
     }
 }

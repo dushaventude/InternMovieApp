@@ -16,25 +16,32 @@ namespace MovieApp.Api.Controllers
             this._actorService = actorService;
         }
 
-        [HttpGet]
-        public async Task<ActorInfo> GetActorById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ActorInfo>> GetActorById(int id)
         {
-            return await _actorService.GetActorById(id);
+            var actor = await _actorService.GetActorById(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+            return Ok(actor);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ActorInfo>> AddActor(ActorInfo actorInfo)
+        public async Task<ActionResult<ActorInfo>> AddActor([FromBody] CreateActorInfo createActorInfo)
         {
-            var addedActor = await _actorService.AddActorAsync(actorInfo);
+            if (createActorInfo == null)
+            {
+                return BadRequest("Actor data is required.");
+            }
+
+            var addedActor = await _actorService.AddActorAsync(createActorInfo);
             if (addedActor == null)
             {
                 return BadRequest("Failed to add actor.");
             }
+
             return CreatedAtAction(nameof(GetActorById), new { id = addedActor.Id }, addedActor);
         }
-
-        
-
-
     }
 }
