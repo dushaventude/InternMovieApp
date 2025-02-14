@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.Services;
+using MovieApp.Business.Utilities;
+using MovieApp.Shared.Models;
+using System.Threading.Tasks;
 
 namespace MovieApp.Api.Controllers
 {
@@ -19,7 +22,11 @@ namespace MovieApp.Api.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid movie ID");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status400BadRequest,
+                    "Invalid request",
+                    "Invalid movie ID");
+                return BadRequest(errorResponse);
             }
 
             var result = await _movieService.DeleteMovieAsync(id);
@@ -29,7 +36,11 @@ namespace MovieApp.Api.Controllers
             }
             else
             {
-                return NotFound($"Movie with ID {id} not found");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movie not found",
+                    $"Movie with ID {id} not found");
+                return NotFound(errorResponse);
             }
         }
     }
