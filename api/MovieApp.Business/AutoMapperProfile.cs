@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MovieApp.Business.DTOs;
+
 using MovieApp.Business.DTOs.MovieDtos;
+
 using MovieApp.Data.Entities;
 
 namespace MovieApp.Business

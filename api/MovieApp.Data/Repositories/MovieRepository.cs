@@ -16,16 +16,16 @@ namespace MovieApp.Data.Repositories
         {
             _context = context;
         }
+
+        //public async Task<Movie?> FindDuplicateAsync()
+        //{
+
+        //}
         public async Task<Movie> CreateMovieAsync(Movie movieModel)
         {
             _context.Movies.Add(movieModel);
             await _context.SaveChangesAsync();
             return movieModel;
-        }
-
-        public async Task<Movie?> GetMovieByIdAsync(int Id)
-        {
-            return await _context.Movies.FindAsync(Id);
         }
 
         public async Task<Movie?> UpdateMovieAsync(Movie movie)
@@ -34,5 +34,16 @@ namespace MovieApp.Data.Repositories
             await _context.SaveChangesAsync();
             return movie;
         }
+
+        public async Task<Movie?> GetMovieByIdAsync(int id)
+        {
+            return await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<Movie?> ExistingMovieAsync(Movie movie)
+        {
+            return await _context.Movies.FirstOrDefaultAsync(m => m.Title == movie.Title);
+        }
     }
 }
+

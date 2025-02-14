@@ -13,6 +13,13 @@ namespace MovieApp.Data
     {
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>()
+                .HasIndex(m => m.Title)
+                .IsUnique();
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
     }

@@ -12,5 +12,6 @@ namespace MovieApp.Data.Repositories
         Task<Movie?> GetMovieByIdAsync(int Id); 
         Task<Movie> CreateMovieAsync(Movie movie);
         Task<Movie?> UpdateMovieAsync(Movie movie);
+        Task<Movie?> ExistingMovieAsync(Movie movie);
     }
 }
