@@ -33,14 +33,13 @@ namespace MovieApp.Business.Services
                     return null;
                 }
 
-                //TODO: AutoMapper configuration
                 var actorInfo = _mapper.Map<ActorInfo>(actor);
 
                 return actorInfo;
             }
             catch (Exception ex)
             {
-                //TODO: Error Logs
+               
                 _logger.LogError($"Error fetching actor with ID {id}: {ex.Message}");
                 return null;
             }

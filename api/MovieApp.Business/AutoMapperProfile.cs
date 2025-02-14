@@ -13,11 +13,11 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
-            CreateMap<Actor, ActorInfo>();
+            CreateMap<Actor, ActorInfo>().ReverseMap();
             //if the field names are not the same 
             //   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName)); 
 
-            CreateMap<Movie, MovieInfo>();
+            CreateMap<Movie, MovieInfo>().ReverseMap();
         }
     }
 }

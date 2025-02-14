@@ -16,11 +16,11 @@ namespace MovieApp.Business.Services
         private readonly IMapper _mapper;
         private readonly ILogger<MovieService> _logger;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper,ILogger<MovieService> @object)
+        public MovieService(IMovieRepository movieRepository, IMapper mapper,ILogger<MovieService> logger )
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
-            _logger = @object;
+            _logger = logger;
         }
         public async Task<List<MovieInfo>> GetMoviesAsync()
         {
