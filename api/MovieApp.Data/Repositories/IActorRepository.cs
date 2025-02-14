@@ -11,10 +11,8 @@ namespace MovieApp.Data.Repositories
     {
         Task<Actor> GetActorAsync(int id);
         Task<Actor> AddActorAsync(Actor actor);
+        Task<bool> DeleteActorAsync(Actor actor); // New method for deleting
+        Task<Actor> UpdateActorAsync(Actor actor);  // New method for updating
 
-        
-
-        
-       
     }
 }

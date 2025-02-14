@@ -27,6 +27,7 @@ namespace MovieApp.Data.Repositories
             return actor;
         }
 
+
         public async Task<Actor> AddActorAsync(Actor actor)
         {
             _movieDbContext.Actors.Add(actor);
@@ -35,5 +36,20 @@ namespace MovieApp.Data.Repositories
         }
 
         
+
+        public async Task<bool> DeleteActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Remove(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<Actor> UpdateActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Update(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return actor;
+        }
+
     }
 }

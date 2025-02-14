@@ -1,4 +1,5 @@
 ﻿using MovieApp.Business.DTOs;
+using MovieApp.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace MovieApp.Business.Services
     {
         Task<ActorInfo> GetActorById(int id);
         Task<ActorInfo> AddActorAsync(CreateActorInfo createActorInfo);
+        Task<bool> DeleteActorById(int id); 
+        Task<ActorInfo> UpdateActorById(int id, ActorUpdateInfo actorUpdateInfo);  // New method for updating
 
-       
     }
 }

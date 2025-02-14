@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.Services;
 using MovieApp.Business.Utilities;
 using MovieApp.Shared.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using MovieApp.Business.DTOs;
 
 namespace MovieApp.Api.Controllers
 {
@@ -10,11 +12,12 @@ namespace MovieApp.Api.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieService _movieService;
+
+        private readonly IMovieService movieService;
 
         public MovieController(IMovieService movieService)
         {
-            this._movieService = movieService;
+            this.movieService = movieService;
         }
 
         [HttpDelete("{id}")]
@@ -43,5 +46,20 @@ namespace MovieApp.Api.Controllers
                 return NotFound(errorResponse);
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
+        {
+            var movies = await movieService.GetMoviesAsync();
+            if (movies == null)
+            {
+                return NotFound("Movies Not Found");
+            }
+            else
+            {
+                return Ok(movies);
+            }
+        }
     }
 }
+

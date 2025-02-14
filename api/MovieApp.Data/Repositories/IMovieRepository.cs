@@ -11,5 +11,7 @@ namespace MovieApp.Data.Repositories
     {
         Task DeleteMovieAsync(Movie movie);
         Task<Movie?> GetMovieByIdAsync(int id);
+        Task<List<Movie>> GetMoviesAsync();
+
     }
 }
