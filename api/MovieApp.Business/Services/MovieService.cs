@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,7 @@ namespace MovieApp.Business.Services
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
+
         private readonly IMapper _mapper;
         private readonly ILogger<MovieService> _logger;
 
@@ -22,6 +23,28 @@ namespace MovieApp.Business.Services
             _mapper = mapper;
             _logger = logger;
         }
+        
+         public async Task<bool> DeleteMovieAsync(int id)
+        {
+            try
+            {
+                var movie = await _movieRepository.GetMovieByIdAsync(id);
+                if (movie == null)
+                {
+                    _logger.LogWarning("Movie with ID {MovieId} not found", id);
+                    return false;
+                }
+
+                await _movieRepository.DeleteMovieAsync(movie);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting movie with ID {MovieId}", id);
+                return false;
+            }
+        }
+        
         public async Task<List<MovieInfo>> GetMoviesAsync()
         {
             try

@@ -11,7 +11,9 @@ namespace MovieApp.Business.Services
     public interface IActorService
     {
         Task<ActorInfo> GetActorById(int id);
+        Task<ActorInfo> AddActorAsync(CreateActorInfo createActorInfo);
         Task<bool> DeleteActorById(int id); 
         Task<ActorInfo> UpdateActorById(int id, ActorUpdateInfo actorUpdateInfo);  // New method for updating
+
     }
 }

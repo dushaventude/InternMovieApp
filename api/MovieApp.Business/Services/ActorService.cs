@@ -10,6 +10,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+
 using System.Threading.Tasks;
 
 namespace MovieApp.Business.Services
@@ -17,6 +18,7 @@ namespace MovieApp.Business.Services
     public class ActorService : IActorService
     {
         private readonly IActorRepository _actorRepository;
+
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
@@ -26,6 +28,7 @@ namespace MovieApp.Business.Services
             this._actorRepository = actorRepository;
             this._mapper = mapper;
             this._logger = logger;
+
         }
 
         public async Task<ActorInfo> GetActorById(int id)
@@ -35,6 +38,7 @@ namespace MovieApp.Business.Services
                 var actor = await _actorRepository.GetActorAsync(id);
                 if (actor == null)
                 {
+
                     return null;
                 }
 
@@ -46,7 +50,30 @@ namespace MovieApp.Business.Services
             catch (Exception ex)
             {
 
-                _logger.LogError($"Error fetching actor with ID {id}: {ex.Message}");
+                _logger.LogError(ex, "Error occurred while fetching actor with ID: {Id}", id);
+                return null;
+            }
+        }
+
+        public async Task<ActorInfo> AddActorAsync(CreateActorInfo createActorInfo)
+        {
+            try
+            {
+                
+                var actor = _mapper.Map<Actor>(createActorInfo);
+
+                var addedActor = await _actorRepository.AddActorAsync(actor);
+                if (addedActor != null)
+                {
+                    
+                    return _mapper.Map<ActorInfo>(addedActor);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding actor: {CreateActorInfo}", createActorInfo);
+
                 return null;
             }
         }

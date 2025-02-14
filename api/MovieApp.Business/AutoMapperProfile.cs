@@ -14,6 +14,8 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
+         
+            CreateMap<CreateActorInfo, Actor>();
             CreateMap<Actor, ActorUpdateInfo>().ReverseMap();
             CreateMap<Actor, ActorInfo>().ReverseMap();
             //if the field names are not the same 
@@ -21,6 +23,7 @@ namespace MovieApp.Business
 
             CreateMap<Movie, MovieInfo>().ReverseMap();
         }
+
 
     }
 }
