@@ -25,7 +25,7 @@ namespace MovieApp.Tests
         [Fact]
         public async Task AddMovieSuccess()
         {
-            CreateMovieDto movie = new()
+            MovieDto movie = new()
             {
                 Title = "AAA",
                 Description = "Some description",
@@ -42,9 +42,9 @@ namespace MovieApp.Tests
 
             var createdResult = Assert.IsType<CreatedAtActionResult>(response);
             Assert.NotNull(createdResult.Value);
-            Assert.IsType<CreateMovieDto>(createdResult.Value);
+            Assert.IsType<MovieRequestDto>(createdResult.Value);
 
-            var createdMovie = createdResult.Value as CreateMovieDto;
+            var createdMovie = createdResult.Value as MovieRequestDto;
 
             Assert.Equal("AAA", createdMovie.Title);
             Assert.Equal("Some description", createdMovie.Description);
@@ -58,7 +58,7 @@ namespace MovieApp.Tests
         {
             const int movieId = 1;
 
-            UpdateMovieDto movie = new()
+            MovieDto movie = new()
             {
                 Title = "AAA",
                 Description = "BBB",

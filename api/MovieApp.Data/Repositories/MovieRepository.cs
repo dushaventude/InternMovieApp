@@ -25,30 +25,14 @@ namespace MovieApp.Data.Repositories
 
         public async Task<Movie?> GetMovieByIdAsync(int Id)
         {
-            var movie = await _context.Movies.FindAsync(Id);
-            if (movie == null)
-            {
-                return null;
-            }
-            return movie;
+            return await _context.Movies.FindAsync(Id);
         }
 
-        public async Task<Movie?> UpdateMovieAsync(int Id, Movie movieModel)
+        public async Task<Movie?> UpdateMovieAsync(Movie movie)
         {
-            var existingMovie = await _context.Movies.FindAsync(Id);
-
-            if (existingMovie == null)
-            {
-                return null;
-            }
-            existingMovie.Title = movieModel.Title;
-            existingMovie.Description = movieModel.Description;
-            existingMovie.Photo = movieModel.Photo;
-            existingMovie.IsFeatured = movieModel.IsFeatured;
-            existingMovie.ReleaseDate = movieModel.ReleaseDate;
-
+            _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
-            return existingMovie;
+            return movie;
         }
     }
 }

@@ -20,30 +20,30 @@ namespace MovieApp.Business.Services
             _movieRepository = movieRepository;
             _mapper = mapper;
         }
-        public async Task<CreateMovieDto> CreateMovie(CreateMovieDto movieModel)
+        public async Task<MovieRequestDto> CreateMovie(MovieDto movieDto)
         {
-            var movie = _mapper.Map<Movie>(movieModel);
+            var movie = _mapper.Map<Movie>(movieDto);
             var createdMovie = await  _movieRepository.CreateMovieAsync(movie);
 
-            return _mapper.Map<CreateMovieDto>(createdMovie);
+            return _mapper.Map<MovieRequestDto>(createdMovie);
         }
 
-        public async Task<Movie> GetById(int Id)
+        public async Task<MovieRequestDto?> GetMovieById(int Id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(Id);
-            if (movie == null) return null;
-
-            return movie;
+            return _mapper.Map<MovieRequestDto>(movie);
         }
 
-        public async Task<UpdateMovieDto?> UpdateMovie(int Id,UpdateMovieDto movieModel)
+        public async Task<MovieRequestDto?> UpdateMovie(int Id, MovieDto movieDto)
         {
-            var movie = _mapper.Map<Movie>(movieModel);
-            var updatedMovie = await _movieRepository.UpdateMovieAsync(Id,movie);
+            var existingMovie = await _movieRepository.GetMovieByIdAsync(Id);
+            if (existingMovie == null) return null;
 
-            if (updatedMovie == null) return null;
+            _mapper.Map(movieDto, existingMovie);
             
-            return _mapper.Map<UpdateMovieDto>(updatedMovie);
+            var updatedMovie = await _movieRepository.UpdateMovieAsync(existingMovie);
+
+            return _mapper.Map<MovieRequestDto>(updatedMovie);
         }
     }
 }
