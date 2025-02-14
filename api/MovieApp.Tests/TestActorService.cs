@@ -11,14 +11,14 @@ using Xunit;
 
 namespace MovieApp.Tests
 {
-    public class ActorServiceTests
+    public class TestActorService
     {
         private readonly ActorService _actorService;
         private readonly Mock<IActorRepository> _mockActorRepository;
         private readonly Mock<ILogger<ActorService>> _mockLogger;
         private readonly Mock<IMapper> _mockMapper;
 
-        public ActorServiceTests()
+        public TestActorService()
         {
             _mockActorRepository = new Mock<IActorRepository>();
             _mockLogger = new Mock<ILogger<ActorService>>();
@@ -33,14 +33,14 @@ namespace MovieApp.Tests
             int actorId = 1;
             var mockActor = new Actor { Id = actorId, Name = "Sri" };
             _mockActorRepository.Setup(x => x.GetActorAsync(actorId)).ReturnsAsync(mockActor);
-            _mockActorRepository.Setup(x => x.DeleteAsync(mockActor)).ReturnsAsync(true);  
+            _mockActorRepository.Setup(x => x.DeleteActorAsync(mockActor)).ReturnsAsync(true);  
 
             // Act
             var result = await _actorService.DeleteActorById(actorId);
 
             // Assert
             Assert.True(result);
-            _mockActorRepository.Verify(x => x.DeleteAsync(mockActor), Times.Once);
+            _mockActorRepository.Verify(x => x.DeleteActorAsync(mockActor), Times.Once);
         }
 
         [Fact]
@@ -55,81 +55,103 @@ namespace MovieApp.Tests
 
             // Assert
             Assert.False(result);
-            _mockActorRepository.Verify(x => x.DeleteAsync(It.IsAny<Actor>()), Times.Never);
+            _mockActorRepository.Verify(x => x.DeleteActorAsync(It.IsAny<Actor>()), Times.Never);
         }
 
         [Fact]
-        public async Task UpdateActorAsync_WhenUpdateSucceeds_ReturnsActorInfo()
+        public async Task UpdateActorById_WhenActorExists_ReturnsUpdatedActorInfo()
         {
             // Arrange
-            var actor = new Actor
-            {
-                Id = 1,
-                Name = "Sri",
-                Gender = "Male",
-                Country = "Sri Lanka"
-            };
+            int actorId = 1;
+            var actorUpdateInfo = new ActorUpdateInfo { Name = "Sri", Gender = "Male", Country = "USA" };
+            var existingActor = new Actor { Id = actorId, Name = "Trisha", Gender = "Female", Country = "UK" };
+            var updatedActor = new Actor { Id = actorId, Name = "Sri", Gender = "Male", Country = "USA" };
+            var expectedActorInfo = new ActorInfo { Id = actorId, Name = "Sri", Gender = "Male", Country = "USA" };
 
-            var updatedActorInfo = new ActorInfo
+            _mockActorRepository.Setup(x => x.GetActorAsync(actorId)).ReturnsAsync(existingActor);
+            _mockMapper.Setup(m => m.Map(actorUpdateInfo, existingActor)).Callback<ActorUpdateInfo, Actor>((src, dest) =>
             {
-                Id = 1,
-                Name = "Billie Ellish",
-                Gender = "Female",
-                Country = "USA"  
-            };
+                dest.Name = src.Name;
+                dest.Gender = src.Gender;
+                dest.Country = src.Country;
+            });
 
-            _mockActorRepository.Setup(x => x.UpdateActorAsync(actor)).ReturnsAsync(actor);
-            _mockMapper.Setup(x => x.Map<ActorInfo>(actor)).Returns(updatedActorInfo);
+            _mockActorRepository.Setup(x => x.UpdateActorAsync(existingActor)).ReturnsAsync(updatedActor);
+            _mockMapper.Setup(m => m.Map<ActorInfo>(updatedActor)).Returns(expectedActorInfo);
 
             // Act
-            var result = await _actorService.UpdateActorAsync(actor);
+            var result = await _actorService.UpdateActorById(actorId, actorUpdateInfo);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(updatedActorInfo.Id, result.Id);
-            Assert.Equal(updatedActorInfo.Name, result.Name);
-            Assert.Equal(updatedActorInfo.Gender, result.Gender);
-            Assert.Equal(updatedActorInfo.Country, result.Country);
+            Assert.Equal(expectedActorInfo.Name, result.Name);
+            Assert.Equal(expectedActorInfo.Gender, result.Gender);
+            Assert.Equal(expectedActorInfo.Country, result.Country);
+
+            _mockActorRepository.Verify(x => x.GetActorAsync(actorId), Times.Once);
+            _mockActorRepository.Verify(x => x.UpdateActorAsync(existingActor), Times.Once);
+            _mockMapper.Verify(m => m.Map(actorUpdateInfo, existingActor), Times.Once);
+            _mockMapper.Verify(m => m.Map<ActorInfo>(updatedActor), Times.Once);
         }
 
         [Fact]
-        public async Task UpdateActorAsync_WhenUpdateFails_ThrowsException()
+        public async Task UpdateActorById_WhenActorDoesNotExist_ReturnsNull()
         {
             // Arrange
-            var actor = new Actor
-            {
-                Id = 1,
-                Name = "Harish",
-                Gender = "Male",
-                Country = "Sri Lanka"
-            };
+            int actorId = 1;
+            var actorUpdateInfo = new ActorUpdateInfo { Name = "Sri", Gender = "Male", Country = "USA" };
 
-            _mockActorRepository.Setup(x => x.UpdateActorAsync(actor))
-                .ThrowsAsync(new Exception("Update failed"));
-
-            // Act & Assert
-            await Assert.ThrowsAsync<Exception>(() => _actorService.UpdateActorAsync(actor));
-        }
-
-        [Fact]
-        public async Task UpdateActorAsync_WhenActorNotFound_ReturnsNull()
-        {
-            // Arrange
-            var actor = new Actor
-            {
-                Id = 1,
-                Name = "Harish",
-                Gender = "Male",
-                Country = "Sri Lanka"
-            };
-
-            _mockActorRepository.Setup(x => x.UpdateActorAsync(actor)).ReturnsAsync((Actor)null);
+            _mockActorRepository.Setup(x => x.GetActorAsync(actorId)).ReturnsAsync((Actor)null);
 
             // Act
-            var result = await _actorService.UpdateActorAsync(actor);
+            var result = await _actorService.UpdateActorById(actorId, actorUpdateInfo);
 
             // Assert
             Assert.Null(result);
+
+            _mockActorRepository.Verify(x => x.GetActorAsync(actorId), Times.Once);
+
+            
+            _mockActorRepository.Verify(x => x.UpdateActorAsync(It.IsAny<Actor>()), Times.Never);
         }
+
+        [Fact]
+        public async Task UpdateActorById_WhenExceptionOccurs_LogsErrorAndReturnsNull()
+        {
+            // Arrange
+            int actorId = 1;
+            var actorUpdateInfo = new ActorUpdateInfo { Name = "Sri", Gender = "Male", Country = "USA" };
+            var existingActor = new Actor { Id = actorId, Name = "Trisha", Gender = "Female", Country = "UK" };
+
+            _mockActorRepository.Setup(x => x.GetActorAsync(actorId)).ReturnsAsync(existingActor);
+
+            // Simulate exception in AutoMapper
+            _mockMapper.Setup(m => m.Map(actorUpdateInfo, existingActor)).Throws(new Exception("Mapping error"));
+
+            // Act
+            var result = await _actorService.UpdateActorById(actorId, actorUpdateInfo);
+
+            // Assert
+            Assert.Null(result);
+
+            _mockActorRepository.Verify(x => x.GetActorAsync(actorId), Times.Once);
+            _mockActorRepository.Verify(x => x.UpdateActorAsync(It.IsAny<Actor>()), Times.Never);
+            _mockMapper.Verify(m => m.Map(actorUpdateInfo, existingActor), Times.Once);
+
+            
+            _mockLogger.Verify(
+                x => x.Log(
+                    It.Is<LogLevel>(l => l == LogLevel.Error),  // Check LogLevel
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((state, t) => state.ToString().Contains($"Error Updating actor with ID {actorId}: Mapping error")), // Check message
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()
+                ),
+                Times.Once
+            );
+        }
+
+
     }
+
 }

@@ -43,28 +43,21 @@ namespace MovieApp.Api.Controllers
             
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateActor(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
+        public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
         {
             if (actorUpdateInfo == null)
             {
                 return BadRequest("Invalid actor data");
             }
 
-            var actor = _mapper.Map<Actor>(actorUpdateInfo);
-            actor.Id = id;
-            actor.Name = actorUpdateInfo.Name;
-            actor.Gender = actorUpdateInfo.Gender;
-            actor.Country = actorUpdateInfo.Country;
-            
-
-            var updatedActor = await _actorService.UpdateActorAsync(actor);
+            var updatedActor = await _actorService.UpdateActorById(id, actorUpdateInfo);
 
             if (updatedActor == null)
             {
                 return NotFound("Actor not found");
             }
 
-            return Ok(updatedActor); // Returns the ActorInfo, including the Id
+            return Ok(updatedActor);
         }
     }
 }

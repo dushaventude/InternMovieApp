@@ -55,25 +55,30 @@ namespace MovieApp.Business.Services
             var actor = await _actorRepository.GetActorAsync(id);
             if (actor == null) return false;
 
-            await _actorRepository.DeleteAsync(actor);
+            await _actorRepository.DeleteActorAsync(actor);
             return true;
         }
-        public async Task<ActorInfo> UpdateActorAsync(Actor actor)
+
+        public async Task<ActorInfo> UpdateActorById(int id, ActorUpdateInfo actorUpdateInfo)
         {
             try
             {
-                var updatedActor = await _actorRepository.UpdateActorAsync(actor);
-                if (updatedActor == null)
+                var existingActor = await _actorRepository.GetActorAsync(id);
+                if (existingActor == null)
                 {
-                    return null;
+                    return null; 
                 }
+                _mapper.Map(actorUpdateInfo, existingActor);
+                var updatedActor = await _actorRepository.UpdateActorAsync(existingActor);
                 return _mapper.Map<ActorInfo>(updatedActor);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
-                throw new Exception("An error occurred while updating the actor.", ex);
+                _logger.LogError($"Error Updating actor with ID {id}: {ex.Message}");
+                return null;
             }
-           
+            
         }
+
     }
 }

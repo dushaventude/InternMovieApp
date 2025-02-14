@@ -26,7 +26,7 @@ namespace MovieApp.Data.Repositories
             return actor;
         }
 
-        public async Task<bool> DeleteAsync(Actor actor)
+        public async Task<bool> DeleteActorAsync(Actor actor)
         {
             _movieDbContext.Actors.Remove(actor);
             await _movieDbContext.SaveChangesAsync();
@@ -35,17 +35,9 @@ namespace MovieApp.Data.Repositories
 
         public async Task<Actor> UpdateActorAsync(Actor actor)
         {
-            var existingActor = await _movieDbContext.Actors.FindAsync(actor.Id);
-            if (existingActor == null) return null;
-
-            existingActor.Name = actor.Name;
-            existingActor.Gender = actor.Gender;
-            existingActor.Country = actor.Country;
-
-            _movieDbContext.Actors.Update(existingActor);
+            _movieDbContext.Actors.Update(actor);
             await _movieDbContext.SaveChangesAsync();
-
-            return existingActor;
+            return actor;
         }
     }
 }
