@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using MovieApp.Business.DTOs;
 using MovieApp.Data.Entities;
@@ -21,6 +21,7 @@ namespace MovieApp.Business.Services
         private readonly ILogger _logger;
 
         public ActorService(IActorRepository actorRepository, IMapper mapper, ILogger<ActorService> logger)
+
         {
             this._actorRepository = actorRepository;
             this._mapper = mapper;
@@ -37,14 +38,14 @@ namespace MovieApp.Business.Services
                     return null;
                 }
 
-                //TODO: AutoMapper configuration
+
                 var actorInfo = _mapper.Map<ActorInfo>(actor);
 
                 return actorInfo;
             }
             catch (Exception ex)
             {
-                //TODO: Error Logs
+
                 _logger.LogError($"Error fetching actor with ID {id}: {ex.Message}");
                 return null;
             }
