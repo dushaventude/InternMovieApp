@@ -31,7 +31,7 @@ namespace MovieApp.Data.Repositories
         
          public async Task<List<Movie>> GetMoviesAsync()
         {
-            return await _context.Movies.ToListAsync();
+            return await _movieDbContext.Movies.ToListAsync();
         }
 
         

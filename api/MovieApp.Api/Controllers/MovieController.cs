@@ -32,7 +32,7 @@ namespace MovieApp.Api.Controllers
                 return BadRequest(errorResponse);
             }
 
-            var result = await _movieService.DeleteMovieAsync(id);
+            var result = await movieService.DeleteMovieAsync(id);
             if (result)
             {
                 return NoContent();
