@@ -3,13 +3,15 @@ using MovieApp.Business;
 using MovieApp.Business.Services;
 using MovieApp.Data;
 using MovieApp.Data.Repositories;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using MovieApp.Business;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,7 +23,7 @@ builder.Services.AddDbContext<MovieDbContext>(options =>
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-builder.Services.AddScoped<IMovieService, MovieService>();
+
 
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();

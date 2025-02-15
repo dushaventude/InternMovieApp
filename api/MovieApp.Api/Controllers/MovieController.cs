@@ -1,3 +1,4 @@
+using MovieApp.Business.DTOs.MovieDtos;
 using MovieApp.Business.Services;
 using MovieApp.Business.Utilities;
 using MovieApp.Shared.Models;
@@ -13,12 +14,37 @@ namespace MovieApp.Api.Controllers
     public class MovieController : ControllerBase
     {
 
-        private readonly IMovieService movieService;
+        private readonly IMovieService _movieService;
 
         public MovieController(IMovieService movieService)
         {
-            this.movieService = movieService;
+            _movieService = movieService;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateMovieDto movieDto)
+        {
+            if (movieDto == null)
+            {
+                return BadRequest("Movie data is required.");
+            }
+            var createdMovie = await _movieService.CreateMovie(movieDto);
+
+            return CreatedAtAction(nameof(Create), createdMovie);
+        }
+
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Update(int Id, [FromBody] UpdateMovieDto movieDto)
+        {
+            Console.WriteLine(Id);
+            var updatedMovie = await _movieService.UpdateMovie(Id, movieDto);
+            if (updatedMovie == null)
+            {
+                return BadRequest();
+            }
+            return Ok(updatedMovie);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMovie(int id)
@@ -32,7 +58,7 @@ namespace MovieApp.Api.Controllers
                 return BadRequest(errorResponse);
             }
 
-            var result = await movieService.DeleteMovieAsync(id);
+            var result = await _movieService.DeleteMovieAsync(id);
             if (result)
             {
                 return NoContent();
@@ -50,7 +76,7 @@ namespace MovieApp.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
         {
-            var movies = await movieService.GetMoviesAsync();
+            var movies = await _movieService.GetMoviesAsync();
             if (movies == null)
             {
                 return NotFound("Movies Not Found");
@@ -62,4 +88,3 @@ namespace MovieApp.Api.Controllers
         }
     }
 }
-

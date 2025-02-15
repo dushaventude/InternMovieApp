@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using MovieApp.Business.DTOs;
+
+using MovieApp.Business.DTOs.MovieDtos;
+
 using MovieApp.Data.Entities;
 
 namespace MovieApp.Business
@@ -14,7 +17,13 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
-         
+
+            CreateMap<Movie,CreateMovieDto>().ReverseMap();
+            CreateMap<Movie, UpdateMovieDto>().ReverseMap();
+
+
+            CreateMap<Actor, ActorInfo>();
+            CreateMap<ActorInfo, Actor>();
             CreateMap<CreateActorInfo, Actor>();
             CreateMap<Actor, ActorUpdateInfo>().ReverseMap();
             CreateMap<Actor, ActorInfo>().ReverseMap();

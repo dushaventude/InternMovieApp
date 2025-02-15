@@ -1,9 +1,13 @@
 using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using MovieApp.Business.DTOs.MovieDtos;
+using MovieApp.Data.Entities;
+
 using Microsoft.Extensions.Logging;
 using MovieApp.Business.DTOs;
 using MovieApp.Data.Repositories;
@@ -23,8 +27,25 @@ namespace MovieApp.Business.Services
             _mapper = mapper;
             _logger = logger;
         }
-        
-         public async Task<bool> DeleteMovieAsync(int id)
+        public async Task<CreateMovieDto> CreateMovie(CreateMovieDto movieModel)
+        {
+            var movie = _mapper.Map<Movie>(movieModel);
+            var createdMovie = await  _movieRepository.CreateMovieAsync(movie);
+
+            return _mapper.Map<CreateMovieDto>(createdMovie);
+        }
+
+        public async Task<UpdateMovieDto?> UpdateMovie(int Id,UpdateMovieDto movieModel)
+        {
+            var movie = _mapper.Map<Movie>(movieModel);
+            var updatedMovie = await _movieRepository.UpdateMovieAsync(Id,movie);
+
+            if (updatedMovie == null) return null;
+            
+            return _mapper.Map<UpdateMovieDto>(updatedMovie);
+        }
+
+        public async Task<bool> DeleteMovieAsync(int id)
         {
             try
             {
@@ -69,3 +90,4 @@ namespace MovieApp.Business.Services
         }
     }
 }
+
