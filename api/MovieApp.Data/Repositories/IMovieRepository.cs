@@ -9,6 +9,12 @@ namespace MovieApp.Data.Repositories
 {
     public interface IMovieRepository
     {
+        Task<Movie> CreateMovieAsync(Movie movieModel);
+        Task<Movie?> UpdateMovieAsync(Movie movie);
+
+        Task DeleteMovieAsync(Movie movie);
+        Task<Movie?> GetMovieByIdAsync(int id);
         Task<List<Movie>> GetMoviesAsync();
+        Task<Movie?> ExistingMovieAsync(Movie movie);
     }
 }

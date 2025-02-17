@@ -8,8 +8,14 @@ using MovieApp.Business.Services;
 using MovieApp.Data;
 using MovieApp.Data.Repositories;
 using MovieApp.Data.Entities;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using MovieApp.Business;
+
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
+
 
 // Add services to the container.
 
@@ -18,18 +24,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
 builder.Services.AddDbContext<MovieDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDbConnection"));
 });
+
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDbConnection"));
 });
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddLogging();
@@ -68,7 +78,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-
+builder.Services.AddSingleton<OmdbService>(sp =>
+{
+    var httpClient = sp.GetRequiredService<HttpClient>();
+    var logger = sp.GetRequiredService<ILogger<OmdbService>>();
+    var apiKey = builder.Configuration["OmdbApi:ApiKey"]; 
+    return new OmdbService(httpClient, apiKey, logger);
+});
 
 
 var app = builder.Build();
