@@ -86,5 +86,22 @@ namespace MovieApp.Api.Controllers
                 return Ok(movies);
             }
         }
+
+        //POst api/movie/search
+        [HttpPost("search")]
+        public async Task<ActionResult<List<MovieInfo>>> SearchMoviesAsync([FromBody] MovieSearchFilter filter)
+        {
+            var movies = await _movieService.SearchMoviesAsync(filter);
+            if (movies == null)
+            {
+                return NotFound("Movies Not Found");
+            }
+            else
+            {
+                return Ok(movies);
+            }
+        }
+
+
     }
 }

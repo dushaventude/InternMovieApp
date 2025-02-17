@@ -88,6 +88,47 @@ namespace MovieApp.Business.Services
             }
             
         }
+        public async Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter)
+        {
+            try
+            {
+                var movies = await _movieRepository.GetMoviesAsync();
+                var filteredMovies = movies.AsQueryable();
+
+                // Search if title contains the filter title
+                if (!string.IsNullOrWhiteSpace(filter.Title))
+                {
+                    filteredMovies = filteredMovies.Where(m => m.Title.Contains(filter.Title, StringComparison.OrdinalIgnoreCase));
+                }
+
+                // Search from release date from and to
+                if (filter.ReleaseDateFrom.HasValue)
+                {
+                    filteredMovies = filteredMovies.Where(m => m.ReleaseDate >= filter.ReleaseDateFrom.Value);
+                }
+
+            
+                if (filter.ReleaseDateTo.HasValue)
+                {
+                    filteredMovies = filteredMovies.Where(m => m.ReleaseDate <= filter.ReleaseDateTo.Value);
+                }
+
+                // Search if movie is featured
+                if (filter.IsFeatured.HasValue)
+                {
+                    filteredMovies = filteredMovies.Where(m => m.IsFeatured == filter.IsFeatured.Value);
+                }
+
+                var movieInfo = _mapper.Map<List<MovieInfo>>(filteredMovies.ToList());
+                return movieInfo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error searching movies: {ex.Message}");
+                return new List<MovieInfo>();
+            }
+        }
     }
+
 }
 

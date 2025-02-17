@@ -18,6 +18,7 @@ namespace MovieApp.Business.Services
 
         Task<bool> DeleteMovieAsync(int id);
         Task<List<MovieInfo>> GetMoviesAsync();
+        Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter);
 
     }
 }
