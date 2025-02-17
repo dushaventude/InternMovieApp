@@ -45,8 +45,10 @@ namespace MovieApp.Api.Controllers
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status400BadRequest,
+
                     "Movie Create Details Required",
                     $"Movie and Actor is required to create");
+
                 return BadRequest(errorResponse);
             }
 
@@ -72,10 +74,12 @@ namespace MovieApp.Api.Controllers
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status404NotFound,
+
                     "Movie Not Found",
                     $"Movie of {Id} Could not be Found");
 
                 return NotFound(errorResponse);
+
             }
             return Ok(updatedMovie);
         }
@@ -113,12 +117,37 @@ namespace MovieApp.Api.Controllers
             var movies = await _movieService.GetMoviesAsync();
             if (movies == null)
             {
-                return NotFound("Movies Not Found");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movies not found",
+                    "Movies not found");
+                return NotFound(errorResponse);
             }
             else
             {
                 return Ok(movies);
             }
         }
+
+        //POst api/movie/search
+        [HttpPost("search")]
+        public async Task<ActionResult<List<MovieInfo>>> SearchMoviesAsync([FromBody] MovieSearchFilter filter)
+        {
+            var movies = await _movieService.SearchMoviesAsync(filter);
+            if (movies == null)
+            {
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movies not found",
+                    "Movies not found");
+                return NotFound(errorResponse);
+            }
+            else
+            {
+                return Ok(movies);
+            }
+        }
+
+
     }
 }
