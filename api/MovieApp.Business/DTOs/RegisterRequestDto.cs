@@ -16,5 +16,11 @@ namespace MovieApp.Business.DTOs
         [DataType(DataType.Password)]
         public string Password { get; set; }
         public string[] Roles { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
     }
 }

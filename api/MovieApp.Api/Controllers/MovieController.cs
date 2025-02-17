@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs;
 using MovieApp.Business.Services;
@@ -19,6 +20,7 @@ namespace MovieApp.Api.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "customer,admin")]
         public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
         {
             var movies = await movieService.GetMoviesAsync();

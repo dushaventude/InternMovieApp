@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs;
+using MovieApp.Data.Entities;
 using MovieApp.Data.Repositories;
 
 namespace MovieApp.Api.Controllers
@@ -10,11 +11,11 @@ namespace MovieApp.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public readonly UserManager<IdentityUser> userManager;
+        public readonly UserManager<ApplicationUser> userManager;
         public readonly ITokenRepository tokenRepository;
         private readonly IConfiguration configuration;
 
-        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.tokenRepository = tokenRepository;
@@ -36,10 +37,12 @@ namespace MovieApp.Api.Controllers
             }
 
             // Create a new IdentityUser based on the provided username and email
-            var identityUser = new IdentityUser
+            var identityUser = new ApplicationUser
             {
                 UserName = registerRequestcsDto.Username,
-                Email = registerRequestcsDto.Username
+                Email = registerRequestcsDto.Username,
+                FirstName= registerRequestcsDto.FirstName,
+                LastName = registerRequestcsDto.LastName
             };
             // Create the user in the database using the UserManager
 
@@ -101,6 +104,46 @@ namespace MovieApp.Api.Controllers
             // If the login was unsuccessful, return a bad request message
             return BadRequest("Username or password incorrect");
         }
+
+
+      ////  TODO://
+      //  [HttpGet("get-user/{id}")]
+      //  public async Task<IActionResult> GetUserById(string id)
+      //  {
+      //      var user = await _userManager.FindByIdAsync(id);
+      //      if (user == null)
+      //          return NotFound("User not found");
+
+      //      return Ok(new
+      //      {
+      //          user.Id,
+      //          user.FirstName,
+      //          user.LastName,
+      //          user.Email,
+      //          user.UserName
+      //      });
+      //  }
+
+
+
+        //[HttpGet("get-all-users")]
+        //public async Task<IActionResult> GetAllUsers()
+        //{
+        //    var users = _userManager.Users.ToList();
+
+        //    var userList = users.Select(user => new
+        //    {
+        //        user.Id,
+        //        user.FirstName,
+        //        user.LastName,
+        //        user.Email,
+        //        user.UserName
+        //    });
+
+        //    return Ok(userList);
+        //}
+
+
 
     }
 }

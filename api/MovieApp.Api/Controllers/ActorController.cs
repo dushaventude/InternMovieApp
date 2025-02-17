@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs;
 using MovieApp.Business.Services;
@@ -17,6 +18,7 @@ namespace MovieApp.Api.Controllers
         }
 
         [HttpGet]
+       // [Authorize(Roles = "customer,admin")]
         public async Task<ActionResult<ActorInfo>> GetActorById(int id)
         {
             var actor=await _actorService.GetActorById(id);

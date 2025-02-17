@@ -7,6 +7,7 @@ using MovieApp.Business;
 using MovieApp.Business.Services;
 using MovieApp.Data;
 using MovieApp.Data.Repositories;
+using MovieApp.Data.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,9 +38,9 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // Use PascalCase
     });
-builder.Services.AddIdentityCore<IdentityUser>()
+builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
-    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("")
+    .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("")
     .AddEntityFrameworkStores<AuthDbContext>()
     .AddDefaultTokenProviders();
 
