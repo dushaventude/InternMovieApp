@@ -26,7 +26,11 @@ namespace MovieApp.Api.Controllers
         {
             if (movieDto == null)
             {
-                return BadRequest("Movie data is required.");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status400BadRequest,
+                    "Invalid request",
+                    "Movie data is required.");
+                return BadRequest(errorResponse);
             }
             var createdMovie = await _movieService.CreateMovie(movieDto);
 
@@ -40,7 +44,12 @@ namespace MovieApp.Api.Controllers
             var updatedMovie = await _movieService.UpdateMovie(Id, movieDto);
             if (updatedMovie == null)
             {
-                return BadRequest();
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movie not found",
+                    $"Movie with ID {Id} not found");
+
+                return BadRequest(errorResponse);
             }
             return Ok(updatedMovie);
         }
@@ -79,7 +88,11 @@ namespace MovieApp.Api.Controllers
             var movies = await _movieService.GetMoviesAsync();
             if (movies == null)
             {
-                return NotFound("Movies Not Found");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movies not found",
+                    "Movies not found");
+                return NotFound(errorResponse);
             }
             else
             {
@@ -94,7 +107,11 @@ namespace MovieApp.Api.Controllers
             var movies = await _movieService.SearchMoviesAsync(filter);
             if (movies == null)
             {
-                return NotFound("Movies Not Found");
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status404NotFound,
+                    "Movies not found",
+                    "Movies not found");
+                return NotFound(errorResponse);
             }
             else
             {
