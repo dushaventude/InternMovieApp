@@ -18,6 +18,5 @@ namespace MovieApp.Data.Entities
         public DateOnly? ReleaseDate { get; set; }
         public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
 
-
     }
 }
