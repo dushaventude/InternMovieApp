@@ -7,7 +7,10 @@ using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using MovieApp.Business;
 
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
+
 
 // Add services to the container.
 
@@ -33,6 +36,14 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // Use PascalCase
     });
+
+builder.Services.AddSingleton<OmdbService>(sp =>
+{
+    var httpClient = sp.GetRequiredService<HttpClient>();
+    var logger = sp.GetRequiredService<ILogger<OmdbService>>();
+    var apiKey = builder.Configuration["OmdbApi:ApiKey"]; 
+    return new OmdbService(httpClient, apiKey, logger);
+});
 
 
 var app = builder.Build();
