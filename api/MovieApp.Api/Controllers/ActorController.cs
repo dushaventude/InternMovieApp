@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using MovieApp.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace MovieApp.Api.Controllers
         }
 
 
+
         //[HttpGet("{id}")]
         //public async Task<ActionResult<ActorInfo>> GetActorById(int id)
         //{
@@ -44,6 +46,7 @@ namespace MovieApp.Api.Controllers
 
         [HttpPost]
         public async Task<ActionResult<ActorInfo>> AddActor(CreateActorInfo createActorInfo)
+
         {
             if (createActorInfo == null)
             {
