@@ -15,6 +15,8 @@ namespace MovieApp.Data.Entities
         public string Name { get; set; }
         public string? Gender { get; set; }
         public string? Country { get; set; }
+        public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
+
     }
 
 }

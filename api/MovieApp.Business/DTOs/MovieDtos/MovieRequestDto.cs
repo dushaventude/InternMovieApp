@@ -14,5 +14,6 @@ namespace MovieApp.Business.DTOs.MovieDtos
         public string Photo { get; set; } = string.Empty;
         public bool IsFeatured { get; set; }
         public DateOnly ReleaseDate { get; set; }
+        public List<ActorDto> Actors { get; set; } = new();
     }
 }

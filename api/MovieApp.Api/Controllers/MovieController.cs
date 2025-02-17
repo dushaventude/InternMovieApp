@@ -34,15 +34,22 @@ namespace MovieApp.Api.Controllers
             return Ok(movie);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> SearchMovie([FromBody] SearchMovieDto searchMovieDto)
+        //{
+        //    return Ok(searchMovieDto);
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> CreateMovie([FromBody] MovieDto movieDto)
         {
-            if (movieDto == null)
+            if (movieDto == null || movieDto.ActorIds.Count == 0 || movieDto.ActorIds.Contains(0))
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status400BadRequest,
                     "Movie Create Details Required",
-                    $"Movie is required to create");
+                    $"Movie and Actor is required to create");
                 return BadRequest(errorResponse);
             }
 

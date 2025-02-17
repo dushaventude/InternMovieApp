@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using MovieApp.Business.DTOs;
 using MovieApp.Business.DTOs.MovieDtos;
 using MovieApp.Business.Services;
 using MovieApp.Data.Entities;
@@ -8,12 +9,14 @@ using MovieApp.Data.Repositories;
 public class MovieService : IMovieService
 {
     private readonly IMovieRepository _movieRepository;
+    private readonly IActorRepository _actorRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<MovieService> _logger;
 
-    public MovieService(IMovieRepository movieRepository, IMapper mapper, ILogger<MovieService> logger)
+    public MovieService(IMovieRepository movieRepository,IActorRepository actorRepository, IMapper mapper, ILogger<MovieService> logger)
     {
         _movieRepository = movieRepository;
+        _actorRepository = actorRepository;
         _mapper = mapper;
         _logger = logger;
     }
@@ -23,6 +26,21 @@ public class MovieService : IMovieService
         try
         {
             var movie = _mapper.Map<Movie>(movieDto);
+            if (movieDto.ActorIds != null && movieDto.ActorIds.Count > 0)
+            {
+                foreach (var actorId in movieDto.ActorIds)
+                {
+                    var actor = await _actorRepository.GetActorAsync(actorId);
+                    if (actor != null)
+                    {
+                        movie.MovieActors.Add(new MovieActor
+                        {
+                            Movie = movie,
+                            Actor = actor
+                        });
+                    }
+                }
+            }
             var createdMovie = await _movieRepository.CreateMovieAsync(movie);
             return _mapper.Map<MovieRequestDto>(createdMovie);
         }
@@ -57,7 +75,15 @@ public class MovieService : IMovieService
                 _logger.LogWarning($"Movie with Id {Id} not found.");
                 return null;
             }
-            return _mapper.Map<MovieRequestDto>(movie);
+            var movieDto = _mapper.Map<MovieRequestDto>(movie);
+
+            movieDto.Actors = movie.MovieActors.Select(ma => new ActorDto
+            {
+                Id = ma.Actor.Id,
+                Name = ma.Actor.Name
+            }).ToList();
+
+            return movieDto;
         }
         catch (Exception ex)
         {
@@ -76,7 +102,37 @@ public class MovieService : IMovieService
                 _logger.LogWarning($"Movie with Id {Id} not found for update.");
                 return null;
             }
+            if (movieDto.ActorIds != null)
+            {
+                // Fetch all existing MovieActor relationships for this movie
+                var existingMovieActors = existingMovie.MovieActors.ToList();
 
+                // Remove actors that are not in the updated list
+                foreach (var movieActor in existingMovieActors)
+                {
+                    if (!movieDto.ActorIds.Contains(movieActor.ActorId))
+                    {
+                        existingMovie.MovieActors.Remove(movieActor);
+                    }
+                }
+
+                // Add new actors that are not already in the list
+                foreach (var actorId in movieDto.ActorIds)
+                {
+                    if (!existingMovieActors.Any(ma => ma.ActorId == actorId))
+                    {
+                        var actor = await _actorRepository.GetActorAsync(actorId);
+                        if (actor != null)
+                        {
+                            existingMovie.MovieActors.Add(new MovieActor
+                            {
+                                MovieId = existingMovie.Id,
+                                ActorId = actor.Id
+                            });
+                        }
+                    }
+                }
+            }
             _mapper.Map(movieDto, existingMovie);
             var updatedMovie = await _movieRepository.UpdateMovieAsync(existingMovie);
 

@@ -16,9 +16,15 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
-            CreateMap<Movie,MovieRequestDto>().ReverseMap();
+            //CreateMap<Movie,MovieRequestDto>().ReverseMap();
             CreateMap<Movie, UpdateMovieDto>().ReverseMap();
             CreateMap<Movie, MovieDto>().ReverseMap();
+            CreateMap<Movie, MovieRequestDto>()
+                .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.MovieActors.Select(ma => new ActorDto
+                {
+                    Id = ma.Actor.Id,
+                    Name = ma.Actor.Name
+                }))).ReverseMap();
         }
     }
 }

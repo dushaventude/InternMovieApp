@@ -37,7 +37,10 @@ namespace MovieApp.Data.Repositories
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            return await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Movies
+                .Include(m=>m.MovieActors)
+                .ThenInclude(ma=>ma.Actor)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<Movie?> ExistingMovieAsync(Movie movie)
