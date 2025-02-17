@@ -1,6 +1,7 @@
 ﻿using MovieApp.Shared.Models;
 
 namespace MovieApp.Business.Utilities
+
 {
     public static class ErrorResponseFactory
     {

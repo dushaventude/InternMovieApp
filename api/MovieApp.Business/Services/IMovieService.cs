@@ -12,13 +12,13 @@ namespace MovieApp.Business.Services
 {
     public interface IMovieService
     {
-
-        Task<CreateMovieDto> CreateMovie(CreateMovieDto movieDto);
-        Task<UpdateMovieDto?> UpdateMovie(int Id,UpdateMovieDto movieDto);
-
         Task<bool> DeleteMovieAsync(int id);
         Task<List<MovieInfo>> GetMoviesAsync();
         Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter);
 
+        Task<MovieRequestDto?> GetMovieById(int id);
+        Task<MovieRequestDto> CreateMovie(MovieDto movieDto);
+        Task<MovieRequestDto?> UpdateMovie(int Id,MovieDto movieDto);
+        Task<MovieRequestDto?> ExistingMovie(MovieDto movieDto);
     }
 }

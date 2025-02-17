@@ -8,11 +8,11 @@ namespace MovieApp.Business.DTOs.MovieDtos
 {
     public class MovieDto
     {
-        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Photo { get; set; } = string.Empty;
         public bool IsFeatured { get; set; }
         public DateOnly ReleaseDate { get; set; }
+        public List<int> ActorIds { get; set; } = new List<int>();
     }
 }
