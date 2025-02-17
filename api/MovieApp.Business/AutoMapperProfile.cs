@@ -17,8 +17,7 @@ namespace MovieApp.Business
     {
         public AutoMapperProfile()
         {
-
-            CreateMap<Movie,CreateMovieDto>().ReverseMap();
+            //CreateMap<Movie,MovieRequestDto>().ReverseMap();
             CreateMap<Movie, UpdateMovieDto>().ReverseMap();
 
 
@@ -31,6 +30,13 @@ namespace MovieApp.Business
             //   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName)); 
 
             CreateMap<Movie, MovieInfo>().ReverseMap();
+            CreateMap<Movie, MovieDto>().ReverseMap();
+            CreateMap<Movie, MovieRequestDto>()
+                .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.MovieActors.Select(ma => new ActorDto
+                {
+                    Id = ma.Actor.Id,
+                    Name = ma.Actor.Name
+                }))).ReverseMap();
         }
 
 

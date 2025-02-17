@@ -17,6 +17,11 @@ namespace MovieApp.Data.Repositories
         {
             _context = context;
         }
+
+        //public async Task<Movie?> FindDuplicateAsync()
+        //{
+
+        //}
         public async Task<Movie> CreateMovieAsync(Movie movieModel)
         {
             _context.Movies.Add(movieModel);
@@ -24,33 +29,24 @@ namespace MovieApp.Data.Repositories
             return movieModel;
         }
 
-        public async Task<Movie?> UpdateMovieAsync(int Id, Movie movieModel)
+        public async Task<Movie?> UpdateMovieAsync(Movie movie)
         {
-            var existingMovie = await _context.Movies.FindAsync(Id);
-
-            if (existingMovie == null)
-            {
-                return null;
-            }
-            existingMovie.Title = movieModel.Title;
-            existingMovie.Description = movieModel.Description;
-            existingMovie.Photo = movieModel.Photo;
-            existingMovie.IsFeatured = movieModel.IsFeatured;
-            existingMovie.ReleaseDate = movieModel.ReleaseDate;
-
+            _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
-            return existingMovie;
+            return movie;
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            return await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Movies
+                .Include(m=>m.MovieActors)
+                .ThenInclude(ma=>ma.Actor)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task DeleteMovieAsync(Movie movie)
+        public async Task<Movie?> ExistingMovieAsync(Movie movie)
         {
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
+            return await _context.Movies.FirstOrDefaultAsync(m => m.Title == movie.Title);
         }
         
          public async Task<List<Movie>> GetMoviesAsync()
@@ -58,7 +54,13 @@ namespace MovieApp.Data.Repositories
             return await _context.Movies.ToListAsync();
         }
 
-        
+        public async Task DeleteMovieAsync(Movie movie)
+        {
+            _context.Movies.Remove(movie);
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }
 
