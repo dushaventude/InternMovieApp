@@ -13,7 +13,7 @@ namespace MovieApp.Business.Services
     public interface IMovieService
     {
         Task<bool> DeleteMovieAsync(int id);
-        Task<List<MovieInfo>> GetMoviesAsync();
+        Task<GetAllMoviesDto> GetMoviesAsync(MovieSearchFilter filter);
         Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter);
 
         Task<MovieRequestDto?> GetMovieById(int id);

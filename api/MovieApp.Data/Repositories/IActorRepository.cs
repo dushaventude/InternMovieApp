@@ -9,6 +9,7 @@ namespace MovieApp.Data.Repositories
 {
     public interface IActorRepository
     {
+        Task<(int TotalCount, List<Actor> Actors)> GetAllAsync(int pageNumber, int pageSize);
         Task<Actor> GetActorAsync(int id);
         Task<Actor> AddActorAsync(Actor actor);
         Task<bool> DeleteActorAsync(Actor actor); // New method for deleting
