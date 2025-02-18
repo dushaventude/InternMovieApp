@@ -7,6 +7,7 @@ using MovieApp.Data.Entities;
 
 using Microsoft.Extensions.Logging;
 using MovieApp.Data.Repositories;
+using MovieApp.Business.DTOs.ActorDtos;
 
 namespace MovieApp.Business.Services
 {
@@ -159,42 +160,19 @@ namespace MovieApp.Business.Services
 
                 if (filter.PageNumber > totalPages || movies.Count == 0)
                 {
-                    return new GetAllMoviesDto
-                    {   
-
-                        PageNumber = filter.PageNumber,
-                        PageSize = filter.PageSize,
-                        TotalCount = TotalMovies,
-                        Response = []
-                    };
+                    return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
                 }
                 
-                var movieInfo = _mapper.Map<List<MovieInfo>>(movies);
-                var response = new GetAllMoviesDto
-                {
-                    PageNumber = filter.PageNumber,
-                    PageSize = filter.PageSize,
-                    TotalCount = TotalMovies,
-                    Response = movieInfo
-                };
-                return response;
+                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
                 
 
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error fetching movies: {ex.Message}");
-                return new GetAllMoviesDto
-                {
-                    PageNumber = filter.PageNumber,
-                    PageSize = filter.PageSize,
-                    TotalCount = 0,
-                    Response = []
-                };
+                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, 0, null);
             }
-
         }
-
 
         public async Task<bool> DeleteMovieAsync(int id)
         {
@@ -255,6 +233,19 @@ namespace MovieApp.Business.Services
                 _logger.LogError($"Error searching movies: {ex.Message}");
                 return new List<MovieInfo>();
             }
+        }
+
+        private GetAllMoviesDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalMovies, List<Movie>? movies)
+        {
+            return new GetAllMoviesDto
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalMovies,
+                Response = movies != null && movies.Any()
+                    ? _mapper.Map<List<MovieInfo>>(movies)
+                    : new List<MovieInfo>()
+            };
         }
     }
 

@@ -24,12 +24,10 @@ namespace MovieApp.Business.Services
         private readonly ILogger _logger;
 
         public ActorService(IActorRepository actorRepository, IMapper mapper, ILogger<ActorService> logger)
-
         {
             this._actorRepository = actorRepository;
             this._mapper = mapper;
             this._logger = logger;
-
         }
 
         public async Task<ActorInfo> GetActorById(int id)
@@ -60,7 +58,6 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                
                 var actor = _mapper.Map<Actor>(createActorInfo);
 
                 var addedActor = await _actorRepository.AddActorAsync(actor);
@@ -106,7 +103,6 @@ namespace MovieApp.Business.Services
                 _logger.LogError($"Error Updating actor with ID {id}: {ex.Message}");
                 return null;
             }
-            
         }
 
         public async Task<GetAllActorsDto> GetActors(int pageNumber,int pageSize)
@@ -117,36 +113,29 @@ namespace MovieApp.Business.Services
 
                 if (actors == null || !actors.Any())
                 {
-                    return new GetAllActorsDto
-                    {
-                        PageNumber = pageNumber,
-                        PageSize = pageSize,
-                        TotalCount = TotalActors,
-                        Response = new List<ActorInfo>()
-                    };
+                    return CreateGetAllActorsDto(pageNumber, pageSize, TotalActors, actors);
                 }
 
-                var actorsInfo = _mapper.Map<List<ActorInfo>>(actors);
-
-                return new GetAllActorsDto
-                {
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    TotalCount = TotalActors,
-                    Response = actorsInfo
-                };
+                return CreateGetAllActorsDto(pageNumber, pageSize, TotalActors, actors);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching actors");
-                return new GetAllActorsDto
-                {
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    TotalCount = 0,
-                    Response = new List<ActorInfo>()
-                };
+                return CreateGetAllActorsDto(pageNumber, pageSize, 0, null);
             }
+        }
+
+        private GetAllActorsDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalActors, List<Actor>? actors)
+        {
+            return new GetAllActorsDto
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalActors,
+                Response = actors != null && actors.Any()
+                    ? _mapper.Map<List<ActorInfo>>(actors)
+                    : new List<ActorInfo>()
+            };
         }
     }
 }
