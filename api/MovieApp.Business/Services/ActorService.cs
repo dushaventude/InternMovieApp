@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 
 using System.Threading.Tasks;
+using MovieApp.Business.DTOs.ActorDtos;
 
 namespace MovieApp.Business.Services
 {
@@ -108,5 +109,44 @@ namespace MovieApp.Business.Services
             
         }
 
+        public async Task<GetAllActorsDto> GetActors(int pageNumber,int pageSize)
+        {
+            try
+            {
+                var (TotalActors, actors) = await _actorRepository.GetAllAsync(pageNumber, pageSize);
+
+                if (actors == null || !actors.Any())
+                {
+                    return new GetAllActorsDto
+                    {
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        TotalCount = TotalActors,
+                        Response = new List<ActorInfo>()
+                    };
+                }
+
+                var actorsInfo = _mapper.Map<List<ActorInfo>>(actors);
+
+                return new GetAllActorsDto
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = TotalActors,
+                    Response = actorsInfo
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching actors");
+                return new GetAllActorsDto
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = 0,
+                    Response = new List<ActorInfo>()
+                };
+            }
+        }
     }
 }

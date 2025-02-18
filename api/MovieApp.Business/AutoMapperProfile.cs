@@ -18,7 +18,7 @@ namespace MovieApp.Business
         public AutoMapperProfile()
         {
             //CreateMap<Movie,MovieRequestDto>().ReverseMap();
-            CreateMap<Movie, UpdateMovieDto>().ReverseMap();
+            //CreateMap<Movie, UpdateMovieDto>().ReverseMap();
 
 
             CreateMap<Actor, ActorInfo>();

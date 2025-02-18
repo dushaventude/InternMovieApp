@@ -49,9 +49,11 @@ namespace MovieApp.Data.Repositories
             return await _context.Movies.FirstOrDefaultAsync(m => m.Title == movie.Title);
         }
         
-         public async Task<List<Movie>> GetMoviesAsync()
+        public async Task<(int TotalCount, List<Movie> Movies)> GetMoviesAsync(int PageNumber , int PageSize)
         {
-            return await _context.Movies.ToListAsync();
+            var skipNumber = (PageNumber - 1) * PageSize;
+            return (await _context.Movies.CountAsync(),await _context.Movies.Skip(skipNumber).Take(PageSize).ToListAsync());
+            //return await _context.Movies.ToListAsync();
         }
 
         public async Task DeleteMovieAsync(Movie movie)

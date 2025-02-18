@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using MovieApp.Data.Entities;
@@ -44,6 +45,16 @@ namespace MovieApp.Api.Controllers
         //    return Ok(actor);
         //}
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllActors(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10, 
+            [FromQuery] string? name = null )
+        {
+            var actors = await _actorService.GetActors(pageNumber,pageSize);
+            return Ok(actors);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ActorInfo>> AddActor(CreateActorInfo createActorInfo)
 
@@ -70,51 +81,52 @@ namespace MovieApp.Api.Controllers
             return CreatedAtAction(nameof(GetActorById), new { id = addedActor.Id }, addedActor);
         }
 
-            [HttpGet]
-            public async Task<ActionResult<ActorInfo>> GetActorById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ActorInfo>> GetActorById(int id)
+        {
+            var actor = await _actorService.GetActorById(id);
+            if (actor == null)
             {
-                var actor = await _actorService.GetActorById(id);
-                if (actor == null)
-                {
-                    return NotFound("Actor Not Found");
-                }
-                else
-                {
-                    return Ok(actor);
-                }
+                return NotFound("Actor Not Found");
             }
-
-            [HttpDelete]
-            public async Task<IActionResult> DeleteActorById(int id)
+            else
             {
-                var result = await _actorService.DeleteActorById(id);
-                if (result == false)
-                {
-                    return NotFound("Actor Not Found");
-                }
-                else
-                {
-                    return NoContent();
-                }
-
-            }
-            [HttpPut]
-            public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
-            {
-                if (actorUpdateInfo == null)
-                {
-                    return BadRequest("Invalid actor data");
-                }
-
-                var updatedActor = await _actorService.UpdateActorById(id, actorUpdateInfo);
-
-                if (updatedActor == null)
-                {
-                    return NotFound("Actor not found");
-                }
-
-                return Ok(updatedActor);
-
+                return Ok(actor);
             }
         }
-    } 
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteActorById(int id)
+        {
+            var result = await _actorService.DeleteActorById(id);
+            if (result == false)
+            {
+                return NotFound("Actor Not Found");
+            }
+            else
+            {
+                return NoContent();
+            }
+
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
+        {
+            if (actorUpdateInfo == null)
+            {
+                return BadRequest("Invalid actor data");
+            }
+
+            var updatedActor = await _actorService.UpdateActorById(id, actorUpdateInfo);
+
+            if (updatedActor == null)
+            {
+                return NotFound("Actor not found");
+            }
+
+            return Ok(updatedActor);
+
+        }
+    }
+}
