@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using MovieApp.Business.DTOs.MovieDtos;
 using MovieApp.Business.Services;
 using MovieApp.Business.Utilities;
 using MovieApp.Shared.Models;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.Business.DTOs;
@@ -14,11 +16,13 @@ namespace MovieApp.Api.Controllers
     public class MovieController : ControllerBase
     {
 
+        private readonly OmdbService _omdbService;
         private readonly IMovieService _movieService;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, OmdbService omdbService)
         {
             _movieService = movieService;
+            _omdbService = omdbService;
         }
 
 
@@ -111,6 +115,7 @@ namespace MovieApp.Api.Controllers
             }
         }
 
+
         //[HttpGet]
         //public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
         //{
@@ -129,6 +134,7 @@ namespace MovieApp.Api.Controllers
         //}
         [HttpPost]
         public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync(MovieSearchFilter filter)
+
         {
             var movies = await _movieService.GetMoviesAsync(filter);
             if (movies.Response.Count == 0)
@@ -160,6 +166,23 @@ namespace MovieApp.Api.Controllers
             return Ok(movies);
         }
 
+        [HttpGet("rating")]
+        public async Task<IActionResult> GetMovieRating([FromQuery] string title)
+        {
+            var movieData = await _omdbService.GetMovieRatingAsync(title);
+
+            if (movieData == null)
+            {
+          
+                return NotFound($"Movie with title '{title}' not found.");
+            }
+
+            return Ok(new
+            {
+                Title = movieData.Title,
+                IMDbRating = movieData.imdbRating
+            });
+        }
 
     }
 }
