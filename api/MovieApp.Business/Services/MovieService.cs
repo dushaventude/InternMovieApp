@@ -6,7 +6,6 @@ using MovieApp.Business.Services;
 using MovieApp.Data.Entities;
 
 using Microsoft.Extensions.Logging;
-using MovieApp.Business.DTOs;
 using MovieApp.Data.Repositories;
 
 namespace MovieApp.Business.Services
@@ -151,26 +150,47 @@ namespace MovieApp.Business.Services
         }
 
 
-             public async Task<List<MovieInfo>> GetMoviesAsync()
+        public async Task<GetAllMoviesDto> GetMoviesAsync(MovieSearchFilter filter)
         {
             try
             {
-                var movies = await _movieRepository.GetMoviesAsync();
-                if (movies == null || movies.Count == 0)
+                var (TotalMovies,movies) = await _movieRepository.GetMoviesAsync(filter.PageNumber,filter.PageSize);
+                var totalPages = (int)Math.Ceiling((double)TotalMovies / filter.PageSize);
+
+                if (filter.PageNumber > totalPages || movies.Count == 0)
                 {
-                    return new List<MovieInfo>();
+                    return new GetAllMoviesDto
+                    {   
+
+                        PageNumber = filter.PageNumber,
+                        PageSize = filter.PageSize,
+                        TotalCount = TotalMovies,
+                        Response = []
+                    };
                 }
-                else
+                
+                var movieInfo = _mapper.Map<List<MovieInfo>>(movies);
+                var response = new GetAllMoviesDto
                 {
-                    var movieInfo = _mapper.Map<List<MovieInfo>>(movies);
-                    return movieInfo;
-                }
+                    PageNumber = filter.PageNumber,
+                    PageSize = filter.PageSize,
+                    TotalCount = TotalMovies,
+                    Response = movieInfo
+                };
+                return response;
+                
 
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error fetching movies: {ex.Message}");
-                return new List<MovieInfo>();
+                return new GetAllMoviesDto
+                {
+                    PageNumber = filter.PageNumber,
+                    PageSize = filter.PageSize,
+                    TotalCount = 0,
+                    Response = []
+                };
             }
 
         }
@@ -200,7 +220,7 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                var movies = await _movieRepository.GetMoviesAsync();
+                var (TotalMoives,movies) = await _movieRepository.GetMoviesAsync(filter.PageNumber,filter.PageSize);
                 var filteredMovies = movies.AsQueryable();
 
                 // Search if title contains the filter title

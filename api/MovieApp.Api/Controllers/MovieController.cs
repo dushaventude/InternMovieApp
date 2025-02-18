@@ -42,7 +42,7 @@ namespace MovieApp.Api.Controllers
             }
             return Ok(movie);
         }
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateMovie([FromBody] MovieDto movieDto)
         {
             if (movieDto == null || movieDto.ActorIds.Count == 0 || movieDto.ActorIds.Contains(0))
@@ -115,12 +115,29 @@ namespace MovieApp.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [Authorize(Roles = "customer,admin")]
-        public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
+
+        //[HttpGet]
+        //public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
+        //{
+        //    var movies = await _movieService.GetMoviesAsync();
+        //    if (movies == null)
+        //    {
+        //        var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+        //            StatusCodes.Status404NotFound,
+        //            "Movies not found",
+        //            "Movies not found");
+        //        return NotFound(errorResponse);
+        //    }
+
+        //    return Ok(movies);
+
+        //}
+        [HttpPost]
+        public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync(MovieSearchFilter filter)
+
         {
-            var movies = await _movieService.GetMoviesAsync();
-            if (movies == null)
+            var movies = await _movieService.GetMoviesAsync(filter);
+            if (movies.Response.Count == 0)
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status404NotFound,
@@ -128,10 +145,9 @@ namespace MovieApp.Api.Controllers
                     "Movies not found");
                 return NotFound(errorResponse);
             }
-            else
-            {
-                return Ok(movies);
-            }
+
+            return Ok(movies);
+
         }
 
         //POst api/movie/search
@@ -143,14 +159,11 @@ namespace MovieApp.Api.Controllers
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status404NotFound,
-                    "Movies not found",
+                    "Movies not found", 
                     "Movies not found");
                 return NotFound(errorResponse);
             }
-            else
-            {
-                return Ok(movies);
-            }
+            return Ok(movies);
         }
 
         [HttpGet("rating")]

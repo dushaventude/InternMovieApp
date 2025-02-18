@@ -51,5 +51,10 @@ namespace MovieApp.Data.Repositories
             return actor;
         }
 
+        public async Task<(int TotalCount, List<Actor> Actors)> GetAllAsync(int pageNumber,int pageSize)
+        {
+            var skipNumber = (pageNumber - 1) * pageSize;
+            return (await _movieDbContext.Actors.CountAsync(),await _movieDbContext.Actors.Skip(skipNumber).Take(pageSize).ToListAsync());
+        }
     }
 }
