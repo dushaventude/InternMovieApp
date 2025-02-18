@@ -37,6 +37,16 @@ namespace MovieApp.Business
                     Id = ma.Actor.Id,
                     Name = ma.Actor.Name
                 }))).ReverseMap();
+
+            // Added Review mapping
+            CreateMap<Review, ReviewDto>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.UserName)) // Map username
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))// Map UserId
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName)) // Map FirstName
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName)) // Map LastName
+                .ReverseMap();
+
+            CreateMap<AddReviewDto, Review>(); // Entity for adding reviews
         }
 
 

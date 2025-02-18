@@ -18,6 +18,8 @@ namespace MovieApp.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MovieActor>(x => x.HasKey(p=> new {p.MovieId,p.ActorId}));
@@ -35,6 +37,19 @@ namespace MovieApp.Data
             modelBuilder.Entity<Movie>()
                 .HasIndex(m => m.Title)
                 .IsUnique();
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Movie)
+                .WithMany()
+                .HasForeignKey(r => r.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             base.OnModelCreating(modelBuilder);
         }
     }

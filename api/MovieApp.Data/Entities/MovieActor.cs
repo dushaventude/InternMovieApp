@@ -14,3 +14,4 @@ namespace MovieApp.Data.Entities
         public Actor Actor { get; set; }
     }
 }
+  
