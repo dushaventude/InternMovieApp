@@ -15,13 +15,20 @@ namespace MovieApp.Business.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IActorRepository _actorRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<MovieService> _logger;
 
-    public MovieService(IMovieRepository movieRepository,IActorRepository actorRepository, IMapper mapper, ILogger<MovieService> logger)
+    public MovieService(
+        IMovieRepository movieRepository,
+        IActorRepository actorRepository, 
+        IReviewRepository reviewRepository,
+        IMapper mapper, 
+        ILogger<MovieService> logger)
     {
         _movieRepository = movieRepository;
         _actorRepository = actorRepository;
+        _reviewRepository = reviewRepository;
         _mapper = mapper;
         _logger = logger;
     }
@@ -87,6 +94,10 @@ namespace MovieApp.Business.Services
                 Id = ma.Actor.Id,
                 Name = ma.Actor.Name
             }).ToList();
+            var reviews = await _reviewRepository.GetReviewsByMovieIdAsync(Id);
+            movieDto.AverageRating = (reviews != null && reviews.Any())
+                ? Math.Round(reviews.Average(r => r.Rate), 1)
+                : null;
 
             return movieDto;
         }
