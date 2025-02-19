@@ -21,7 +21,11 @@ namespace MovieApp.Data.Repositories
         {
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
-            return review;
+
+            return await _context.Reviews
+                .Include(r => r.User) 
+                .FirstOrDefaultAsync(r => r.Id == review.Id);
+
         }
 
         public async Task<List<Review>> GetReviewsByMovieIdAsync(int movieId)
@@ -45,7 +49,9 @@ namespace MovieApp.Data.Repositories
         {
             _context.Reviews.Update(review);
             await _context.SaveChangesAsync();
-            return review;
+            return await _context.Reviews
+               .Include(r => r.User)
+               .FirstOrDefaultAsync(r => r.Id == review.Id);
         }
 
     }
