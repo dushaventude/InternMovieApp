@@ -15,5 +15,6 @@ namespace MovieApp.Business.DTOs.MovieDtos
         public bool IsFeatured { get; set; }
         public DateOnly ReleaseDate { get; set; }
         public List<ActorDto> Actors { get; set; } = new();
+        public double? AverageRating { get; set; }
     }
 }
