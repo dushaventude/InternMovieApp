@@ -168,10 +168,12 @@ namespace MovieApp.Business.Services
             {
                 var moviesQuery = await _movieRepository.GetMoviesAsync();
 
-                if (!string.IsNullOrEmpty(filter.Query))
-                {
-                    moviesQuery = moviesQuery.Where(m => m.Title.Contains(filter.Query));
-                }
+                moviesQuery = moviesQuery
+                    .Where(m => string.IsNullOrEmpty(filter.Query) || m.Title.Contains(filter.Query))
+                    .Where(m => !filter.IsFeatured.HasValue || m.IsFeatured == filter.IsFeatured.Value)
+                    .Where(m => !filter.ReleaseDateFrom.HasValue || m.ReleaseDate >= filter.ReleaseDateFrom.Value)
+                    .Where(m => !filter.ReleaseDateTo.HasValue || m.ReleaseDate <= filter.ReleaseDateTo.Value);
+
 
                 var TotalMovies = await moviesQuery.CountAsync();
 
