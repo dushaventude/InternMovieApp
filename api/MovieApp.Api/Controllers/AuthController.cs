@@ -30,6 +30,11 @@ namespace MovieApp.Api.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestcsDto)
         {
 
+            if(registerRequestcsDto.Password.Length <8)
+            {
+                return BadRequest(new { Message = "The password must include at least 8 characters" });
+            }
+
             var existingUser = await userManager.FindByNameAsync(registerRequestcsDto.Username);
             if (existingUser != null)
             {
