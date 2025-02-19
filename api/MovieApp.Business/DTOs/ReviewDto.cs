@@ -10,7 +10,7 @@ namespace MovieApp.Business.DTOs
     public class ReviewDto
     {
         public int Id { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+       // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string UserId { get; set; }
         public int MovieId { get; set; }
         public string Comment { get; set; }

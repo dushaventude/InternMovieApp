@@ -24,7 +24,7 @@ namespace MovieApp.Business.Services
 
         public async Task<ReviewDto> AddReviewAsync(string userId, AddReviewDto dto)
         {
-            // 🔹 Fetch the user from the database
+            // Fetch the user from the database
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -36,8 +36,7 @@ namespace MovieApp.Business.Services
 
             var savedReview = await _reviewRepository.AddReviewAsync(review);
 
-            var reviewDto = _mapper.Map<ReviewDto>(savedReview); // Review → ReviewDto
-            reviewDto.Username = user.UserName;
+            var reviewDto = _mapper.Map<ReviewDto>(savedReview);
 
             return reviewDto;
         }
