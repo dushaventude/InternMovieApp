@@ -8,7 +8,7 @@ namespace MovieApp.Business.DTOs
 {
     public class MovieSearchFilter
     {
-        public string? Title { get; set; }
+        public string? Query { get; set; }
         public DateOnly? ReleaseDateFrom { get; set; }
         public DateOnly? ReleaseDateTo { get; set; }
         public bool? IsFeatured { get; set; }
