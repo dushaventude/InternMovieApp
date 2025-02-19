@@ -7,6 +7,7 @@ using MovieApp.Data.Entities;
 
 using Microsoft.Extensions.Logging;
 using MovieApp.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace MovieApp.Business.Services
 {
@@ -154,45 +155,43 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                var (TotalMovies,movies) = await _movieRepository.GetMoviesAsync(filter.PageNumber,filter.PageSize);
+                var moviesQuery = await _movieRepository.GetMoviesAsync();
+
+                if (!string.IsNullOrEmpty(filter.Query))
+                {
+                    moviesQuery = moviesQuery.Where(m => m.Title.Contains(filter.Query));
+                }
+
+                var TotalMovies = await moviesQuery.CountAsync();
+
                 var totalPages = (int)Math.Ceiling((double)TotalMovies / filter.PageSize);
 
-                if (filter.PageNumber > totalPages || movies.Count == 0)
+                if (filter.PageNumber > totalPages || TotalMovies == 0)
                 {
-                    return new GetAllMoviesDto
-                    {   
-
-                        PageNumber = filter.PageNumber,
-                        PageSize = filter.PageSize,
-                        TotalCount = TotalMovies,
-                        Response = []
-                    };
+                    return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, null);
                 }
-                
-                var movieInfo = _mapper.Map<List<MovieInfo>>(movies);
-                var response = new GetAllMoviesDto
-                {
-                    PageNumber = filter.PageNumber,
-                    PageSize = filter.PageSize,
-                    TotalCount = TotalMovies,
-                    Response = movieInfo
-                };
-                return response;
-                
+                var movies = await moviesQuery.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
 
+                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error fetching movies: {ex.Message}");
-                return new GetAllMoviesDto
-                {
-                    PageNumber = filter.PageNumber,
-                    PageSize = filter.PageSize,
-                    TotalCount = 0,
-                    Response = []
-                };
+                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, 0, null);
             }
+        }
 
+        private GetAllMoviesDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalMovies, List<Movie>? movies)
+        {
+            return new GetAllMoviesDto
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalMovies,
+                Response = movies != null && movies.Any()
+                    ? _mapper.Map<List<MovieInfo>>(movies)
+                    : new List<MovieInfo>()
+            };
         }
 
 
@@ -216,46 +215,7 @@ namespace MovieApp.Business.Services
                 return false;
             }
         }
-        public async Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter)
-        {
-            try
-            {
-                var (TotalMoives,movies) = await _movieRepository.GetMoviesAsync(filter.PageNumber,filter.PageSize);
-                var filteredMovies = movies.AsQueryable();
-
-                // Search if title contains the filter title
-                if (!string.IsNullOrWhiteSpace(filter.Title))
-                {
-                    filteredMovies = filteredMovies.Where(m => m.Title.Contains(filter.Title, StringComparison.OrdinalIgnoreCase));
-                }
-
-                // Search from release date from and to
-                if (filter.ReleaseDateFrom.HasValue)
-                {
-                    filteredMovies = filteredMovies.Where(m => m.ReleaseDate >= filter.ReleaseDateFrom.Value);
-                }
-
-            
-                if (filter.ReleaseDateTo.HasValue)
-                {
-                    filteredMovies = filteredMovies.Where(m => m.ReleaseDate <= filter.ReleaseDateTo.Value);
-                }
-
-                // Search if movie is featured
-                if (filter.IsFeatured.HasValue)
-                {
-                    filteredMovies = filteredMovies.Where(m => m.IsFeatured == filter.IsFeatured.Value);
-                }
-
-                var movieInfo = _mapper.Map<List<MovieInfo>>(filteredMovies.ToList());
-                return movieInfo;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error searching movies: {ex.Message}");
-                return new List<MovieInfo>();
-            }
-        }
+        
     }
 
 }
