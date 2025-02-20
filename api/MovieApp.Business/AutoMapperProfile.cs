@@ -32,7 +32,9 @@ namespace MovieApp.Business
                 {
                     Id = ma.Actor.Id,
                     Name = ma.Actor.Name
-                }))).ReverseMap();
+                })))
+                .ForMember(dest => dest.PhotoUrlList, opt => opt.MapFrom(src => src.MoviePhotos.Select(mp => mp.Url)))
+                .ReverseMap();
 
             // Added Review mapping
             CreateMap<Review, ReviewDto>()

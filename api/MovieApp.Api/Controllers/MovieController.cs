@@ -58,6 +58,15 @@ namespace MovieApp.Api.Controllers
                 return BadRequest(errorResponse);
             }
 
+            if (movieDto.PhotoUrlList == null || movieDto.PhotoUrlList.Count == 0)
+            {
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status400BadRequest,
+                    "Photos Required",
+                    "At least one photo is required for the movie");
+                return BadRequest(errorResponse);
+            }
+
             if (await _movieService.ExistingMovie(movieDto) != null)
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
@@ -134,7 +143,7 @@ namespace MovieApp.Api.Controllers
         }
 
         [HttpGet("rating")]
-        public async Task<IActionResult> GetMovieRating([FromQuery] string title)
+        public async Task<IActionResult> GetMovieRating(string title)
         {
             var movieData = await _omdbService.GetMovieRatingAsync(title);
 

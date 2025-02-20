@@ -31,9 +31,10 @@ namespace MovieApp.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllActors(
-            [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10,
-            [FromQuery] string? name = null)
+
+            int pageNumber = 1,
+            int pageSize = 10)
+
         {
             var actors = await _actorService.GetActors(pageNumber, pageSize);
             return Ok(actors);
