@@ -18,10 +18,6 @@ namespace MovieApp.Data.Repositories
             _context = context;
         }
 
-        //public async Task<Movie?> FindDuplicateAsync()
-        //{
-
-        //}
         public async Task<Movie> CreateMovieAsync(Movie movieModel)
         {
             _context.Movies.Add(movieModel);
@@ -49,11 +45,9 @@ namespace MovieApp.Data.Repositories
             return await _context.Movies.FirstOrDefaultAsync(m => m.Title == movie.Title);
         }
 
-        public async Task<(int TotalCount, List<Movie> Movies)> GetMoviesAsync(int PageNumber, int PageSize)
+        public Task<IQueryable<Movie>> GetMoviesAsync()
         {
-            var skipNumber = (PageNumber - 1) * PageSize;
-            return (await _context.Movies.CountAsync(), await _context.Movies.Skip(skipNumber).Take(PageSize).ToListAsync());
-            //return await _context.Movies.ToListAsync();
+            return Task.FromResult(_context.Movies.AsQueryable());
         }
 
         public async Task DeleteMovieAsync(Movie movie)

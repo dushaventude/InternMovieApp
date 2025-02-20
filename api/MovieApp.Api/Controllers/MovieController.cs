@@ -120,35 +120,16 @@ namespace MovieApp.Api.Controllers
 
         [HttpPost]
         public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync(MovieSearchFilter filter)
-
         {
             var movies = await _movieService.GetMoviesAsync(filter);
-            if (movies.Response.Count == 0)
-            {
-                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
-                    StatusCodes.Status404NotFound,
-                    "Movies not found",
-                    "Movies not found");
-                return NotFound(errorResponse);
-            }
-
-            return Ok(movies);
-
-        }
-
-        //POst api/movie/search
-        [HttpPost("search")]
-        public async Task<ActionResult<List<MovieInfo>>> SearchMoviesAsync([FromBody] MovieSearchFilter filter)
-        {
-            var movies = await _movieService.SearchMoviesAsync(filter);
-            if (movies == null)
-            {
-                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
-                    StatusCodes.Status404NotFound,
-                    "Movies not found",
-                    "Movies not found");
-                return NotFound(errorResponse);
-            }
+            //if (movies.Response.Count == 0)
+            //{
+            //    var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+            //        StatusCodes.Status404NotFound,
+            //        "Movies not found",
+            //        "Movies not found");
+            //    return NotFound(errorResponse);
+            //}
             return Ok(movies);
         }
 

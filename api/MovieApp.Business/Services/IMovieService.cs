@@ -14,7 +14,7 @@ namespace MovieApp.Business.Services
     {
         Task<bool> DeleteMovieAsync(int id);
         Task<GetAllMoviesDto> GetMoviesAsync(MovieSearchFilter filter);
-        Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter);
+        //Task<List<MovieInfo>> SearchMoviesAsync(MovieSearchFilter filter);
 
         Task<MovieRequestDto?> GetMovieById(int id);
         Task<MovieRequestDto> CreateMovie(MovieDto movieDto);
