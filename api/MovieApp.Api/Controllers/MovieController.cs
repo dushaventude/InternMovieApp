@@ -132,7 +132,7 @@ namespace MovieApp.Api.Controllers
         }
 
         [HttpGet("rating")]
-        public async Task<IActionResult> GetMovieRating([FromQuery] string title)
+        public async Task<IActionResult> GetMovieRating(string title)
         {
             var movieData = await _omdbService.GetMovieRatingAsync(title);
 
