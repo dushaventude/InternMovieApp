@@ -60,13 +60,13 @@ namespace MovieApp.Business.Services
         {
             try
             {
-                
+
                 var actor = _mapper.Map<Actor>(createActorInfo);
 
                 var addedActor = await _actorRepository.AddActorAsync(actor);
                 if (addedActor != null)
                 {
-                    
+
                     return _mapper.Map<ActorInfo>(addedActor);
                 }
                 return null;
@@ -95,21 +95,21 @@ namespace MovieApp.Business.Services
                 var existingActor = await _actorRepository.GetActorAsync(id);
                 if (existingActor == null)
                 {
-                    return null; 
+                    return null;
                 }
                 _mapper.Map(actorUpdateInfo, existingActor);
                 var updatedActor = await _actorRepository.UpdateActorAsync(existingActor);
                 return _mapper.Map<ActorInfo>(updatedActor);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError($"Error Updating actor with ID {id}: {ex.Message}");
                 return null;
             }
-            
+
         }
 
-        public async Task<GetAllActorsDto> GetActors(int pageNumber,int pageSize)
+        public async Task<GetAllActorsDto> GetActors(int pageNumber, int pageSize)
         {
             try
             {

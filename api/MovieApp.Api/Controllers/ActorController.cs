@@ -29,29 +29,13 @@ namespace MovieApp.Api.Controllers
         }
 
 
-
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<ActorInfo>> GetActorById(int id)
-        //{
-        //    var actor = await _actorService.GetActorById(id);
-        //    if (actor == null)
-        //    {
-        //        var errorResponse = ErrorResponseFactory.CreateErrorResponse(
-        //            StatusCodes.Status404NotFound,
-        //            "Actor not found",
-        //            $"Actor with ID {id} not found");
-        //        return NotFound(errorResponse);
-        //    }
-        //    return Ok(actor);
-        //}
-
         [HttpGet]
         public async Task<IActionResult> GetAllActors(
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 10, 
-            [FromQuery] string? name = null )
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? name = null)
         {
-            var actors = await _actorService.GetActors(pageNumber,pageSize);
+            var actors = await _actorService.GetActors(pageNumber, pageSize);
             return Ok(actors);
         }
 
@@ -109,7 +93,7 @@ namespace MovieApp.Api.Controllers
             }
 
         }
-        
+
         [HttpPut]
         public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
         {

@@ -42,6 +42,8 @@ namespace MovieApp.Api.Controllers
             }
             return Ok(movie);
         }
+
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateMovie([FromBody] MovieDto movieDto)
         {
@@ -116,22 +118,6 @@ namespace MovieApp.Api.Controllers
         }
 
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync()
-        //{
-        //    var movies = await _movieService.GetMoviesAsync();
-        //    if (movies == null)
-        //    {
-        //        var errorResponse = ErrorResponseFactory.CreateErrorResponse(
-        //            StatusCodes.Status404NotFound,
-        //            "Movies not found",
-        //            "Movies not found");
-        //        return NotFound(errorResponse);
-        //    }
-
-        //    return Ok(movies);
-
-        //}
         [HttpPost]
         public async Task<ActionResult<List<MovieInfo>>> GetMoviesAsync(MovieSearchFilter filter)
 
@@ -159,7 +145,7 @@ namespace MovieApp.Api.Controllers
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
                     StatusCodes.Status404NotFound,
-                    "Movies not found", 
+                    "Movies not found",
                     "Movies not found");
                 return NotFound(errorResponse);
             }
@@ -173,7 +159,7 @@ namespace MovieApp.Api.Controllers
 
             if (movieData == null)
             {
-          
+
                 return NotFound($"Movie with title '{title}' not found.");
             }
 

@@ -23,7 +23,7 @@ namespace MovieApp.Data.Repositories
             await _context.SaveChangesAsync();
 
             return await _context.Reviews
-                .Include(r => r.User) 
+                .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.Id == review.Id);
 
         }

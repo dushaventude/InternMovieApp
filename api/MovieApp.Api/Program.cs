@@ -65,22 +65,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequiredUniqueChars = 1;
 });
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            ValidIssuer = builder.Configuration["jwt:Issuer"],
-//            ValidAudience = builder.Configuration["jwt:Audience"],
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:KEY"]))
-//        };
-//    });
 
-// 🔐 Add Authentication Services
+//  Add Authentication Services
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -101,7 +87,7 @@ builder.Services.AddSingleton<OmdbService>(sp =>
 {
     var httpClient = sp.GetRequiredService<HttpClient>();
     var logger = sp.GetRequiredService<ILogger<OmdbService>>();
-    var apiKey = builder.Configuration["OmdbApi:ApiKey"]; 
+    var apiKey = builder.Configuration["OmdbApi:ApiKey"];
     return new OmdbService(httpClient, apiKey, logger);
 });
 

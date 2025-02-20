@@ -14,7 +14,7 @@ namespace MovieApp.Data.Repositories
     {
         private readonly MovieDbContext _movieDbContext;
 
-       
+
 
         public ActorRepository(MovieDbContext movieDbContext)
         {
@@ -35,7 +35,7 @@ namespace MovieApp.Data.Repositories
             return actor;
         }
 
-        
+
 
         public async Task<bool> DeleteActorAsync(Actor actor)
         {
@@ -51,10 +51,10 @@ namespace MovieApp.Data.Repositories
             return actor;
         }
 
-        public async Task<(int TotalCount, List<Actor> Actors)> GetAllAsync(int pageNumber,int pageSize)
+        public async Task<(int TotalCount, List<Actor> Actors)> GetAllAsync(int pageNumber, int pageSize)
         {
             var skipNumber = (pageNumber - 1) * pageSize;
-            return (await _movieDbContext.Actors.CountAsync(),await _movieDbContext.Actors.Skip(skipNumber).Take(pageSize).ToListAsync());
+            return (await _movieDbContext.Actors.CountAsync(), await _movieDbContext.Actors.Skip(skipNumber).Take(pageSize).ToListAsync());
         }
     }
 }

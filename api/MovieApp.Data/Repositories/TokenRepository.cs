@@ -13,7 +13,7 @@ using MovieApp.Data.Entities;
 
 namespace MovieApp.Data.Repositories
 {
-    public class TokenRepository: ITokenRepository
+    public class TokenRepository : ITokenRepository
     {
         private readonly IConfiguration configuration;
 
@@ -26,9 +26,7 @@ namespace MovieApp.Data.Repositories
         {
 
             //create claims
-            //var claims = new List<Claim>();
 
-            //claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
@@ -38,7 +36,7 @@ namespace MovieApp.Data.Repositories
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
-               
+
             }
 
             //create token

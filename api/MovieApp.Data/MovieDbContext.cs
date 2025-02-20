@@ -9,11 +9,11 @@ using MovieApp.Data.Entities;
 
 namespace MovieApp.Data
 {
-    public class MovieDbContext: DbContext
+    public class MovieDbContext : DbContext
     {
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options) { }
 
-        
+
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
@@ -22,7 +22,7 @@ namespace MovieApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MovieActor>(x => x.HasKey(p=> new {p.MovieId,p.ActorId}));
+            modelBuilder.Entity<MovieActor>(x => x.HasKey(p => new { p.MovieId, p.ActorId }));
 
             modelBuilder.Entity<MovieActor>()
                 .HasOne(m => m.Movie)

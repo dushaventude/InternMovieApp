@@ -9,7 +9,7 @@ using MovieApp.Data.Entities;
 
 namespace MovieApp.Data.Repositories
 {
-    public class MovieRepository:IMovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly MovieDbContext _context;
 
@@ -39,8 +39,8 @@ namespace MovieApp.Data.Repositories
         public async Task<Movie?> GetMovieByIdAsync(int id)
         {
             return await _context.Movies
-                .Include(m=>m.MovieActors)
-                .ThenInclude(ma=>ma.Actor)
+                .Include(m => m.MovieActors)
+                .ThenInclude(ma => ma.Actor)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -48,11 +48,11 @@ namespace MovieApp.Data.Repositories
         {
             return await _context.Movies.FirstOrDefaultAsync(m => m.Title == movie.Title);
         }
-        
-        public async Task<(int TotalCount, List<Movie> Movies)> GetMoviesAsync(int PageNumber , int PageSize)
+
+        public async Task<(int TotalCount, List<Movie> Movies)> GetMoviesAsync(int PageNumber, int PageSize)
         {
             var skipNumber = (PageNumber - 1) * PageSize;
-            return (await _context.Movies.CountAsync(),await _context.Movies.Skip(skipNumber).Take(PageSize).ToListAsync());
+            return (await _context.Movies.CountAsync(), await _context.Movies.Skip(skipNumber).Take(PageSize).ToListAsync());
             //return await _context.Movies.ToListAsync();
         }
 
