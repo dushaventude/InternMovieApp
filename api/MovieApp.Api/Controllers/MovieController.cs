@@ -42,6 +42,8 @@ namespace MovieApp.Api.Controllers
             }
             return Ok(movie);
         }
+
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateMovie([FromBody] MovieDto movieDto)
         {
@@ -147,7 +149,7 @@ namespace MovieApp.Api.Controllers
 
             if (movieData == null)
             {
-          
+
                 return NotFound($"Movie with title '{title}' not found.");
             }
 

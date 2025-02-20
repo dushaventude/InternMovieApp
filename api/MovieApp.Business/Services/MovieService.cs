@@ -38,6 +38,7 @@ namespace MovieApp.Business.Services
             {
                 var movie = _mapper.Map<Movie>(movieDto);
                 Console.WriteLine(movie.MoviePhotos.Count);
+
                 if (movieDto.ActorIds != null && movieDto.ActorIds.Count > 0)
                 {
                     foreach (var actorId in movieDto.ActorIds)
@@ -62,6 +63,7 @@ namespace MovieApp.Business.Services
 
                 var createdMovie = await _movieRepository.CreateMovieAsync(movie);
                 Console.WriteLine(createdMovie.MoviePhotos.Count);
+
                 return _mapper.Map<MovieRequestDto>(createdMovie);
             }
             catch (Exception ex)
@@ -111,10 +113,12 @@ namespace MovieApp.Business.Services
                     ? Math.Round(reviews.Average(r => r.Rate), 1)
                     : null;
 
+
                 return movieDto;
             }
             catch (Exception ex)
             {
+
                 _logger.LogError($"Error occurred while fetching movie by Id: {ex.Message}");
                 return null;
             }

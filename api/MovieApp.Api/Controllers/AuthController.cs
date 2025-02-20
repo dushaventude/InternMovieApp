@@ -109,46 +109,5 @@ namespace MovieApp.Api.Controllers
             // If the login was unsuccessful, return a bad request message
             return BadRequest("Username or password incorrect");
         }
-
-
-      ////  TODO://
-      //  [HttpGet("get-user/{id}")]
-      //  public async Task<IActionResult> GetUserById(string id)
-      //  {
-      //      var user = await _userManager.FindByIdAsync(id);
-      //      if (user == null)
-      //          return NotFound("User not found");
-
-      //      return Ok(new
-      //      {
-      //          user.Id,
-      //          user.FirstName,
-      //          user.LastName,
-      //          user.Email,
-      //          user.UserName
-      //      });
-      //  }
-
-
-
-        //[HttpGet("get-all-users")]
-        //public async Task<IActionResult> GetAllUsers()
-        //{
-        //    var users = _userManager.Users.ToList();
-
-        //    var userList = users.Select(user => new
-        //    {
-        //        user.Id,
-        //        user.FirstName,
-        //        user.LastName,
-        //        user.Email,
-        //        user.UserName
-        //    });
-
-        //    return Ok(userList);
-        //}
-
-
-
     }
 }

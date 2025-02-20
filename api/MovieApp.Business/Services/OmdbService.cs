@@ -31,10 +31,10 @@ namespace MovieApp.Business.Services
 
                 var response = await _httpClient.GetAsync(requestUrl);
 
-               
+
                 response.EnsureSuccessStatusCode();
 
-                
+
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 var movieData = JsonSerializer.Deserialize<OmdbApiResponse>(jsonResponse);
 

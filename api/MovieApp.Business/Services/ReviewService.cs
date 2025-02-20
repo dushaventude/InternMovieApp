@@ -18,7 +18,7 @@ namespace MovieApp.Business.Services
         public ReviewService(IReviewRepository reviewRepository, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _reviewRepository = reviewRepository;
-            _userManager = userManager; 
+            _userManager = userManager;
             _mapper = mapper;
         }
 
@@ -32,7 +32,7 @@ namespace MovieApp.Business.Services
             }
 
             var review = _mapper.Map<Review>(dto); // AddReviewDto → Review
-            review.UserId = userId; 
+            review.UserId = userId;
 
             var savedReview = await _reviewRepository.AddReviewAsync(review);
 
@@ -71,7 +71,7 @@ namespace MovieApp.Business.Services
             if (review.UserId != userId) // Ensure user owns the review
                 throw new UnauthorizedAccessException("You can only update your own reviews.");
 
-            _mapper.Map(dto, review); 
+            _mapper.Map(dto, review);
 
             var updatedReview = await _reviewRepository.UpdateReviewAsync(review);
 

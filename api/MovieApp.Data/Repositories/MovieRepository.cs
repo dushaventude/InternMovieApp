@@ -9,7 +9,7 @@ using MovieApp.Data.Entities;
 
 namespace MovieApp.Data.Repositories
 {
-    public class MovieRepository:IMovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly MovieDbContext _context;
 
@@ -35,9 +35,11 @@ namespace MovieApp.Data.Repositories
         public async Task<Movie?> GetMovieByIdAsync(int id)
         {
             return await _context.Movies
+
                 .Include(m=>m.MovieActors)
                 .ThenInclude(ma=>ma.Actor)
                 .Include(m=>m.MoviePhotos)
+
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 

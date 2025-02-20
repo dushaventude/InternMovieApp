@@ -31,10 +31,12 @@ namespace MovieApp.Api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAllActors(
+
             int pageNumber = 1,
             int pageSize = 10)
+
         {
-            var actors = await _actorService.GetActors(pageNumber,pageSize);
+            var actors = await _actorService.GetActors(pageNumber, pageSize);
             return Ok(actors);
         }
 
@@ -92,7 +94,7 @@ namespace MovieApp.Api.Controllers
             }
 
         }
-        
+
         [HttpPut]
         public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
         {

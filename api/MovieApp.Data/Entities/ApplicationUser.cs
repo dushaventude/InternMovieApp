@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 namespace MovieApp.Data.Entities
 {
     [Table("AspNetUsers")]
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
