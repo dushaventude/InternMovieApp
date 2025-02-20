@@ -17,7 +17,7 @@ namespace MovieApp.Data.Entities
         public bool IsFeatured { get; set; } = false;
         public DateOnly? ReleaseDate { get; set; }
         public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
-
+        public List<MoviePhoto> MoviePhotos { get; set; } = new List<MoviePhoto>();
 
     }
 }

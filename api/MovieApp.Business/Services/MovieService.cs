@@ -4,7 +4,6 @@ using MovieApp.Business.DTOs;
 using MovieApp.Business.DTOs.MovieDtos;
 using MovieApp.Business.Services;
 using MovieApp.Data.Entities;
-
 using Microsoft.Extensions.Logging;
 using MovieApp.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,94 +18,107 @@ namespace MovieApp.Business.Services
         private readonly IMapper _mapper;
         private readonly ILogger<MovieService> _logger;
 
-    public MovieService(
-        IMovieRepository movieRepository,
-        IActorRepository actorRepository, 
-        IReviewRepository reviewRepository,
-        IMapper mapper, 
-        ILogger<MovieService> logger)
-    {
-        _movieRepository = movieRepository;
-        _actorRepository = actorRepository;
-        _reviewRepository = reviewRepository;
-        _mapper = mapper;
-        _logger = logger;
-    }
-
-    public async Task<MovieRequestDto> CreateMovie(MovieDto movieDto)
-    {
-        try
+        public MovieService(
+            IMovieRepository movieRepository,
+            IActorRepository actorRepository,
+            IReviewRepository reviewRepository,
+            IMapper mapper,
+            ILogger<MovieService> logger)
         {
-            var movie = _mapper.Map<Movie>(movieDto);
-            if (movieDto.ActorIds != null && movieDto.ActorIds.Count > 0)
+            _movieRepository = movieRepository;
+            _actorRepository = actorRepository;
+            _reviewRepository = reviewRepository;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        public async Task<MovieRequestDto> CreateMovie(MovieDto movieDto)
+        {
+            try
             {
-                foreach (var actorId in movieDto.ActorIds)
+                var movie = _mapper.Map<Movie>(movieDto);
+                Console.WriteLine(movie.MoviePhotos.Count);
+                if (movieDto.ActorIds != null && movieDto.ActorIds.Count > 0)
                 {
-                    var actor = await _actorRepository.GetActorAsync(actorId);
-                    if (actor != null)
+                    foreach (var actorId in movieDto.ActorIds)
                     {
-                        movie.MovieActors.Add(new MovieActor
+                        var actor = await _actorRepository.GetActorAsync(actorId);
+                        if (actor != null)
                         {
-                            Movie = movie,
-                            Actor = actor
-                        });
+                            movie.MovieActors.Add(new MovieActor
+                            {
+                                Movie = movie,
+                                Actor = actor
+                            });
+                        }
                     }
                 }
+
+                movie.MoviePhotos = movieDto.PhotoUrlList.Select(url => new MoviePhoto
+                {
+                    Url = url,
+                    Movie = movie
+                }).ToList();
+
+                var createdMovie = await _movieRepository.CreateMovieAsync(movie);
+                Console.WriteLine(createdMovie.MoviePhotos.Count);
+                return _mapper.Map<MovieRequestDto>(createdMovie);
             }
-            var createdMovie = await _movieRepository.CreateMovieAsync(movie);
-            return _mapper.Map<MovieRequestDto>(createdMovie);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error occurred while creating movie: {ex.Message}", ex);
-            return null;
-        }
-    }
-
-    public async Task<MovieRequestDto?> ExistingMovie(MovieDto movieDto)
-    {
-        try
-        {
-            var movie = _mapper.Map<Movie>(movieDto);
-            return _mapper.Map<MovieRequestDto>(await _movieRepository.ExistingMovieAsync(movie));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error occurred while checking for existing movie: {ex.Message}");
-            return null;
-        }
-    }
-
-    public async Task<MovieRequestDto?> GetMovieById(int Id)
-    {
-        try
-        {
-            var movie = await _movieRepository.GetMovieByIdAsync(Id);
-            if (movie == null)
+            catch (Exception ex)
             {
-                _logger.LogWarning($"Movie with Id {Id} not found.");
+                _logger.LogError($"Error occurred while creating movie: {ex.Message}", ex);
                 return null;
             }
-            var movieDto = _mapper.Map<MovieRequestDto>(movie);
-
-            movieDto.Actors = movie.MovieActors.Select(ma => new ActorDto
-            {
-                Id = ma.Actor.Id,
-                Name = ma.Actor.Name
-            }).ToList();
-            var reviews = await _reviewRepository.GetReviewsByMovieIdAsync(Id);
-            movieDto.AverageRating = (reviews != null && reviews.Any())
-                ? Math.Round(reviews.Average(r => r.Rate), 1)
-                : null;
-
-            return movieDto;
         }
-        catch (Exception ex)
+
+        public async Task<MovieRequestDto?> ExistingMovie(MovieDto movieDto)
         {
-            _logger.LogError($"Error occurred while fetching movie by Id: {ex.Message}");
-            return null;
+            try
+            {
+                var movie = _mapper.Map<Movie>(movieDto);
+                return _mapper.Map<MovieRequestDto>(await _movieRepository.ExistingMovieAsync(movie));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occurred while checking for existing movie: {ex.Message}");
+                return null;
+            }
         }
-    }
+
+        public async Task<MovieRequestDto?> GetMovieById(int Id)
+        {
+            try
+            {
+                var movie = await _movieRepository.GetMovieByIdAsync(Id);
+                if (movie == null)
+                {
+                    _logger.LogWarning($"Movie with Id {Id} not found.");
+                    return null;
+                }
+
+                var movieDto = _mapper.Map<MovieRequestDto>(movie);
+
+                movieDto.Actors = movie.MovieActors.Select(ma => new ActorDto
+                {
+                    Id = ma.Actor.Id,
+                    Name = ma.Actor.Name
+                }).ToList();
+
+                movieDto.PhotoUrlList = movie.MoviePhotos.Select(mp => mp.Url).ToList();
+
+                var reviews = await _reviewRepository.GetReviewsByMovieIdAsync(Id);
+                movieDto.AverageRating = (reviews != null && reviews.Any())
+                    ? Math.Round(reviews.Average(r => r.Rate), 1)
+                    : null;
+
+                return movieDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error occurred while fetching movie by Id: {ex.Message}");
+                return null;
+            }
+        }
 
         public async Task<MovieRequestDto?> UpdateMovie(int Id, MovieDto movieDto)
         {
@@ -118,12 +130,11 @@ namespace MovieApp.Business.Services
                     _logger.LogWarning($"Movie with Id {Id} not found for update.");
                     return null;
                 }
+
                 if (movieDto.ActorIds != null)
                 {
-                    // Fetch all existing MovieActor relationships for this movie
                     var existingMovieActors = existingMovie.MovieActors.ToList();
 
-                    // Remove actors that are not in the updated list
                     foreach (var movieActor in existingMovieActors)
                     {
                         if (!movieDto.ActorIds.Contains(movieActor.ActorId))
@@ -132,7 +143,6 @@ namespace MovieApp.Business.Services
                         }
                     }
 
-                    // Add new actors that are not already in the list
                     foreach (var actorId in movieDto.ActorIds)
                     {
                         if (!existingMovieActors.Any(ma => ma.ActorId == actorId))
@@ -149,6 +159,32 @@ namespace MovieApp.Business.Services
                         }
                     }
                 }
+
+                if (movieDto.PhotoUrlList != null)
+                {
+                    var existingMoviePhotos = existingMovie.MoviePhotos.ToList();
+
+                    foreach (var moviePhoto in existingMoviePhotos)
+                    {
+                        if (!movieDto.PhotoUrlList.Contains(moviePhoto.Url))
+                        {
+                            existingMovie.MoviePhotos.Remove(moviePhoto);
+                        }
+                    }
+
+                    foreach (var photoUrl in movieDto.PhotoUrlList)
+                    {
+                        if (!existingMoviePhotos.Any(mp => mp.Url == photoUrl))
+                        {
+                            existingMovie.MoviePhotos.Add(new MoviePhoto
+                            {
+                                MovieId = existingMovie.Id,
+                                Url = photoUrl
+                            });
+                        }
+                    }
+                }
+
                 _mapper.Map(movieDto, existingMovie);
                 var updatedMovie = await _movieRepository.UpdateMovieAsync(existingMovie);
 
@@ -183,7 +219,9 @@ namespace MovieApp.Business.Services
                 {
                     return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, null);
                 }
-                var movies = await moviesQuery.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize).ToListAsync();
+
+                var movies = await moviesQuery.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize)
+                    .ToListAsync();
 
                 return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
             }
@@ -194,7 +232,8 @@ namespace MovieApp.Business.Services
             }
         }
 
-        private GetAllMoviesDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalMovies, List<Movie>? movies)
+        private GetAllMoviesDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalMovies,
+            List<Movie>? movies)
         {
             return new GetAllMoviesDto
             {
@@ -228,7 +267,5 @@ namespace MovieApp.Business.Services
                 return false;
             }
         }
-        
     }
-
 }

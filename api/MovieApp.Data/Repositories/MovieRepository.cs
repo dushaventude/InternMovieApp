@@ -20,7 +20,7 @@ namespace MovieApp.Data.Repositories
 
         public async Task<Movie> CreateMovieAsync(Movie movieModel)
         {
-            _context.Movies.Add(movieModel);
+            await _context.Movies.AddAsync(movieModel);
             await _context.SaveChangesAsync();
             return movieModel;
         }
@@ -37,6 +37,7 @@ namespace MovieApp.Data.Repositories
             return await _context.Movies
                 .Include(m=>m.MovieActors)
                 .ThenInclude(ma=>ma.Actor)
+                .Include(m=>m.MoviePhotos)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 

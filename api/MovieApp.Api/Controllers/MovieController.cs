@@ -56,6 +56,15 @@ namespace MovieApp.Api.Controllers
                 return BadRequest(errorResponse);
             }
 
+            if (movieDto.PhotoUrlList == null || movieDto.PhotoUrlList.Count == 0)
+            {
+                var errorResponse = ErrorResponseFactory.CreateErrorResponse(
+                    StatusCodes.Status400BadRequest,
+                    "Photos Required",
+                    "At least one photo is required for the movie");
+                return BadRequest(errorResponse);
+            }
+
             if (await _movieService.ExistingMovie(movieDto) != null)
             {
                 var errorResponse = ErrorResponseFactory.CreateErrorResponse(
