@@ -1,0 +1,21 @@
+.rating_container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 24px;
+  font-weight: 600;
+  max-width: fit-content;
+
+  .rating {
+    display: flex;
+    align-items: center;
+    // flex-direction: row;
+    gap: 16px;
+  }
+  .clear {
+    background-color: #ffd903;
+    align-self: flex-end;
+    padding: 8px 16px;
+    border-radius: 16px;
+  }
+}
