@@ -1,0 +1,186 @@
+// p {
+//   font-size: 1rem;
+//   font-weight: 400;
+//   line-height: 1.5;
+//   margin: 0;
+//   padding: 0;
+//   color: #be2626;
+// }
+
+// span {
+//   font-size: 1rem;
+//   font-weight: 400;
+//   line-height: 1.5;
+//   margin: 0;
+//   padding: 0;
+//   color: #be2626;
+// }
+
+// .text-center {
+//   text-align: center;
+// }
+
+// .typography {
+//   &.sm {
+//     font-size: 12px;
+//   }
+//   &.md {
+//     font-size: 16px;
+//   }
+//   &.lg {
+//     font-size: 20px;
+//   }
+//   &.xl {
+//     font-size: 24px;
+//   }
+// }
+
+.typography {
+  // Font Sizes
+  &.sm {
+    font-size: 12px;
+  }
+  &.md {
+    font-size: 16px;
+  }
+  &.lg {
+    font-size: 20px;
+  }
+  &.xl {
+    font-size: 24px;
+  }
+  &.xxl {
+    font-size: 32px;
+  }
+
+  // Font Weights
+  &.thin {
+    font-weight: 100;
+  }
+  &.light {
+    font-weight: 300;
+  }
+  &.regular {
+    font-weight: 400;
+  }
+  &.medium {
+    font-weight: 500;
+  }
+  &.bold {
+    font-weight: 700;
+  }
+  &.black {
+    font-weight: 900;
+  }
+
+  // Line Heights
+  &.lh-sm {
+    line-height: 1.2;
+  }
+  &.lh-md {
+    line-height: 1.5;
+  }
+  &.lh-lg {
+    line-height: 1.8;
+  }
+
+  // Letter Spacing
+  &.ls-tight {
+    letter-spacing: -0.5px;
+  }
+  &.ls-normal {
+    letter-spacing: 0;
+  }
+  &.ls-wide {
+    letter-spacing: 1px;
+  }
+
+  // Text Colors
+  &.text-primary {
+    color: #007bff;
+  } // Blue
+  &.text-secondary {
+    color: #6c757d;
+  } // Gray
+  &.text-success {
+    color: #28a745;
+  } // Green
+  &.text-danger {
+    color: #dc3545;
+  } // Red
+  &.text-warning {
+    color: #ffc107;
+  } // Yellow
+  &.text-info {
+    color: #17a2b8;
+  } // Cyan
+  &.text-light {
+    color: #f8f9fa;
+  } // Light Gray
+  &.text-dark {
+    color: #343a40;
+  } // Dark Gray
+
+  // Text Alignment
+  &.text-left {
+    text-align: left;
+  }
+  &.text-center {
+    text-align: center;
+  }
+  &.text-right {
+    text-align: right;
+  }
+  &.text-justify {
+    text-align: justify;
+  }
+
+  // Text Decorations
+  &.underline {
+    text-decoration: underline;
+  }
+  &.line-through {
+    text-decoration: line-through;
+  }
+  &.no-underline {
+    text-decoration: none;
+  }
+
+  // Text Transformations
+  &.uppercase {
+    text-transform: uppercase;
+  }
+  &.lowercase {
+    text-transform: lowercase;
+  }
+  &.capitalize {
+    text-transform: capitalize;
+  }
+
+  // Word Wrapping & Breaking
+  &.break-word {
+    word-break: break-word;
+  }
+  &.break-all {
+    word-break: break-all;
+  }
+  &.nowrap {
+    white-space: nowrap;
+  }
+
+  // Responsive Typography (Mobile First)
+  @media (max-width: 768px) {
+    &.sm {
+      font-size: 10px;
+    }
+    &.md {
+      font-size: 14px;
+    }
+    &.lg {
+      font-size: 18px;
+    }
+    &.xl {
+      font-size: 22px;
+    }
+  }
+}
