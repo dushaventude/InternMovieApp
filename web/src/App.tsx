@@ -1,11 +1,9 @@
-
 function App() {
 
-
   return (
-   <div>
-    helloowwwwwww mOVIE aPP
-   </div>
+    <div>
+      helloowwwwwww mOVIE aPP
+    </div>
   )
 }
 

@@ -1,0 +1,66 @@
+// Button.module.scss
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Variants
+  &--primary {
+    background-color: #3b82f6;
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+      background-color: #2563eb;
+    }
+  }
+
+  &--secondary {
+    background-color: #f3f4f6;
+    color: #1f2937;
+
+    &:hover:not(:disabled) {
+      background-color: #e5e7eb;
+    }
+  }
+
+  &--outline {
+    background-color: transparent;
+    border-color: #e5e7eb;
+    color: #1f2937;
+
+    &:hover:not(:disabled) {
+      background-color: #f3f4f6;
+    }
+  }
+
+  // Sizes
+  &--small {
+    padding: 0.25rem 0.5rem;
+    font-size: 12px;
+  }
+
+  &--large {
+    padding: 0.75rem 1.5rem;
+    font-size: 16px;
+  }
+
+  &--icon {
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
