@@ -43,8 +43,8 @@ type TypographyClass =
 
 interface TypographyProps {
   children: React.ReactNode;
-  variant?: "p" | "span";
-  className?: TypographyClass;
+  variant?: keyof JSX.IntrinsicElements; // Allow any valid HTML tag
+  className?: TypographyClass | TypographyClass[]; // Allow single class or array of classes
 }
 
 const Typography: React.FC<TypographyProps> = ({
@@ -52,9 +52,12 @@ const Typography: React.FC<TypographyProps> = ({
   variant = "p",
   className,
 }) => {
-  const Tag = variant as keyof JSX.IntrinsicElements;
-  return <Tag className={className}>{children}</Tag>;
-  //   return <Tag className={`typography ${size} ${className}`}>{children}</Tag>;
+  const Tag = variant;
+
+  // Convert className to a string if it's an array
+  const classNames = Array.isArray(className) ? className.join(" ") : className;
+
+  return <Tag className={classNames}>{children}</Tag>;
 };
 
 export default Typography;
