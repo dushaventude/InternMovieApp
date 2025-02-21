@@ -1,0 +1,45 @@
+// Variables
+$primary-color: #007bff;
+$font-size-large: 16px;
+$font-size-small: 14px;
+
+// Container
+.date-picker-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: $primary-color;
+  }
+}
+
+// Date Picker Input
+.responsive-date-picker {
+  width: 100%;
+  padding: 10px;
+  font-size: $font-size-large;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $primary-color;
+    outline: none;
+  }
+}
+
+// Responsive Styles
+@media (max-width: 600px) {
+  .responsive-date-picker {
+    font-size: $font-size-small;
+  }
+
+  .date-picker-container h2 {
+    font-size: 20px;
+  }
+}
