@@ -37,6 +37,9 @@
 
 .typography {
   // Font Sizes
+  &.xs {
+    font-size: 10px;
+  }
   &.sm {
     font-size: 12px;
   }
