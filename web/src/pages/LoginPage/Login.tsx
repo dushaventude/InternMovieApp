@@ -27,6 +27,9 @@ const Login: React.FC = () => {
                 <div className="form-group">
                   <Input type="password" placeholder="Enter your password" className="input" style={{ opacity: 0.5, border: "2px solid #000000" }} />
                 </div>
+                <div>
+                  <Typography variant="p" className="xs"><a href="/resetPw">Forgot Password?</a></Typography>
+                </div>
                 <center><Button variant="primary" type="submit" size="large">Sign In</Button></center>
                
                   <p> <center style={{fontSize:'10px'}}>Don't have an account?{" "}

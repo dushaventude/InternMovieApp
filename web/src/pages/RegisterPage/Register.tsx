@@ -7,7 +7,7 @@ import { Box } from "lucide-react";
 
 // interface LoginProps {}
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -56,4 +56,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;
