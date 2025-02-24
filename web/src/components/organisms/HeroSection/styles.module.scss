@@ -1,0 +1,167 @@
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  position: relative;
+  color: white;
+  text-align: center;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+              url('default-hero-image.jpg') no-repeat center center/cover;
+}
+
+/* Content Styling */
+.heroContent {
+  z-index: 2;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.heroContent h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.heroContent p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* Background Image */
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+
+.heroImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.heroImage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  filter: blur(8px); /* Adjust the blur intensity */
+  z-index: -1; /* Place it behind the image */
+}
+
+
+/* IMDb-Style Movie Card */
+.movieCard {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease-in-out;
+  max-width: 600px;
+  min-width: 280px;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* Bigger Movie Poster */
+.moviePoster {
+  width: 200px;  /* Increased from 60px */
+  height: 200px; /* Increased from 80px */
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+/* Movie Details */
+.movieDetails {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+/* Title Inside Thumbnail */
+.movieTitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f5c518; /* IMDb Yellow */
+  margin-bottom: 5px;
+}
+
+/* Description Styling */
+.movieDesc {
+  font-size: 0.9rem;
+  color: #ddd;
+  margin-bottom: 8px;
+  max-height: 40px; /* Adjusted for better fit */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  //-webkit-line-clamp: 2;
+  //-webkit-box-orient: vertical;
+}
+
+/* IMDb-Style Rating */
+.rating {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #f5c518;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Release Date */
+.releaseDate {
+  font-size: 0.9rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Responsive Styling */
+@media (min-width: 768px) {
+  .heroSection {
+    flex-direction: row;
+  }
+
+  .heroContent {
+    padding: 4rem;
+  }
+
+  .heroContent h1 {
+    font-size: 4rem;
+  }
+
+  .heroContent p {
+    font-size: 1.5rem;
+  }
+
+  .movieCard {
+    bottom: 40px;
+    left: 40px;
+  }
+}
+
+
