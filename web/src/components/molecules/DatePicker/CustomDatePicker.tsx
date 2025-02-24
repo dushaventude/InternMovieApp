@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./ResponsiveDatePicker.scss"; // Import SCSS file
-
+import "./ResponsiveDatePicker.scss"; 
 const CustomDatePicker = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
