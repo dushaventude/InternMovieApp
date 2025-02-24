@@ -1,0 +1,34 @@
+.review-container {
+  background-color: #fff;
+  width: 50%;
+  margin: 0 auto;
+  padding: 12px 24px;
+  font-family: "Roboto", serif;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 24px;
+}
+
+.review-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.dropdown-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

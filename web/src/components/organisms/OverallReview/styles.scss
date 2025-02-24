@@ -1,0 +1,34 @@
+.ratingBar {
+  padding: 16px 8px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #404040;
+  border-radius: 0 5px 5px 0;
+}
+
+.ratingBarItem {
+  p {
+    font-size: 12px;
+  }
+}
+
+.progressBarWrapper {
+  width: 100%;
+  height: 10px;
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progressBarText {
+  font-size: 12px;
+}

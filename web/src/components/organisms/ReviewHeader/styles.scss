@@ -1,0 +1,37 @@
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  width: 100%;
+  padding: 12px 0;
+  border-bottom: 2px solid #404040;
+}
+
+.reviewHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reviewHeaderImage {
+  height: 75px;
+  border-radius: 5px;
+}
+
+.reviewHeaderText {
+  p {
+    margin: 0;
+  }
+  .title {
+    font-weight: 600;
+    font-size: 24px;
+  }
+}
+
+.addRating {
+  padding: 8px 16px;
+  background-color: #404040;
+  border-radius: 5px;
+  display: flex;
+  align-self: center;
+}

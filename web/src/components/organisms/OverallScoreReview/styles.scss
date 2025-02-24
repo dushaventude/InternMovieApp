@@ -1,0 +1,34 @@
+.userScore {
+  padding: 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #404040;
+  border-radius: 5px 0 0 5px;
+}
+
+.scoreCircle {
+  font-size: 32px;
+  font-weight: 600;
+  padding: 16px;
+  background-color: var(--score-bg);
+  border-radius: 100%;
+  color: white;
+}
+
+.scoreText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scoreLabel {
+  margin: 0;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+.scoreDescription {
+  margin: 0;
+  font-size: 16px;
+}

@@ -1,0 +1,35 @@
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid black;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  height: 16px;
+  width: 16px;
+}
+
+.dropdownMenu {
+  margin-top: 8px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  width: 100%;
+}
+
+.dropdownOption {
+  font-size: 12px;
+  padding: 4px;
+  cursor: pointer;
+}

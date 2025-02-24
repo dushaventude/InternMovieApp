@@ -30,7 +30,12 @@ const Carousel: React.FC<CarouselProps> = ({ movies }) => {
   return (
     <div
       className="carousel-container"
-      style={{ backgroundImage: `url(${movies[currentIndex].Photo})` }}
+      style={{
+        backgroundImage: `url(
+        https://wallpapercave.com/wp/wp1839578.jpg
+        )`,
+        // ${movies[currentIndex].Photo}
+      }}
     >
       <div className="carousel-content">
         <CarouselItem
