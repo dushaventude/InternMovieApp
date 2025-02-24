@@ -5,6 +5,7 @@ import Login from "./pages/LoginPage/Login";
 import Register from "./pages/RegisterPage/Register";
 import Header from "./components/molecules/Header/Header";
 import PwResetPage from "./pages/PwResetPage/PwResetPage";
+import MovieListPage from "./pages/MovieListPage/MovieListPage";
 
 const router = createBrowserRouter([
   {
@@ -14,9 +15,9 @@ const router = createBrowserRouter([
       { path: "home", element: <HomePage /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
-      { path: "movies", element: <HomePage /> },
-      { path: "actors", element: <HomePage /> },
+      { path: "movies", element: <MovieListPage /> },
       {path: "resetPw", element: <PwResetPage />},
+      
     ],
   },
 ]);

@@ -1,6 +1,11 @@
 import "./styles.scss";
 import Carousel from "../../components/templates/Carousel";
-const movies = [
+import SmallCard from "../../components/molecules/smallCard";
+import { Link } from "react-router-dom";
+import movies from "../../data/MovieData";
+import actors from "../../data/ActorsData";
+
+const moviesCarousel = [
   {
     Id: 1,
     Title: "Inception",
@@ -47,7 +52,64 @@ const movies = [
 ];
 
 const HomePage: React.FC = () => {
-  return <Carousel movies={movies} />;
+  return (
+    <>
+      <Carousel movies={moviesCarousel} />
+      <div style={{ padding: "20px" }}>
+        <h1>Featured Movies</h1>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+            marginBottom: "20px",
+            justifyContent: "center",
+          }}
+        >
+          {movies
+            .filter((movie) => movie.isFeatured)
+            .map((movie) => (
+              <SmallCard
+                key={movie.title}
+                title={movie.title}
+                image={movie.image}
+                releaseDate={movie.releaseDate}
+                rating={movie.rating}
+              />
+            ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginBottom: "40px" }}>
+          <Link
+            to="/movies"
+            style={{ textDecoration: "none", color: "#007bff" }}
+          >
+            View All Movies
+          </Link>
+        </div>
+
+        <h1>Popular Actors</h1>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+            justifyContent: "center",
+          }}
+        >
+          {actors.map((actor) => (
+            <SmallCard
+              key={actor.name}
+              title={actor.name}
+              image={actor.profilePhoto}
+              actor={actor}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default HomePage;
