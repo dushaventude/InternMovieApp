@@ -12,7 +12,13 @@ const SmallCarouselMovieCard: React.FC<SmallCarouselMovieCardProps> = ({
 }) => {
   return (
     <div className="up-next-item">
-      <img src={photo} alt={title} />
+      <img
+        src={
+          "https://wallpapercave.com/wp/wp1839578.jpg"
+          // || photo
+        }
+        alt={title}
+      />
       <p>{title}</p>
     </div>
   );

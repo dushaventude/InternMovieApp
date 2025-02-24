@@ -6,7 +6,16 @@ interface MovieImageProps {
 }
 
 const MovieImage: React.FC<MovieImageProps> = ({ src, alt }) => {
-  return <img src={src} alt={alt} className="current-movie-image" />;
+  return (
+    <img
+      src={
+        "https://wallpapercave.com/wp/wp1839578.jpg"
+        // || src
+      }
+      alt={alt}
+      className="current-movie-image"
+    />
+  );
 };
 
 export default MovieImage;

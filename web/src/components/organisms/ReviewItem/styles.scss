@@ -1,0 +1,36 @@
+.reviewItem {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 5px;
+}
+
+.reviewItemHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+.ratingCircleAvatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingCircle {
+  padding: 16px;
+  border-radius: 100%;
+  background-color: #eee;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reviewText {
+  margin: 0;
+}
+
+.comment {
+  margin-top: 8px;
+}
