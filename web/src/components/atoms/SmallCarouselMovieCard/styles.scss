@@ -1,0 +1,25 @@
+.up-next-item {
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  p {
+    font-size: 14px;
+    font-style: "Roboto", sans-serif;
+    font-weight: 600;
+  }
+}
