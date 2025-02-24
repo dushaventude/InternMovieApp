@@ -54,15 +54,15 @@ const Typography: React.FC<TypographyProps> = ({
   className,
 }) => {
 
-  const Tag = variant;
+  // const Tag = variant;
 
-  // Convert className to a string if it's an array
-  const classNames = Array.isArray(className) ? className.join(" ") : className;
+  // // Convert className to a string if it's an array
+  // const classNames = Array.isArray(className) ? className.join(" ") : className;
 
-  return <Tag className={classNames}>{children}</Tag>;
+  // return <Tag className={classNames}>{children}</Tag>;
 
-<!--   const Tag = variant as keyof JSX.IntrinsicElements;
-  return <Tag className={`typography ${className}`}>{children}</Tag>; -->
+  const Tag = variant as keyof JSX.IntrinsicElements;
+  return <Tag className={`typography ${className}`}>{children}</Tag>; 
 
 };
 
