@@ -3,6 +3,7 @@ import "./styles.scss";
 
 type TypographyClass =
   | "sm"
+  | "xs"
   | "md"
   | "lg"
   | "xl"
@@ -53,8 +54,7 @@ const Typography: React.FC<TypographyProps> = ({
   className,
 }) => {
   const Tag = variant as keyof JSX.IntrinsicElements;
-  return <Tag className={className}>{children}</Tag>;
-  //   return <Tag className={`typography ${size} ${className}`}>{children}</Tag>;
+  return <Tag className={`typography ${className}`}>{children}</Tag>;
 };
 
 export default Typography;
