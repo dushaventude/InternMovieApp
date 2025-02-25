@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Link from "../components/atoms/Link";
+import Footer from "../components/molecules/Footer/Footer";
 
 interface AppLayoutProps {
   string: string;
@@ -20,12 +21,13 @@ const AppLayout: React.FC = () => {
           <li>
             <Link href="register">Register</Link>
           </li>
-          {/* <li>
-            <Link href="actors">Actors</Link>
-          </li> */}
+          <li>
+            <Link href="movies">Movies</Link>
+          </li>
         </ul>
       </nav>
       <Outlet />
+      <Footer />
     </div>
   );
 };

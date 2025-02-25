@@ -7,10 +7,14 @@ import { Box } from "lucide-react";
 import axios from "axios";
 import { LoginPageValidation } from "./LoginPageValidation";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../store/store";
+import { loginUser } from "../../store/features/user/userSlice";
 
 // interface LoginProps {}
 
 const Login: React.FC = () => {
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -46,15 +50,40 @@ const Login: React.FC = () => {
     },
   });
 
+
+  const BASE_URL = import.meta.env.VITE_base;
+  console.log(BASE_URL);
+
+  const handleClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(loginUser({ Username: username, Password: password }));
+  };
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-8 offset-md-2"> {/* Set to start from the 5th column */}
+        <div className="col-md-8 offset-md-2">
+          {" "}
+          {/* Set to start from the 5th column */}
           <div className="card text-center">
-            <div className="card-header" style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '32px', color: 'black' }}>
+            <div
+              className="card-header"
+              style={{
+                fontFamily: "Bebas Neue, sans-serif",
+                fontSize: "32px",
+                color: "black",
+              }}
+            >
               <center>Welcome Back!</center>
             </div>
-            <div className="card-header" style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: '32px', color: 'black', alignContent: 'center' }}>
+            <div
+              className="card-header"
+              style={{
+                fontFamily: "Bebas Neue, sans-serif",
+                fontSize: "32px",
+                color: "black",
+                alignContent: "center",
+              }}
+            >
               <center>Movie Hub</center>
             </div>
             <div className="card-body">
@@ -63,6 +92,7 @@ const Login: React.FC = () => {
                   <Input
                     type="email"
                     placeholder="Enter your email"
+
                     name="username"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -73,11 +103,13 @@ const Login: React.FC = () => {
                   {formik.touched.username && formik.errors.username ? (
                     <div className="error">{formik.errors.username}</div>
                   ) : null}
+
                 </div>
                 <div className="form-group">
                   <Input
                     type="password"
                     placeholder="Enter your password"
+
                     name="password"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -88,14 +120,24 @@ const Login: React.FC = () => {
                   {formik.touched.password && formik.errors.password ? (
                     <div className="error">{formik.errors.password}</div>
                   ) : null}
+
                 </div>
                 <div>
-                  <Typography variant="p" className="xs"><a href="/resetPw">Forgot Password?</a></Typography>
+                  <Typography variant="p" className="xs">
+                    <a href="/resetPw">Forgot Password?</a>
+                  </Typography>
                 </div>
+
                 <center><Button variant="primary" type="submit" size="large">Sign In</Button></center>
+
                 <p>
-                  <center style={{ fontSize: '10px' }}>Don't have an account?{" "}
-                    <a href="/register" className="text-primary" style={{ fontSize: '10px' }}>
+                  <center style={{ fontSize: "10px" }}>
+                    Don't have an account?{" "}
+                    <a
+                      href="/register"
+                      className="text-primary"
+                      style={{ fontSize: "10px" }}
+                    >
                       Sign Up
                     </a>
                   </center>
