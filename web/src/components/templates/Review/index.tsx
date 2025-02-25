@@ -27,6 +27,7 @@ const Review: React.FC = () => {
       try {
         const response = await fetch(`http://localhost:5140/api/Review/${id}`);
         const data = await response.json();
+        console.log(data);
         setReviews(data);
       } catch (error) {
         console.error("Error fetching movie reviews:", error);

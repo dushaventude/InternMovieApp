@@ -24,7 +24,6 @@ const AppLayout: React.FC = () => {
           <li>
             <Link href="movies">Movies</Link>
           </li>
-          
         </ul>
       </nav>
       <Outlet />
