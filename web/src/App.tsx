@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MoviePage from "./pages/MoviePage";
+import ActorPage from "./pages/ActorPage";
 import HomePage from "./pages/HomePage/HomePage";
 import AppLayout from "./layouts/AppLayout";
 import Login from "./pages/LoginPage/Login";
@@ -14,9 +16,11 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "login", element: <Login /> },
-      // { path: "register", element: <Register /> },
-      // { path: "movies", element: <MovieListPage /> },
-      // { path: "resetPw", element: <PwResetPage /> },
+      { path: "register", element: <Register /> },
+      { path: "movies/:id", element: <MoviePage /> },
+      { path: "actors", element: <ActorPage /> },
+      { path: "movies", element: <MovieListPage /> },
+      { path: "resetPw", element: <PwResetPage />},
     ],
   },
 ]);
