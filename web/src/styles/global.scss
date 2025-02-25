@@ -1,0 +1,22 @@
+@import "./colors";
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray-300;
+  border-radius: 9px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $gray-400;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: $gray-500;
+}
