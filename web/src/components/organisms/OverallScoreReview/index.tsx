@@ -1,17 +1,11 @@
-import React from "react";
+import { getBackgroundColor } from "../../../utils/helpers";
 import "./styles.scss";
 
 interface UserScoreProps {
   avgRating: number;
 }
 
-const getBackgroundColor = (rating: number) => {
-  if (rating >= 8) return "#007a55"; // Green
-  if (rating >= 5) return "#d08700"; // Orange
-  return "#c70036"; // Red
-};
-
-const UserScore: React.FC<UserScoreProps> = ({ avgRating }) => {
+const UserScore = ({ avgRating }: UserScoreProps) => {
   return (
     <div className="userScore">
       <p

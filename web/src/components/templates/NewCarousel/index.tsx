@@ -297,17 +297,17 @@ interface CarouselProps {
   movies: Movie[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({ movies: initialMovies }) => {
-  const [movies, setMovies] = useState<Movie[]>(initialMovies);
+const Carousel: React.FC = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [offset, setOffset] = useState(0);
-  const [currentMovie, setCurrentMovie] = useState(movies[0]);
+  const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
   const visibleMovies = movies.length - 1;
   const movieWidth = 210;
 
   useEffect(() => {
     const interval = setInterval(() => {
       setMovies((prevMovies) => {
-        if (prevMovies.length > 0) {
+        if (prevMovies && prevMovies.length > 0) {
           const firstMovie = prevMovies[0];
           setCurrentMovie(firstMovie);
           const restMovies = prevMovies.slice(1);
@@ -322,23 +322,82 @@ const Carousel: React.FC<CarouselProps> = ({ movies: initialMovies }) => {
 
   useEffect(() => {
     setOffset(0);
+    if (movies.length > 0) {
+      setCurrentMovie(movies[0]);
+    }
   }, [movies]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const response = await fetch("http://localhost:5140/api/Movie", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Query: "",
+            ReleaseDateFrom: "1900-02-22",
+            ReleaseDateTo: "2025-02-22",
+            IsFeatured: true,
+            PageSize: 6,
+            PageNumber: 1,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.Response || data.Response.length === 0) {
+          setMovies([]);
+        } else {
+          console.log(data.Response);
+          setMovies(data.Response);
+        }
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+        setError("Failed to load movies");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchMovies();
+  }, []);
+  if (!movies || (movies.length === 0 && currentMovie == null))
+    return <p>No movies available</p>;
+  if (loading) return <p>Loading movies...</p>;
+  if (error) return <p>{error}</p>;
+  if (movies.length === 0 && currentMovie == null)
+    return <p>No movies available</p>;
 
   return (
     <div className="carousel-container">
       <div
         className="carousel-background"
-        style={{ backgroundImage: `url(${currentMovie.Photo})` }}
+        style={{
+          backgroundImage: currentMovie ? `url(${currentMovie.Photo})` : "none",
+        }}
       />
       <div className="carousel-main">
-        <img src={currentMovie.Photo} alt={currentMovie.Title} />
-        <div className="carousel-content">
+        {currentMovie && (
           <img src={currentMovie.Photo} alt={currentMovie.Title} />
-          <div className="carousel-text">
-            <p className="carousel-title">{currentMovie.Title}</p>
-            <p className="carousel-description">{currentMovie.Description}</p>
+        )}
+        {currentMovie && (
+          <div className="carousel-content">
+            <img src={currentMovie.Photo} alt={currentMovie.Title} />
+            <div className="carousel-text">
+              <p className="carousel-title">{currentMovie.Title}</p>
+              <p className="carousel-description">{currentMovie.Description}</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div
         className="carousel-thumbnails"

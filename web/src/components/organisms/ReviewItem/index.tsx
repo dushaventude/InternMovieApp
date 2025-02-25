@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate } from "../../../utils/helpers";
+import { formatDate, getBackgroundColor } from "../../../utils/helpers";
 import "./styles.scss";
 
 interface Review {
@@ -20,7 +20,12 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     <div className="reviewItem">
       <div className="reviewItemHeader">
         <div className="ratingCircleAvatar">
-          <p className="ratingCircle">{review.Rate}</p>
+          <p
+            className="ratingCircle"
+            style={{ backgroundColor: getBackgroundColor(review.Rate) }}
+          >
+            {review.Rate}
+          </p>
           <p>
             {review.FirstName} {review.LastName}
           </p>

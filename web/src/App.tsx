@@ -14,23 +14,19 @@ const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      { path: "home", element: <HomePage /> },
+      { path: "/", element: <HomePage /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "movies/:id", element: <MoviePage /> },
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
-      {path: "resetPw", element: <PwResetPage />},
-
+      { path: "resetPw", element: <PwResetPage />},
     ],
   },
 ]);
 
-
 function App() {
-  return (
-  <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
