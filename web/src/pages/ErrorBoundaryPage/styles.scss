@@ -1,0 +1,19 @@
+.error-container {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid red;
+  color: red;
+  margin: 20px;
+  border-radius: 5px;
+}
+
+.error-container button {
+  padding: 10px 15px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}

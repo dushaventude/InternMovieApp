@@ -1,18 +1,24 @@
 .carousel-container {
   position: relative;
   height: 80vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: -11;
 }
 
 .carousel-background {
   position: absolute;
   top: 0;
   left: 0;
+  // left: 50%;
+  // transform: translateX(-50%);
   width: 100%;
+  // width: 80%;
   height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: -1;
+  z-index: -10;
   // mask-image: linear-gradient(
   //   to bottom,
   //   rgb(206, 36, 36),
@@ -38,6 +44,7 @@
     padding: 20px 0;
     filter: brightness(50%);
     margin: 0 auto;
+    z-index: -9;
   }
 }
 
@@ -50,6 +57,7 @@
   color: rgb(232, 186, 186);
   display: flex;
   gap: 20px;
+  z-index: -8;
 
   img {
     width: 200px;
