@@ -7,6 +7,14 @@ export interface Auth {
   JwtToken: string;
 }
 
+export interface registerParms {
+    username: string;
+    password: string;
+    roles:['customer'];
+    firstName: string;
+    lastName: string;
+    }
+
 export interface AuthBK {
   userToken: string | null | undefined;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
