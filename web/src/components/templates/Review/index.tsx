@@ -5,6 +5,8 @@ import UserScore from "../../organisms/OverallScoreReview";
 import ReviewHeader from "../../organisms/ReviewHeader";
 import ReviewItem from "../../organisms/ReviewItem";
 import "./styles.scss";
+import { useParams } from "react-router-dom";
+import { PhoneOutgoing } from "lucide-react";
 interface Review {
   Id: string;
   Username: string;
@@ -15,15 +17,22 @@ interface Review {
   LastName: string;
 }
 
-const Review: React.FC = () => {
+interface ReviewProps {
+  photo: string;
+  title: string;
+}
+
+const Review: React.FC<ReviewProps> = ({ photo, title }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedReviewType, setSelectedReviewType] =
     useState<string>("All Reviews");
   const [selectedSortOrder, setSelectedSortOrder] =
     useState<string>("Recently Added");
 
+  const { id } = useParams<{ id: string }>();
+
   useEffect(() => {
-    async function fetchMovie(id: number) {
+    async function fetchMovie(id: string) {
       try {
         const response = await fetch(`http://localhost:5140/api/Review/${id}`);
         const data = await response.json();
@@ -33,8 +42,8 @@ const Review: React.FC = () => {
         console.error("Error fetching movie reviews:", error);
       }
     }
-    fetchMovie(1);
-  }, []);
+    if (id) fetchMovie(id);
+  }, [id]);
 
   const handleReviewFilter = (option: string) => {
     setSelectedReviewType(option);
@@ -46,7 +55,7 @@ const Review: React.FC = () => {
 
   return (
     <div className="review-container">
-      <ReviewHeader thumbnail="https://image.tmdb.org/t/p/original/lVhv7kHPOL4XQvr8VC7PpPtXB5y.jpg" />
+      <ReviewHeader thumbnail={photo} title={title} />
 
       <div className="review-grid">
         <UserScore avgRating={5.7} />

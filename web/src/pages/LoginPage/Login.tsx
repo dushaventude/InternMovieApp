@@ -46,7 +46,7 @@ const Login: React.FC = () => {
           if (userRole === "Admin") {
             window.location.href = "/admin";
           } else if (userRole === "customer") {
-            window.location.href = "/home";
+            window.location.href = "/";
           }
         }
       } catch (e) {

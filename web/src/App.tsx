@@ -8,6 +8,7 @@ import Register from "./pages/RegisterPage/Register";
 import Header from "./components/molecules/Header/Header";
 import PwResetPage from "./pages/PwResetPage/PwResetPage";
 import MovieListPage from "./pages/MovieListPage/MovieListPage";
+import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    // <ErrorBoundary>
+    <RouterProvider router={router} />
+    // </ErrorBoundary>
+  );
 }
 
 export default App;

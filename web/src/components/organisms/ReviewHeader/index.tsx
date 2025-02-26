@@ -3,15 +3,16 @@ import "./styles.scss";
 
 interface ReviewHeaderProps {
   thumbnail: string;
+  title: string;
 }
 
-const ReviewHeader: React.FC<ReviewHeaderProps> = ({ thumbnail }) => {
+const ReviewHeader: React.FC<ReviewHeaderProps> = ({ thumbnail, title }) => {
   return (
     <div className="reviewHeader">
       <div className="reviewHeaderLeft">
         <img src={thumbnail} className="reviewHeaderImage" />
         <div className="reviewHeaderText">
-          <p className="title">Mulholland Dr.</p>
+          <p className="title">{title}</p>
           <p>User Reviews</p>
         </div>
       </div>
