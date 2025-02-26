@@ -25,7 +25,10 @@ namespace MovieApp.Business
             //if the field names are not the same 
             //   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FullName)); 
 
-            CreateMap<Movie, MovieInfo>().ReverseMap();
+            //CreateMap<Movie, MovieInfo>().ReverseMap();
+            CreateMap<Movie, MovieInfo>()
+                .ForMember(dest => dest.PhotoUrlList, opt => opt.MapFrom(src => src.MoviePhotos.Select(mp => mp.Url).ToList()))
+                .ReverseMap();
             CreateMap<Movie, MovieDto>().ReverseMap();
             CreateMap<Movie, MovieRequestDto>()
                 .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.MovieActors.Select(ma => new ActorDto

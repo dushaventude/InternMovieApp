@@ -14,5 +14,7 @@ namespace MovieApp.Business.DTOs
         public string Photo { get; set; }
         public bool IsFeatured { get; set; } = false;
         public DateOnly ReleaseDate { get; set; }
+        public List<string>? PhotoUrlList { get; set; }
+
     }
 }

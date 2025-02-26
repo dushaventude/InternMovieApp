@@ -207,7 +207,7 @@ namespace MovieApp.Business.Services
             try
             {
                 var moviesQuery = await _movieRepository.GetMoviesAsync();
-
+                moviesQuery = moviesQuery.Include(m => m.MoviePhotos);
                 moviesQuery = moviesQuery
                     .Where(m => string.IsNullOrEmpty(filter.Query) || m.Title.Contains(filter.Query))
                     .Where(m => !filter.IsFeatured.HasValue || m.IsFeatured == filter.IsFeatured.Value)
@@ -221,22 +221,23 @@ namespace MovieApp.Business.Services
 
                 if (filter.PageNumber > totalPages || TotalMovies == 0)
                 {
-                    return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, null);
+                    return CreateGetAllMoviesDto(filter.PageNumber, filter.PageSize, TotalMovies, null);
                 }
 
                 var movies = await moviesQuery.Skip((filter.PageNumber - 1) * filter.PageSize).Take(filter.PageSize)
                     .ToListAsync();
+               
 
-                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
+                return CreateGetAllMoviesDto(filter.PageNumber, filter.PageSize, TotalMovies, movies);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error fetching movies: {ex.Message}");
-                return CreateGetAllActorsDto(filter.PageNumber, filter.PageSize, 0, null);
+                return CreateGetAllMoviesDto(filter.PageNumber, filter.PageSize, 0, null);
             }
         }
 
-        private GetAllMoviesDto CreateGetAllActorsDto(int pageNumber, int pageSize, int totalMovies,
+        private GetAllMoviesDto CreateGetAllMoviesDto(int pageNumber, int pageSize, int totalMovies,
             List<Movie>? movies)
         {
             return new GetAllMoviesDto
