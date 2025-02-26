@@ -4,7 +4,7 @@ import HeroSection from "../components/organisms/HeroSection";
 import { useParams } from "react-router-dom";
 import Review from "../components/templates/Review";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
+import { AppDispatch, RootState } from "../store/index";
 import { fetchMovieById } from "../store/features/movies/movieSlice";
 
 const MoviePage: React.FC = () => {

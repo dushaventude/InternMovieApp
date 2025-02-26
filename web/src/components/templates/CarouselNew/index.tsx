@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { fetchMoviesCarousel } from "../../../store/features/movies/movieSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
+import { AppDispatch, RootState } from "../../../store/index";
 import { getFullYear } from "../../../utils/helpers";
 
 const Carousel: React.FC = () => {
