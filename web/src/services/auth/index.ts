@@ -4,7 +4,7 @@ import { request } from "../api";
 const Authentication = {
     login: (auth: AuthParms) =>
       request.post<any | null>(
-        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_URL}/Auth/login`,
+        `https://localhost:7183/api/Auth/login`,
         JSON.stringify(auth)
       ),
    

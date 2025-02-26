@@ -34,10 +34,11 @@ export const loginUser = createAsyncThunk(
             'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
           ];
 
-        if (userRole === 'Admin') {
-          window.location.href = '/register';
+          console.log(userRole);
+        if (userRole === 'admin') {
+          window.location.href = '/';
         } else {
-          window.location.href = '/register';
+          window.location.href = '/login';
         }
         const user = {
           id: decodedPayload[
@@ -78,7 +79,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.user = {
           id: payload.id,
-          email: state.user.email
+          email: payload.email
         };
         state.token = payload.token;
         state.status = 'succeeded';
