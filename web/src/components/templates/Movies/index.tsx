@@ -1,21 +1,41 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import type React from "react";
+import { useEffect, useState } from "react";
 import "./styles.scss";
-import { AppDispatch, RootState } from "../../../store";
+import type { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
+import Button from "../../atoms/button/Button";
+import Dialog from "../../atoms/DialogBox/Dialog";
+import MovieForm from "../../molecules/MovieForm/MovieForm";
+interface Movie {
+  Id?: number;
+  Title: string;
+  Description: string;
+  ReleaseDate: string;
+  Photo: string;
+}
 
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
+  const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [jumpToPage, setJumpToPage] = useState("");
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { searchMovies, searchStatus } = useSelector(
     (state: RootState) => state.movies
   );
+
   const pageSize = 10;
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
   );
+
   useEffect(() => {
     dispatch(
       fetchSearchMovies({
@@ -27,9 +47,43 @@ const Movies: React.FC = () => {
       })
     );
   }, [dispatch, currentPage]);
-  console.log(searchMovies);
 
-  if (searchStatus == "loading") return <div>Loading...</div>;
+  const handleAddMovie = () => {
+    setIsAddMovieOpen(true);
+  };
+
+  const handleEditMovie = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsEditMovieOpen(true);
+  };
+
+  const handleSubmitMovie = (movie: Movie) => {
+    // Here you would dispatch an action to add/update the movie
+    console.log("Submitting movie:", movie);
+
+    // Close the dialog
+    if (selectedMovie) {
+      setIsEditMovieOpen(false);
+    } else {
+      setIsAddMovieOpen(false);
+    }
+
+    // Reset selected movie
+    setSelectedMovie(null);
+  };
+
+  const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const page = Number.parseInt(jumpToPage);
+      if (!isNaN(page) && page > 0 && page <= totalPages) {
+        setCurrentPage(page);
+        setJumpToPage("");
+      }
+    }
+  };
+
+  if (searchStatus === "loading") return <div>Loading...</div>;
+
   return (
     <div className="movies-container">
       <div className="current-navigation">
@@ -50,7 +104,7 @@ const Movies: React.FC = () => {
         <p>/ Manage Movies</p>
       </div>
       <div className="create-pagination-wrapper">
-        <div className="add-new-movie">
+        <Button className="add-new-movie" onClick={handleAddMovie}>
           <p>Add New Movie</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,16 +120,23 @@ const Movies: React.FC = () => {
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-        </div>
+        </Button>
+
         {searchMovies.Response && (
           <div className="pagination">
             <p>Jump to</p>
-            <input type="text" className="jump-to-input" />
+            <input
+              type="text"
+              className="jump-to-input"
+              value={jumpToPage}
+              onChange={(e) => setJumpToPage(e.target.value)}
+              onKeyDown={handleJumpToPage}
+            />
             {[...Array(totalPages)].map((_, index) => (
               <p
                 key={index}
                 onClick={() => setCurrentPage(index + 1)}
-                className={`${currentPage == index + 1 ? "active-page" : ""}`}
+                className={`${currentPage === index + 1 ? "active-page" : ""}`}
               >
                 {index + 1}
               </p>
@@ -102,26 +163,69 @@ const Movies: React.FC = () => {
                 <td>{index + 1}</td>
                 <td>{movie.Id}</td>
                 <td>
-                  <img src={movie.Photo} />
+                  <img
+                    src={movie.Photo || "/placeholder.svg"}
+                    alt={movie.Title}
+                  />
                 </td>
                 <td>{movie.Title}</td>
                 <td>{movie.Description}</td>
                 <td>{getFullYear(movie.ReleaseDate)}</td>
                 <td>
-                  <button className="edit-btn">Edit</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEditMovie(movie)}
+                  >
+                    Edit
+                  </button>
                   <button className="delete-btn">Delete</button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan={5} className="no-data">
+              <td colSpan={7} className="no-data">
                 No movies found
               </td>
             </tr>
           )}
         </tbody>
       </table>
+
+      {/* Add Movie Dialog */}
+      <Dialog
+        isOpen={isAddMovieOpen}
+        onClose={() => setIsAddMovieOpen(false)}
+        title="Add New Movie"
+        size="medium"
+      >
+        <MovieForm
+          onSubmit={handleSubmitMovie}
+          onCancel={() => setIsAddMovieOpen(false)}
+        />
+      </Dialog>
+
+      {/* Edit Movie Dialog */}
+      <Dialog
+        isOpen={isEditMovieOpen}
+        onClose={() => {
+          setIsEditMovieOpen(false);
+          setSelectedMovie(null);
+        }}
+        title="Edit Movie"
+        size="medium"
+      >
+        {selectedMovie && (
+          <MovieForm
+            movie={selectedMovie}
+            onSubmit={handleSubmitMovie}
+            onCancel={() => {
+              setIsEditMovieOpen(false);
+              setSelectedMovie(null);
+            }}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
-      {path : "ResetPassword", element : <ResetPassword />}
+      {path : "ResetPassword", element : <ResetPassword />},
       {
         path: "dashboard",
         element: <AdminDashboard />,
