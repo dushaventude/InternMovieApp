@@ -23,6 +23,8 @@ interface MovieState {
   searchMovies: Movie[];
   searchStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  fetchMovies: Movie[];
+  fetchStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
 const initialState: MovieState = {
@@ -33,6 +35,9 @@ const initialState: MovieState = {
   searchMovies: [],
   searchStatus: "idle",
   error: null as string | null,
+  fetchMovies: [],
+  fetchStatus: "idle",
+
 };
 
 export const fetchMovieById = createAsyncThunk(
@@ -73,6 +78,33 @@ export const fetchMoviesCarousel = createAsyncThunk(
     }
   }
 );
+
+export const fetchAllMovies = createAsyncThunk(
+  "movie/fetchAllMovies",
+  async (
+    filters: {
+      Query: string;
+      ReleaseDateFrom: string;
+      ReleaseDateTo: string;
+      IsFeatured: boolean;
+      PageSize: number;
+      PageNumber: number;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await movieService.getAllMovies(filters);
+      console.log(response);
+
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to fetch movies"
+      );
+    }
+  }
+);
+
 export const fetchSearchMovies = createAsyncThunk(
   "movie/fetchSearchMovies",
   async (
@@ -142,6 +174,21 @@ const movieSlice = createSlice({
       state.searchStatus = "idle";
       state.error = action.payload as string;
     });
+
+    builder.addCase(fetchAllMovies.pending, (state) => {
+      state.fetchStatus = "loading";
+    });
+    builder.addCase(fetchAllMovies.fulfilled, (state, action) => {
+      state.fetchStatus = "idle";
+      state.fetchMovies = action.payload; 
+    }
+    );
+    builder.addCase(fetchAllMovies.rejected, (state, action) => {
+      state.fetchStatus = "idle";
+      state.error = action.payload as string;
+    }
+    );
+
   },
 });
 

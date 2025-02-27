@@ -13,6 +13,7 @@ import storage from "redux-persist/lib/storage"; // Uses localStorage
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "./features/user/authSlice"; // Ensure this import is correct
 import moviesReducer from "./features/movies/movieSlice";
+import actorReducer from "./features/actors/actorSlice";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ export const store = configureStore({
   reducer: {
     user: persistedReducer,
     movies: moviesReducer,
+    actors: actorReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
