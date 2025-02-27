@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import MoviePage from "./pages/MoviePage";
 import ActorPage from "./pages/ActorPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -9,6 +13,8 @@ import Header from "./components/molecules/Header/Header";
 import PwResetPage from "./pages/PwResetPage/PwResetPage";
 import MovieListPage from "./pages/MovieListPage/MovieListPage";
 import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Movies from "./components/templates/Movies";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +28,15 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
+      {
+        path: "dashboard",
+        element: <AdminDashboard />,
+        children: [
+          { index: true, element: <Navigate to="movies" replace /> },
+          { path: "movies", element: <Movies />, index: true },
+          { path: "actors", element: <Actors /> },
+        ],
+      },
     ],
   },
 ]);
@@ -35,3 +50,7 @@ function App() {
 }
 
 export default App;
+
+function Actors() {
+  return <div>Actors</div>;
+}

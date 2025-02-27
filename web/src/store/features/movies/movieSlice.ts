@@ -80,7 +80,7 @@ export const fetchSearchMovies = createAsyncThunk(
       Query: string;
       ReleaseDateFrom: string;
       ReleaseDateTo: string;
-      IsFeatured: boolean;
+      IsFeatured?: boolean;
       PageSize: number;
       PageNumber: number;
     },

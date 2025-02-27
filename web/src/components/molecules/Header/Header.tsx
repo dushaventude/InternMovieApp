@@ -3,7 +3,7 @@ import "./styles.scss";
 import Button from "../../atoms/button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
+import { AppDispatch, RootState } from "../../../store/index";
 import {
   clearSearchMovies,
   fetchSearchMovies,
