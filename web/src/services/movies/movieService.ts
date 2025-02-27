@@ -14,6 +14,7 @@ const movieService = {
     PageNumber: number;
   }) => request.post("/Movie", queryParams),
 
+
   createMovie: (movie: {
     Title: string;
     Description: string;
@@ -21,6 +22,12 @@ const movieService = {
     Photo: string;
     
   }) => request.post("/Movie/Create", movie),
+
+
+  updateMovie: (Id: number, movieData: any) =>
+    request.put(`/Movie/${Id}`, movieData),
+
+  deleteMovie: (Id: number) => request.delete(`/Movie/${Id}`),
 
 };
 

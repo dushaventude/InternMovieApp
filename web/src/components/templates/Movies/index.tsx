@@ -1,5 +1,4 @@
 "use client";
-
 import type React from "react";
 import { useEffect, useState } from "react";
 import "./styles.scss";
@@ -10,6 +9,10 @@ import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import MovieForm from "../../molecules/MovieForm/MovieForm";
+import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
+import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
+import { Import } from "lucide-react";
+
 interface Movie {
   Id?: number;
   Title: string;
@@ -24,6 +27,12 @@ const Movies: React.FC = () => {
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+//   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -31,7 +40,26 @@ const Movies: React.FC = () => {
     (state: RootState) => state.movies
   );
 
-  const pageSize = 10;
+
+  //   const pageSize = 10;
+
+  const openUpdateModal = (movieId) => {
+    setSelectedMovie(movieId);
+    setUpdateModalOpen(true);
+  };
+
+  const openDeleteModal = (movie) => {
+    console.log("Opening delete modal for movie:", movie); // Log full movie object
+    if (!movie || typeof movie !== "object" || !movie.Id) {
+      console.error("Error: movie object is invalid!", movie);
+      return;
+    }
+
+    setSelectedMovie(movie);
+    setDeleteModalOpen(true);
+  };
+
+
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
   );
@@ -46,7 +74,12 @@ const Movies: React.FC = () => {
         PageNumber: currentPage,
       })
     );
-  }, [dispatch, currentPage]);
+
+<!--   }, [dispatch, currentPage]); -->
+
+  }, [dispatch, currentPage, pageSize]);
+  console.log(searchMovies);
+
 
   const handleAddMovie = () => {
     setIsAddMovieOpen(true);
@@ -124,6 +157,18 @@ const Movies: React.FC = () => {
 
         {searchMovies.Response && (
           <div className="pagination">
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              <option value="5">5 per page</option>
+              <option value="10">10 per page</option>
+              <option value="20">20 per page</option>
+              <option value="50">50 per page</option>
+            </select>
             <p>Jump to</p>
             <input
               type="text"
@@ -161,7 +206,7 @@ const Movies: React.FC = () => {
           {searchMovies.Response?.length > 0 ? (
             searchMovies.Response?.map((movie, index) => (
               <tr key={movie.Id}>
-                <td>{index + 1}</td>
+                <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
                 <td>{movie.Id}</td>
                 <td>
                   <img
@@ -175,11 +220,16 @@ const Movies: React.FC = () => {
                 <td>
                   <button
                     className="edit-btn"
-                    onClick={() => handleEditMovie(movie)}
+                    onClick={() => openUpdateModal(movie)}
                   >
                     Edit
                   </button>
-                  <button className="delete-btn">Delete</button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => openDeleteModal(movie)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
@@ -227,6 +277,20 @@ const Movies: React.FC = () => {
           />
         )}
       </Dialog>
+
+<!--       {isUpdateModalOpen && (
+        <UpdateMovieModal
+          movie={selectedMovie}
+          onClose={() => setUpdateModalOpen(false)}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteMovieModal
+          movieId={selectedMovie?.Id}
+          onClose={() => setDeleteModalOpen(false)}
+        />
+      )} -->
+
     </div>
   );
 };
