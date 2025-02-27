@@ -1,0 +1,102 @@
+.movie-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+
+      &.error {
+        border-color: #ff0000;
+      }
+    }
+
+    .error-message {
+      color: #ff0000;
+      font-size: 14px;
+    }
+  }
+
+  .added-actors-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .added-actor {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 8px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+
+      .actor-thumbnail {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .remove-actor-btn {
+        margin-left: auto;
+        background-color: #ff4444;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #cc0000;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+
+      &.cancel-btn {
+        background-color: #ccc;
+
+        &:hover {
+          background-color: #999;
+        }
+      }
+
+      &.submit-btn {
+        background-color: #4CAF50;
+        color: white;
+
+        &:hover {
+          background-color: #45a049;
+        }
+      }
+    }
+  }
+}
+

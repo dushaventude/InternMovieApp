@@ -25,6 +25,8 @@ interface MovieState {
   error: string | null;
   fetchMovies: Movie[];
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
+  createStatus: "idle" | "loading" | "succeeded" | "failed";
+
 }
 
 const initialState: MovieState = {
@@ -39,6 +41,20 @@ const initialState: MovieState = {
   fetchStatus: "idle",
 
 };
+
+export const createMovie = createAsyncThunk(
+  "movie/create",
+  async (movie: Movie, thunkAPI) => {
+    try {
+      const response = await movieService.createMovie(movie);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to create movie");
+    }
+  }
+);
 
 export const fetchMovieById = createAsyncThunk(
   "movie/id",
@@ -188,6 +204,20 @@ const movieSlice = createSlice({
       state.error = action.payload as string;
     }
     );
+
+    builder.addCase(createMovie.pending, (state) => {
+      state.createStatus = "loading";
+    });
+
+    builder.addCase(createMovie.fulfilled, (state) => {
+      state.createStatus = "succeeded";
+    });
+
+    builder.addCase(createMovie.rejected, (state, action) => {
+      state.createStatus = "failed";
+      state.error = action.payload as string;
+    });
+    
 
   },
 });

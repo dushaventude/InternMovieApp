@@ -131,6 +131,7 @@ const Movies: React.FC = () => {
               value={jumpToPage}
               onChange={(e) => setJumpToPage(e.target.value)}
               onKeyDown={handleJumpToPage}
+              placeholder="Enter page number"
             />
             {[...Array(totalPages)].map((_, index) => (
               <p

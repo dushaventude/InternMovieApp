@@ -1,3 +1,4 @@
+import { create } from "domain";
 import { request } from "../request";
 
 const movieService = {
@@ -12,6 +13,15 @@ const movieService = {
     PageSize: number;
     PageNumber: number;
   }) => request.post("/Movie", queryParams),
+
+  createMovie: (movie: {
+    Title: string;
+    Description: string;
+    ReleaseDate: string;
+    Photo: string;
+    
+  }) => request.post("/Movie/Create", movie),
+
 };
 
 export default movieService;
