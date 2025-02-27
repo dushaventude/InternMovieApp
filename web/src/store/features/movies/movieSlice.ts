@@ -20,7 +20,7 @@ interface MovieState {
   status: "idle" | "loading" | "succeeded" | "failed";
   carouselMovies: Movie[];
   carouselStatus: "idle" | "loading" | "succeeded" | "failed";
-  searchMovies: Movie[];
+  searchMovies: [];
   searchStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -97,7 +97,33 @@ export const fetchSearchMovies = createAsyncThunk(
     }
   }
 );
+export const updateMovie = createAsyncThunk(
+  "movie/updateMovie",
+  async ({ id, movieData }: { id: number; movieData: any }, thunkAPI) => {
+    try {
+      const response = await movieService.updateMovie(id, movieData);
+      console.log("Updated movie:", response);
+      return response;
+    } catch (error) {
+      console.error("Update failed", error);
+      return thunkAPI.rejectWithValue("Failed to update movie");
+    }
+  }
+);
 
+export const deleteMovie = createAsyncThunk(
+  "movie/deleteMovie",
+  async (id: number, thunkAPI) => {
+    try {
+      await movieService.deleteMovie(id);
+      console.log("Deleted movie:", id);
+      return id;
+    } catch (error) {
+      console.error("Delete failed", error);
+      return thunkAPI.rejectWithValue("Failed to delete movie");
+    }
+  }
+);
 const movieSlice = createSlice({
   name: "movie",
   initialState,
@@ -135,12 +161,39 @@ const movieSlice = createSlice({
       state.searchStatus = "loading";
     });
     builder.addCase(fetchSearchMovies.fulfilled, (state, action) => {
+      console.log("API Response for searchMovies:", action.payload);
       state.searchStatus = "idle";
       state.searchMovies = action.payload;
     });
     builder.addCase(fetchSearchMovies.rejected, (state, action) => {
       state.searchStatus = "idle";
       state.error = action.payload as string;
+    });
+    builder.addCase(updateMovie.fulfilled, (state, action) => {
+      console.log("Updated movie:", action.payload);
+      state.movie = action.payload; // Store the updated movie
+    });
+
+    builder.addCase(deleteMovie.fulfilled, (state, action) => {
+      console.log("Current searchMovies state:", state.searchMovies);
+      console.log("Type of searchMovies:", typeof state.searchMovies);
+      // Convert `searchMovies` to a plain array before filtering
+      const searchMoviesArray = Array.isArray(state.searchMovies)
+        ? state.searchMovies
+        : Object.values(state.searchMovies);
+      if (!Array.isArray(state.searchMovies)) {
+        console.error(
+          "Error: searchMovies is not an array!",
+          state.searchMovies
+        );
+        return;
+      }
+      console.log("Converted searchMoviesArray:", searchMoviesArray);
+      console.log("Deleted movie:", action.payload);
+      // Create a new array to ensure Redux detects the state change
+      state.searchMovies = [
+        ...state.searchMovies.filter((movie) => movie.Id !== action.payload),
+      ];
     });
   },
 });

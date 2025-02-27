@@ -4,14 +4,36 @@ import { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
+import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
+import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
+import { Import } from "lucide-react";
 
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
   const { searchMovies, searchStatus } = useSelector(
     (state: RootState) => state.movies
   );
+  const openUpdateModal = (movieId) => {
+    setSelectedMovie(movieId);
+    setUpdateModalOpen(true);
+  };
+
+  const openDeleteModal = (movie) => {
+    console.log("Opening delete modal for movie:", movie); // Log full movie object
+    if (!movie || typeof movie !== "object" || !movie.Id) {
+      console.error("Error: movie object is invalid!", movie);
+      return;
+    }
+
+    setSelectedMovie(movie);
+    setDeleteModalOpen(true);
+  };
+
   const pageSize = 10;
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
@@ -108,8 +130,18 @@ const Movies: React.FC = () => {
                 <td>{movie.Description}</td>
                 <td>{getFullYear(movie.ReleaseDate)}</td>
                 <td>
-                  <button className="edit-btn">Edit</button>
-                  <button className="delete-btn">Delete</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => openUpdateModal(movie)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => openDeleteModal(movie)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
@@ -122,6 +154,18 @@ const Movies: React.FC = () => {
           )}
         </tbody>
       </table>
+      {isUpdateModalOpen && (
+        <UpdateMovieModal
+          movie={selectedMovie}
+          onClose={() => setUpdateModalOpen(false)}
+        />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteMovieModal
+          movieId={selectedMovie?.Id}
+          onClose={() => setDeleteModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
