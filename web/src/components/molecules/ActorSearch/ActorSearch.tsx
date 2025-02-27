@@ -1,10 +1,12 @@
 import type React from "react";
+import { useState, useEffect } from "react";
 import "./ActorSearch.scss";
 
 interface Actor {
-  id: number;
-  name: string;
-  photoUrl: string;
+  Id: number;
+  Name: string;
+  Photo: string;
+  DOB: string;
 }
 
 interface ActorSearchProps {
@@ -20,6 +22,17 @@ const ActorSearch: React.FC<ActorSearchProps> = ({
   searchResults,
   onActorSelect,
 }) => {
+  const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    setShowResults(searchTerm.trim() !== "");
+  }, [searchTerm]);
+
+  const handleActorClick = (actor: Actor, e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    onActorSelect(actor);
+  };
+
   return (
     <div className="actor-search">
       <input
@@ -29,25 +42,36 @@ const ActorSearch: React.FC<ActorSearchProps> = ({
         placeholder="Search for actors..."
         className="actor-search-input"
       />
-      {searchResults.length > 0 && (
+      {showResults && (
         <ul className="actor-search-results">
-          {searchResults.map((actor) => (
-            <li key={actor.id} className="actor-search-item">
-              <img
-                src={actor.photoUrl || "/placeholder.svg"}
-                alt={actor.name}
-                className="actor-thumbnail"
-              />
-              <span>{actor.name}</span>
-              <button
-                type="button"
-                onClick={() => onActorSelect(actor)}
-                className="add-actor-btn"
+          {searchResults.length > 0 ? (
+            searchResults.map((actor) => (
+              <li
+                key={actor.Id}
+                className="actor-search-item"
+                onClick={(e) => handleActorClick(actor, e)}
               >
-                Add
-              </button>
-            </li>
-          ))}
+                <img
+                  src={actor.Photo || "/placeholder.svg"}
+                  alt={actor.Name}
+                  className="actor-thumbnail"
+                />
+                <span>{actor.Name}</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation(); 
+                    handleActorClick(actor, e);
+                  }}
+                  className="add-actor-btn"
+                >
+                  Add
+                </button>
+              </li>
+            ))
+          ) : (
+            <li className="no-results">No results found</li>
+          )}
         </ul>
       )}
     </div>

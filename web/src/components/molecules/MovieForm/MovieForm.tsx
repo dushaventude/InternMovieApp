@@ -1,15 +1,19 @@
 "use client";
 
-import type React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./MovieForm.scss";
 import ImageUpload from "../ImageUpload/ImageUpload";
 import ActorSearch from "../ActorSearch/ActorSearch";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../../../store";
+import { fetchAllActors } from "../../../store/features/actors/actorSlice";
+import { debounce } from "lodash";
 
 interface Actor {
-  id: number;
-  name: string;
-  photoUrl: string;
+  Id: number;
+  Name: string;
+  Photo: string;
+  DOB: string;
 }
 
 interface Movie {
@@ -42,93 +46,109 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<Actor[]>([]);
 
+  const dispatch: AppDispatch = useDispatch();
+  const { fetchActors, fetchStatus, error } = useSelector(
+    (state: RootState) => state.actors
+  );
+
+  // Fetch actors on component mount
   useEffect(() => {
-    if (searchTerm) {
-      // Simulating an API call to search for actors
-      // In a real application, you would call your backend API here
-      const mockApiCall = setTimeout(() => {
-        const results = mockActors.filter((actor) =>
-          actor.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setSearchResults(results);
-      }, 300);
+    dispatch(fetchAllActors({ pageNumber: 1, pageSize: 100 }));
+  }, [dispatch]);
 
-      return () => clearTimeout(mockApiCall);
-    } else {
-      setSearchResults([]);
+  // Update search results when actors are fetched
+  useEffect(() => {
+    if (fetchStatus === "succeeded") {
+      const actors =
+        (fetchActors as unknown as { Response: Actor[] })?.Response || [];
+      setSearchResults(actors);
     }
-  }, [searchTerm]);
+  }, [fetchActors, fetchStatus]);
 
+  // Handle form input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
     if (errors[name]) {
-      setErrors({
-        ...errors,
+      setErrors((prev) => ({
+        ...prev,
         [name]: "",
-      });
+      }));
     }
   };
 
+  // Handle image upload
   const handleImageChange = (url: string) => {
-    setFormData({
-      ...formData,
-      photoUrl: url,
-    });
+    setFormData((prev) => ({ ...prev, photoUrl: url }));
   };
 
-  const handleActorSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+  // Debounced actor search
+  const handleActorSearch = useCallback(
+    debounce((term: string) => {
+      if (term) {
+        const filteredActors = searchResults.filter((actor) =>
+          actor.Name.toLowerCase().includes(term.toLowerCase())
+        );
+        setSearchResults(filteredActors);
+      } else {
+        const actors =
+          (fetchActors as unknown as { Response: Actor[] })?.Response || [];
+        setSearchResults(actors);
+      }
+    }, 300),
+    [fetchActors, searchResults]
+  );
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    handleActorSearch(term);
   };
 
+  // Add an actor to the movie
   const handleAddActor = (actor: Actor) => {
-    if (!formData.actors.some((a) => a.id === actor.id)) {
-      setFormData({
-        ...formData,
-        actors: [...formData.actors, actor],
-      });
+    if (!formData.actors.some((a) => a.Id === actor.Id)) {
+      setFormData((prev) => ({
+        ...prev,
+        actors: [...prev.actors, actor],
+      }));
     }
     setSearchTerm("");
   };
 
+  // Remove an actor from the movie
   const handleRemoveActor = (actorId: number) => {
-    setFormData({
-      ...formData,
-      actors: formData.actors.filter((a) => a.id !== actorId),
-    });
+    setFormData((prev) => ({
+      ...prev,
+      actors: prev.actors.filter((a) => a.Id !== actorId),
+    }));
   };
 
+  // Validate form fields
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
-    }
-
-    if (!formData.description.trim()) {
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (!formData.description.trim())
       newErrors.description = "Description is required";
-    }
-
-    if (!formData.releaseDate) {
+    if (!formData.releaseDate)
       newErrors.releaseDate = "Release date is required";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (validate()) {
-      onSubmit(formData);
-    }
+    if (validate()) onSubmit(formData);
   };
 
   return (
@@ -176,48 +196,33 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
         )}
       </div>
 
-      <div className="form-group">
-        <ImageUpload
-          value={formData.photoUrl}
-          onChange={handleImageChange}
-          label="Movie Poster"
-        />
-      </div>
+      <ImageUpload
+        value={formData.photoUrl}
+        onChange={handleImageChange}
+        label="Movie Poster"
+      />
 
-      <div className="form-group">
-        <label htmlFor="actorSearch">Add Actors</label>
-        <ActorSearch
-          searchTerm={searchTerm}
-          onSearchChange={handleActorSearch}
-          searchResults={searchResults}
-          onActorSelect={handleAddActor}
-        />
-      </div>
+      <ActorSearch
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        searchResults={searchResults}
+        onActorSelect={handleAddActor}
+      />
 
-      {formData.actors.length > 0 && (
-        <div className="form-group">
-          <label>Added Actors</label>
-          <ul className="added-actors-list">
-            {formData.actors.map((actor) => (
-              <li key={actor.id} className="added-actor">
-                <img
-                  src={actor.photoUrl || "/placeholder.svg"}
-                  alt={actor.name}
-                  className="actor-thumbnail"
-                />
-                <span>{actor.name}</span>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveActor(actor.id)}
-                  className="remove-actor-btn"
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="selected-actors">
+        {formData.actors.map((actor) => (
+          <div key={actor.Id} className="actor-chip">
+            <span>{actor.Name}</span>
+            <button
+              type="button"
+              className="remove-actor"
+              onClick={() => handleRemoveActor(actor.Id)}
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+      </div>
 
       <div className="form-actions">
         <button type="button" className="cancel-btn" onClick={onCancel}>
@@ -230,30 +235,5 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
     </form>
   );
 };
-
-// Mock data for actors (replace with actual API call in a real application)
-const mockActors: Actor[] = [
-  { id: 1, name: "Tom Hanks", photoUrl: "https://example.com/tom-hanks.jpg" },
-  {
-    id: 2,
-    name: "Meryl Streep",
-    photoUrl: "https://example.com/meryl-streep.jpg",
-  },
-  {
-    id: 3,
-    name: "Denzel Washington",
-    photoUrl: "https://example.com/denzel-washington.jpg",
-  },
-  {
-    id: 4,
-    name: "Viola Davis",
-    photoUrl: "https://example.com/viola-davis.jpg",
-  },
-  {
-    id: 5,
-    name: "Leonardo DiCaprio",
-    photoUrl: "https://example.com/leonardo-dicaprio.jpg",
-  },
-];
 
 export default MovieForm;
