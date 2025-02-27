@@ -10,14 +10,19 @@ import { Import } from "lucide-react";
 
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const { searchMovies, searchStatus } = useSelector(
     (state: RootState) => state.movies
   );
+
+  //   const pageSize = 10;
+
   const openUpdateModal = (movieId) => {
     setSelectedMovie(movieId);
     setUpdateModalOpen(true);
@@ -34,7 +39,6 @@ const Movies: React.FC = () => {
     setDeleteModalOpen(true);
   };
 
-  const pageSize = 10;
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
   );
@@ -48,7 +52,7 @@ const Movies: React.FC = () => {
         PageNumber: currentPage,
       })
     );
-  }, [dispatch, currentPage]);
+  }, [dispatch, currentPage, pageSize]);
   console.log(searchMovies);
 
   if (searchStatus == "loading") return <div>Loading...</div>;
@@ -91,6 +95,18 @@ const Movies: React.FC = () => {
         </div>
         {searchMovies.Response && (
           <div className="pagination">
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              <option value="5">5 per page</option>
+              <option value="10">10 per page</option>
+              <option value="20">20 per page</option>
+              <option value="50">50 per page</option>
+            </select>
             <p>Jump to</p>
             <input type="text" className="jump-to-input" />
             {[...Array(totalPages)].map((_, index) => (
@@ -121,7 +137,7 @@ const Movies: React.FC = () => {
           {searchMovies.Response?.length > 0 ? (
             searchMovies.Response?.map((movie, index) => (
               <tr key={movie.Id}>
-                <td>{index + 1}</td>
+                <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
                 <td>{movie.Id}</td>
                 <td>
                   <img src={movie.Photo} />
@@ -147,7 +163,7 @@ const Movies: React.FC = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={5} className="no-data">
+              <td colSpan={7} className="no-data">
                 No movies found
               </td>
             </tr>
