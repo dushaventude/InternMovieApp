@@ -1,35 +1,21 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import HeroSection from "../components/organisms/HeroSection";
 import { useParams } from "react-router-dom";
-interface Movie {
-  id: number;
-  Title: string;
-  Description: string;
-  Photo: string;
-  PhotoUrlList: string;
-  AverageRating: number;
-  ReleaseDate: string;
-}
+import Review from "../components/templates/Review";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/index";
+import { fetchMovieById } from "../store/features/movies/movieSlice";
 
 const MoviePage: React.FC = () => {
-  const [movie, setMovie] = useState<Movie | null>(null);
   const { id } = useParams<{ id: string }>();
-  console.log(id);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { movie } = useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const response = await fetch(`http://localhost:5140/api/movie/${id}`);
-        const data = await response.json();
-        setMovie(data);
-      } catch (error) {
-        console.error("Failed to fetch movie:", error);
-      }
-    };
-
-    fetchMovie();
-  }, [id]);
+    if (id) dispatch(fetchMovieById(id));
+  }, [id, dispatch]);
 
   if (!movie) {
     return <div>Loading...</div>;
@@ -45,6 +31,7 @@ const MoviePage: React.FC = () => {
         averageRating={movie.AverageRating}
         releaseDate={movie.ReleaseDate}
       />
+      <Review photo={movie.Photo} title={movie.Title} />
     </div>
   );
 };

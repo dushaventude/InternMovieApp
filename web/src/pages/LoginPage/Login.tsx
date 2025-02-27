@@ -24,6 +24,7 @@ const Login: React.FC = () => {
         await dispatch(
           loginUser({ username: values.username, password: values.password })
         );
+
       } catch (e) {
         console.error('There is an error', e);
       }

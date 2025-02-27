@@ -1,0 +1,173 @@
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: rgba($color: #000000, $alpha: 0.9);
+  height: auto;
+  padding: 16px 0;
+}
+
+.carousel-flexbox {
+  display: flex;
+  margin: 0 auto;
+  gap: 16px;
+  width: 80%;
+  padding: 8px 16px;
+}
+
+.carousel-slider {
+  flex: 3;
+  z-index: 1;
+  position: relative;
+
+  .btn-chevron {
+    position: absolute;
+    z-index: 1;
+    border: none;
+    background-color: #a9a8a8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    width: 32px;
+    height: 32px;
+    top: 50%;
+  }
+
+  .btn-chevron-left {
+    left: 0;
+    transform: translate(0, -50%);
+  }
+
+  .btn-chevron-right {
+    right: 0;
+    transform: translate(0, -50%);
+  }
+  .chevron {
+    height: 24px;
+    width: 24px;
+    stroke: #2a2828;
+  }
+}
+.carousel-slider-movies {
+  display: flex;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: inset;
+  filter: brightness(50%);
+  border-radius: 8px;
+}
+
+.carousel-info {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  transform: translate(-10%, 0%);
+  display: flex;
+  gap: 8px;
+  width: 50%;
+  color: #a9a8a8;
+
+  img {
+    width: 150px;
+    border-radius: 8px;
+    filter: brightness(75%);
+  }
+  .carousel-info-movie .title {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .carousel-info-movie .description {
+    font-size: 16px;
+  }
+}
+
+.carousel-upnext {
+  flex: 1;
+  .upnext-title {
+    color: #cedf10;
+    font-weight: 600;
+    font-family: "Roboto", serif;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .upnext-chevron {
+      height: 16px;
+      width: 16px;
+    }
+  }
+}
+
+.upnext-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.upnext-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 5px;
+  color: beige;
+  background-color: rgb(65, 62, 62);
+  img {
+    width: 50px;
+  }
+  .upnext-card-info {
+    font-family: "Roboto", serif;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.carousel-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-slider-movies {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+  position: relative;
+  min-width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+}
+
+.btn-chevron {
+  position: absolute;
+  top: 50%;
+  // transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.btn-chevron-left {
+  left: 10px;
+}
+
+.btn-chevron-right {
+  right: 10px;
+}

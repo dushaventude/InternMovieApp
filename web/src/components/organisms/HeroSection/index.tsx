@@ -11,7 +11,6 @@
 //   releaseDate: string;
 // }
 
-
 // const HeroSection: React.FC<HeroSectionProps> = ({
 //   title,
 //   description,
@@ -38,10 +37,8 @@
 
 // export default HeroSection;
 
-
 import * as React from "react";
 import styles from "./styles.module.scss";
-
 
 interface HeroSectionProps {
   title: string;
@@ -58,7 +55,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   imageUrl,
   photo,
   averageRating,
-  releaseDate
+  releaseDate,
 }) => {
   return (
     <div className={styles.heroSection}>
@@ -78,7 +75,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         <div className={styles.movieDetails}>
           <h3 className={styles.movieTitle}>{title}</h3>
           <p className={styles.movieDesc}>{description}</p>
-          <p className={styles.rating}>⭐ {averageRating.toFixed(1)}</p>
+          <p className={styles.rating}>⭐ {averageRating?.toFixed(1)}</p>
           <p className={styles.releaseDate}>📅 {releaseDate}</p>
         </div>
       </div>
@@ -87,8 +84,3 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 };
 
 export default HeroSection;
-
-
-
-
-  

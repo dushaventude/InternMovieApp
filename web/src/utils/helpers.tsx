@@ -14,3 +14,9 @@ export function getBackgroundColor(rating: number) {
   // return "#c70036";
   return "#ef4444";
 }
+
+export function getFullYear(dateString: string) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  return year;
+}
