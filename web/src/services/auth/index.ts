@@ -1,22 +1,30 @@
-import { AuthParms } from "../../models/models";
+import { AuthParms,emailParms,registerParms,resetParms } from "../../models/models";
 import { request } from "../api";
 
 const Authentication = {
     login: (auth: AuthParms) =>
       request.post<any | null>(
-        `${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_BASE_URL}/Auth/login`,
+        `https://localhost:7183/api/Auth/login`,
         JSON.stringify(auth)
       ),
+
+      register:(auth:registerParms)=>
+      request.post<any | null>(
+        `https://localhost:7183/api/Auth/register`,
+        JSON.stringify(auth)
+      ),
+      forgetPassword:(email:emailParms)=>
+      request.post<any | null>(
+        `https://localhost:7183/api/Auth/forgot-password`,
+        JSON.stringify(email)
+      ),
+      resetPassword:(reset:resetParms)=>
+      request.post<any | null>(
+        `https://localhost:7183/api/Auth/reset-password`,
+        JSON.stringify(reset)
+      )
    
-    // loginasuserUserid: () =>
-    //   request.post<any | null>(
-    //     `${process.env.REACT_APP_USER_API}${process.env.REACT_APP_BASE_API_VERSION}/auth/loginasuser-userid`,
-    //     {}
-    //   ),
-    // getAuthorizationSettingsByUser: () =>
-    //   request.get<any | null>(
-    //     `${process.env.REACT_APP_SURVEY_API_2}${process.env.REACT_APP_BASE_API_VERSION}/surveys/get-authorization-settings`
-    //   )
+
   };
   
   export default Authentication;

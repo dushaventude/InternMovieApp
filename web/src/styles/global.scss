@@ -1,10 +1,12 @@
-@import "./colors";
+@use "./_colors.scss" as colors;
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
+
   background: #333;
 }
 
@@ -14,9 +16,13 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: $gray-400;
+  background: colors.$gray-400;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: $gray-500;
+  background: colors.$gray-500;
+}
+
+body {
+  background-color: colors.$white;
 }

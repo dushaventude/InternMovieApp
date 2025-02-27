@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MoviePage from "./pages/MoviePage";
-import ActorPage from "./pages/ActorPage";
+import ActorPage from "./pages/ActorListPage/ActorListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import AppLayout from "./layouts/AppLayout";
 import Login from "./pages/LoginPage/Login";
@@ -12,9 +12,11 @@ import Register from "./pages/RegisterPage/Register";
 import Header from "./components/molecules/Header/Header";
 import PwResetPage from "./pages/PwResetPage/PwResetPage";
 import MovieListPage from "./pages/MovieListPage/MovieListPage";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,7 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
+      {path : "ResetPassword", element : <ResetPassword />}
       {
         path: "dashboard",
         element: <AdminDashboard />,
@@ -37,6 +40,7 @@ const router = createBrowserRouter([
           { path: "actors", element: <Actors /> },
         ],
       },
+
     ],
   },
 ]);
