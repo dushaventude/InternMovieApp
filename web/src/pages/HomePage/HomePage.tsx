@@ -5,8 +5,8 @@ import Review from "../../components/templates/Review";
 const HomePage: React.FC = () => {
   return (
     <>
-      <Carousel />;
-      <Review />
+      {/* <Carousel />;
+      <Review /> */}
     </>
   );
 };

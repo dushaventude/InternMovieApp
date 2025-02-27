@@ -8,6 +8,7 @@ import Register from "./pages/RegisterPage/Register";
 import Header from "./components/molecules/Header/Header";
 import PwResetPage from "./pages/PwResetPage/PwResetPage";
 import MovieListPage from "./pages/MovieListPage/MovieListPage";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
+      {path : "ResetPassword", element : <ResetPassword />}
     ],
   },
 ]);
