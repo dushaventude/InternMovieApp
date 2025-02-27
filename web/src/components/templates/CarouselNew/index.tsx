@@ -77,7 +77,7 @@ const Carousel: React.FC = () => {
                   index === currentIndex ? "active" : "inactive"
                 }`}
               >
-                <img src={movie.PhotoUrlList[0]} className="carousel-image" />
+                <img src={movie?.PhotoUrlList[0]} className="carousel-image" />
                 <div className="carousel-info">
                   <img src={movie.Photo} />
                   <div className="carousel-info-movie">

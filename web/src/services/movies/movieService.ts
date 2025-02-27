@@ -12,6 +12,11 @@ const movieService = {
     PageSize: number;
     PageNumber: number;
   }) => request.post("/Movie", queryParams),
+
+  updateMovie: (Id: number, movieData: any) =>
+    request.put(`/Movie/${Id}`, movieData),
+
+  deleteMovie: (Id: number) => request.delete(`/Movie/${Id}`),
 };
 
 export default movieService;
