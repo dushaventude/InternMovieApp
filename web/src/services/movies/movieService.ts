@@ -6,7 +6,7 @@ const movieService = {
     Query: string;
     ReleaseDateFrom: string;
     ReleaseDateTo: string;
-    IsFeatured: boolean;
+    IsFeatured?: boolean;
     PageSize: number;
     PageNumber: number;
   }) => request.post("/Movie", queryParams),
