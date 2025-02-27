@@ -5,9 +5,9 @@ import Carousel from "../../components/templates/CarouselNew";
 const HomePage: React.FC = () => {
   return (
     <>
-      <Carousel />
       {/* <Carousel /> */}
-      <Review />
+      {/* <Carousel /> */}
+      {/* <Review /> */}
     </>
   );
 };
