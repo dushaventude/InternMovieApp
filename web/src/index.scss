@@ -1,9 +1,6 @@
-@import "./styles/global.scss";
+@use "./styles/_colors.scss" as colors;
+
 body {
   margin: 0;
-  // background-color: #000;
+  background-color: colors.$white;
 }
-// #root {
-//   width: 100%;
-//   margin-top:80%;
-// }

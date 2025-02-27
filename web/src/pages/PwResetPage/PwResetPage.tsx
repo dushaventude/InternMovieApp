@@ -3,11 +3,32 @@ import Typography from "../../components/atoms/Typography";
 import "./styles.scss";
 import Input from "../../components/atoms/input/Input";
 import Button from "../../components/atoms/button/Button";
-import { Box } from "lucide-react";
+import { useFormik } from "formik";
+import { useAppDispatch } from '../../store';
+import { PwResetPageValidation } from "./PwResetPageValidation";
+import { forgetPassword } from "../../store/features/user/authSlice";
 
-// interface LoginProps {}
+// interface PwResetPageProps {}
 
 const PwResetPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: PwResetPageValidation,
+    onSubmit: async (values) => {
+      try {
+        
+        await dispatch(forgetPassword({ email: values.email }));
+        console.log("Password reset link sent to:", values.email);
+      } catch (e) {
+        console.error("There is an error", e);
+      }
+    },
+  });
+
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -25,14 +46,21 @@ const PwResetPage: React.FC = () => {
             </div>
             
             <div className="card-body">
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <div className="form-group">
                   <Input
                     type="email"
                     placeholder="Enter your email"
+                    name="email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
                     className="input"
                     style={{ opacity: 0.5, border: "2px solid #000000" }}
                   />
+                  {formik.touched.email && formik.errors.email ? (
+                    <div className="error">{formik.errors.email}</div>
+                  ) : null}
                 </div>
 
                 <center>
