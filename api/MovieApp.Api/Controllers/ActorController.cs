@@ -28,7 +28,7 @@ namespace MovieApp.Api.Controllers
 
         }
 
-
+      //  [Authorize(Roles = "Admin,Customer")]
         [HttpGet]
         public async Task<IActionResult> GetAllActors(
 
@@ -40,6 +40,7 @@ namespace MovieApp.Api.Controllers
             return Ok(actors);
         }
 
+       // [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<ActorInfo>> AddActor(CreateActorInfo createActorInfo)
 
@@ -66,6 +67,7 @@ namespace MovieApp.Api.Controllers
             return CreatedAtAction(nameof(GetActorById), new { id = addedActor.Id }, addedActor);
         }
 
+      // [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ActorInfo>> GetActorById(int id)
         {
@@ -80,6 +82,8 @@ namespace MovieApp.Api.Controllers
             }
         }
 
+
+       // [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<IActionResult> DeleteActorById(int id)
         {
@@ -95,6 +99,8 @@ namespace MovieApp.Api.Controllers
 
         }
 
+
+       // [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> UpdateActorById(int id, [FromBody] ActorUpdateInfo actorUpdateInfo)
         {
