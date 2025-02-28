@@ -100,7 +100,7 @@ const Movies: React.FC = () => {
   //   setIsEditMovieOpen(true);
   // };
 
-  const handleSubmitMovie = (movie: Movie) => {
+  const  handleSubmitMovie = async(movie: Movie) => {
       const movieData = {
         Title: movie.title,
         Description: movie.description,
@@ -113,8 +113,20 @@ const Movies: React.FC = () => {
       };
   
       console.log("Creating movie:", movieData);
-      dispatch(createMovie(movieData));
+      await dispatch(createMovie(movieData));
       setIsAddMovieOpen(false);
+      try {
+        dispatch(fetchSearchMovies({
+          Query: "",
+          ReleaseDateFrom: "1900-01-01",
+          ReleaseDateTo: "2025-12-12",
+          PageSize: pageSize,
+          PageNumber: currentPage,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch movies", error);
+      }
+      
     };
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
