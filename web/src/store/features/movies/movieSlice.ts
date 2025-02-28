@@ -42,19 +42,31 @@ const initialState: MovieState = {
 
 };
 
+interface MovieData {
+  Title: string;
+  Description: string;
+  Photo: string;
+  IsFeatured: boolean;
+  ReleaseDate: string;
+  PhotoUrlList: string[];
+  ActorIds: number[];
+}
+
 export const createMovie = createAsyncThunk(
-  "movie/create",
-  async (movie: Movie, thunkAPI) => {
+  "movie/createMovie",
+  async (movieData: MovieData, thunkAPI) => {
     try {
-      const response = await movieService.createMovie(movie);
-      console.log(response);
+      console.log("Creating movieeeeee:", movieData);
+      const response = await movieService.createMovie(movieData);
+      // console.log("Created movie:", response);
       return response;
     } catch (error) {
-      console.error(error);
+      console.error("Create failed", error);
       return thunkAPI.rejectWithValue("Failed to create movie");
     }
   }
-);
+);  
+
 
 export const fetchMovieById = createAsyncThunk(
   "movie/id",

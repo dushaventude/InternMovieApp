@@ -24,6 +24,21 @@ const initialState: ActorState = {
   error: null,
 };
 
+export const createActor = createAsyncThunk(
+  "actor/createActor",
+  async (actor: IActor, thunkAPI) => {
+    try {
+      const response = await actorService.createActor(actor);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to create actor");
+    }
+  }
+);
+
+
+
 export const fetchAllActors = createAsyncThunk(
   "actor/fetchAllActors",
   async (
@@ -82,6 +97,19 @@ const actorSlice = createSlice({
       state.status = "failed";
       state.error = action.payload as string;
     });
+
+    builder.addCase(createActor.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(createActor.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.actor = action.payload;
+    });
+    builder.addCase(createActor.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload as string;
+    });
+    
   },
 });
 

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 import type { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
+import { fetchSearchMovies , createMovie } from "../../../store/features/movies/movieSlice";
+
+
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
@@ -13,12 +15,21 @@ import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/Up
 import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
 import { Import } from "lucide-react";
 
+interface Actor {
+  Id: number;
+  Name: string;
+  Gender: string;
+  Country: string;
+}
+
 interface Movie {
-  Id?: number;
-  Title: string;
-  Description: string;
-  ReleaseDate: string;
-  Photo: string;
+  id?: number;
+  title: string;
+  description: string;
+  releaseDate: string;
+  photoUrl: string;
+  actors: Actor[];
+  isFeatured: boolean; 
 }
 
 const Movies: React.FC = () => {
@@ -84,25 +95,27 @@ const Movies: React.FC = () => {
     setIsAddMovieOpen(true);
   };
 
-  const handleEditMovie = (movie: Movie) => {
-    setSelectedMovie(movie);
-    setIsEditMovieOpen(true);
-  };
+  // const handleEditMovie = (movie: Movie) => {
+  //   setSelectedMovie(movie);
+  //   setIsEditMovieOpen(true);
+  // };
 
   const handleSubmitMovie = (movie: Movie) => {
-    // Here you would dispatch an action to add/update the movie
-    console.log("Submitting movie:", movie);
-
-    // Close the dialog
-    if (selectedMovie) {
-      setIsEditMovieOpen(false);
-    } else {
+      const movieData = {
+        Title: movie.title,
+        Description: movie.description,
+        Photo: movie.photoUrl,
+        IsFeatured: movie.isFeatured,
+        Actors: movie.actors,
+        ReleaseDate: movie.releaseDate,
+        PhotoUrlList: [movie.photoUrl], 
+        ActorIds: movie.actors.map(actor => actor.Id), 
+      };
+  
+      console.log("Creating movie:", movieData);
+      dispatch(createMovie(movieData));
       setIsAddMovieOpen(false);
-    }
-
-    // Reset selected movie
-    setSelectedMovie(null);
-  };
+    };
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -255,7 +268,7 @@ const Movies: React.FC = () => {
         />
       </Dialog>
 
-      {/* Edit Movie Dialog */}
+      {/* Edit Movie Dialog
       <Dialog
         isOpen={isEditMovieOpen}
         onClose={() => {
@@ -275,7 +288,7 @@ const Movies: React.FC = () => {
             }}
           />
         )}
-      </Dialog>
+      </Dialog> */}
 
 
 
