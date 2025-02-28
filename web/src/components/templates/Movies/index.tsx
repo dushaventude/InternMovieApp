@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 import type { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
+import { createMovie, fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
@@ -14,11 +14,20 @@ import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal"
 import { Import } from "lucide-react";
 
 interface Movie {
-  Id?: number;
-  Title: string;
-  Description: string;
-  ReleaseDate: string;
-  Photo: string;
+  id?: number;
+  title: string;
+  description: string;
+  releaseDate: string;
+  photoUrl: string;
+  actors: Actor[];
+  isFeatured: boolean;
+}
+
+interface Actor {
+  Id: number;
+  Name: string;
+  Gender: string;
+  Country: string;
 }
 
 const Movies: React.FC = () => {
@@ -84,10 +93,10 @@ const Movies: React.FC = () => {
     setIsAddMovieOpen(true);
   };
 
-  const handleEditMovie = (movie: Movie) => {
-    setSelectedMovie(movie);
-    setIsEditMovieOpen(true);
-  };
+  // const handleEditMovie = (movie: Movie) => {
+  //   setSelectedMovie(movie);
+  //   setIsEditMovieOpen(true);
+  // };
 
 
   const  handleSubmitMovie = async(movie: Movie) => {
@@ -129,6 +138,8 @@ const Movies: React.FC = () => {
       }
     }
   };
+
+  
 
   if (searchStatus === "loading") return <div>Loading...</div>;
 
@@ -271,7 +282,7 @@ const Movies: React.FC = () => {
         />
       </Dialog>
 
-      {/* Edit Movie Dialog */}
+      {/* Edit Movie Dialog
       <Dialog
         isOpen={isEditMovieOpen}
         onClose={() => {
@@ -291,7 +302,7 @@ const Movies: React.FC = () => {
             }}
           />
         )}
-      </Dialog>
+      </Dialog> */}
 
 
 
