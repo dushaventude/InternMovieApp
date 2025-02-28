@@ -1,4 +1,4 @@
-import { request } from "../request";
+import { request } from "../api";
 
 const movieService = {
   getMovie: (Id: string) => request.get(`/Movie/${Id}`),

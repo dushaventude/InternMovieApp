@@ -1,35 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-//import { useAppDispatch, RootState,useAppSelector } from "../../../store";
-//import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
-import { getFullYear } from "../../../utils/helpers";
+//import { useDispatch, useSelector } from "react-redux";
+import { fetchAllActors } from "../../../store/features/actors/actorSlice";
 
-const Movies: React.FC = () => {
+const Actors: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
-  const { searchMovies, searchStatus } = useAppSelector(
-    (state: RootState) => state.movies
+  const { fetchActors, fetchStatus } = useAppSelector(
+    (state: RootState) => state.actors
   );
   const pageSize = 10;
-  const totalPages = Math.ceil(
-    searchMovies?.TotalCount / searchMovies?.PageSize
-  );
-  useEffect(() => {
-    dispatch(
-      fetchSearchMovies({
-        Query: "",
-        ReleaseDateFrom: "1900-01-01",
-        ReleaseDateTo: "2025-12-12",
-        PageSize: pageSize,
-        PageNumber: currentPage,
-      })
-    );
-  }, [dispatch, currentPage]);
-  console.log(searchMovies);
+  const totalPages = Math.ceil(fetchActors?.TotalCount / pageSize);
 
-  if (searchStatus == "loading") return <div>Loading...</div>;
+  useEffect(() => {
+    dispatch(fetchAllActors({ pageNumber: currentPage, pageSize }));
+  }, [dispatch, currentPage]);
+
+  if (fetchStatus === "loading") return <div>Loading...</div>;
+
   return (
     <div className="movies-container">
       <div className="current-navigation">
@@ -47,11 +36,11 @@ const Movies: React.FC = () => {
             d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
           />
         </svg>
-        <p>/ Manage Movies</p>
+        <p>/ Manage Actors</p>
       </div>
       <div className="create-pagination-wrapper">
         <div className="add-new-movie">
-          <p>Add New Movie</p>
+          <p>Add New Actor</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -67,7 +56,7 @@ const Movies: React.FC = () => {
             />
           </svg>
         </div>
-        {searchMovies.Response && (
+        {fetchActors.Response && (
           <div className="pagination">
             <p>Jump to</p>
             <input type="text" className="jump-to-input" />
@@ -75,7 +64,7 @@ const Movies: React.FC = () => {
               <p
                 key={index}
                 onClick={() => setCurrentPage(index + 1)}
-                className={`${currentPage == index + 1 ? "active-page" : ""}`}
+                className={`${currentPage === index + 1 ? "active-page" : ""}`}
               >
                 {index + 1}
               </p>
@@ -88,25 +77,21 @@ const Movies: React.FC = () => {
           <tr>
             <th>Index</th>
             <th>ID</th>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Release Year</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Country</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {searchMovies.Response?.length > 0 ? (
-            searchMovies.Response?.map((movie, index) => (
-              <tr key={movie.Id}>
+          {fetchActors.Response?.length > 0 ? (
+            fetchActors.Response.map((actor, index) => (
+              <tr key={actor.Id}>
                 <td>{index + 1}</td>
-                <td>{movie.Id}</td>
-                <td>
-                  <img src={movie.Photo} />
-                </td>
-                <td>{movie.Title}</td>
-                <td>{movie.Description}</td>
-                <td>{getFullYear(movie.ReleaseDate)}</td>
+                <td>{actor.Id}</td>
+                <td>{actor.Name}</td>
+                <td>{actor.Gender}</td>
+                <td>{actor.Country}</td>
                 <td>
                   <button className="edit-btn">Edit</button>
                   <button className="delete-btn">Delete</button>
@@ -115,8 +100,8 @@ const Movies: React.FC = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={5} className="no-data">
-                No movies found
+              <td colSpan={6} className="no-data">
+                No actors found
               </td>
             </tr>
           )}
@@ -126,4 +111,4 @@ const Movies: React.FC = () => {
   );
 };
 
-export default Movies;
+export default Actors;

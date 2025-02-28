@@ -167,6 +167,7 @@ const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload as string;
       })
+      
       .addCase(forgetPassword.pending, (state) => {
         state.status = 'loading';
       })
