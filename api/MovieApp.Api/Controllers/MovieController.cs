@@ -43,7 +43,7 @@ namespace MovieApp.Api.Controllers
             return Ok(movie);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> CreateMovie([FromBody] MovieDto movieDto)
         {
@@ -81,6 +81,7 @@ namespace MovieApp.Api.Controllers
             return CreatedAtAction(nameof(GetMovieById), new { Id = createdMovie.Id }, createdMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateMovie(int Id, [FromBody] MovieDto movieDto)
         {
@@ -99,6 +100,7 @@ namespace MovieApp.Api.Controllers
             return Ok(updatedMovie);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMovie(int id)
         {

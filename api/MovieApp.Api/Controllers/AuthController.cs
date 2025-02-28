@@ -139,7 +139,7 @@ namespace MovieApp.Api.Controllers
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
                 // Create reset link
-                var resetLink = $"{configuration["AppSettings:ClientBaseUrl"]}/ResetPassword?email={HttpUtility.UrlEncode(user.Email)}&token={encodedToken}";
+                var resetLink = $"{configuration["AppSettings:ClientBaseUrl"]}ResetPassword?email={HttpUtility.UrlEncode(user.Email)}&token={encodedToken}";
 
                 // Send email
                 await SendPasswordResetEmail(user.Email, resetLink);

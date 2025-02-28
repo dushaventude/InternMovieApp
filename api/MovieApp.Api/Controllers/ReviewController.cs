@@ -19,7 +19,7 @@ namespace MovieApp.Api.Controllers
             _reviewService = reviewService;
         }
 
-        // Add Review (Requires JWT Token)
+      //  [Authorize(Roles = "Admin,Customer")]
         [HttpPost]
         public async Task<IActionResult> AddReview([FromBody] AddReviewDto dto)
         {
@@ -76,6 +76,7 @@ namespace MovieApp.Api.Controllers
             }
         }
 
+       // [Authorize(Roles = "Admin,Customer")]
         [HttpPut("{reviewId}")]
         public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] AddReviewDto dto)
         {
