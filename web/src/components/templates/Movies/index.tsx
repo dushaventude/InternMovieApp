@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 import type { AppDispatch, RootState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies , createMovie } from "../../../store/features/movies/movieSlice";
-
-
+import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
@@ -15,21 +13,12 @@ import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/Up
 import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
 import { Import } from "lucide-react";
 
-interface Actor {
-  Id: number;
-  Name: string;
-  Gender: string;
-  Country: string;
-}
-
 interface Movie {
-  id?: number;
-  title: string;
-  description: string;
-  releaseDate: string;
-  photoUrl: string;
-  actors: Actor[];
-  isFeatured: boolean; 
+  Id?: number;
+  Title: string;
+  Description: string;
+  ReleaseDate: string;
+  Photo: string;
 }
 
 const Movies: React.FC = () => {
@@ -95,10 +84,11 @@ const Movies: React.FC = () => {
     setIsAddMovieOpen(true);
   };
 
-  // const handleEditMovie = (movie: Movie) => {
-  //   setSelectedMovie(movie);
-  //   setIsEditMovieOpen(true);
-  // };
+  const handleEditMovie = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsEditMovieOpen(true);
+  };
+
 
   const  handleSubmitMovie = async(movie: Movie) => {
       const movieData = {
@@ -128,6 +118,7 @@ const Movies: React.FC = () => {
       }
       
     };
+
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -280,7 +271,7 @@ const Movies: React.FC = () => {
         />
       </Dialog>
 
-      {/* Edit Movie Dialog
+      {/* Edit Movie Dialog */}
       <Dialog
         isOpen={isEditMovieOpen}
         onClose={() => {
@@ -300,7 +291,7 @@ const Movies: React.FC = () => {
             }}
           />
         )}
-      </Dialog> */}
+      </Dialog>
 
 
 
