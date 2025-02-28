@@ -89,20 +89,36 @@ const Movies: React.FC = () => {
     setIsEditMovieOpen(true);
   };
 
-  const handleSubmitMovie = (movie: Movie) => {
-    // Here you would dispatch an action to add/update the movie
-    console.log("Submitting movie:", movie);
 
-    // Close the dialog
-    if (selectedMovie) {
-      setIsEditMovieOpen(false);
-    } else {
+  const  handleSubmitMovie = async(movie: Movie) => {
+      const movieData = {
+        Title: movie.title,
+        Description: movie.description,
+        Photo: movie.photoUrl,
+        IsFeatured: movie.isFeatured,
+        Actors: movie.actors,
+        ReleaseDate: movie.releaseDate,
+        PhotoUrlList: [movie.photoUrl], 
+        ActorIds: movie.actors.map(actor => actor.Id), 
+      };
+  
+      console.log("Creating movie:", movieData);
+      await dispatch(createMovie(movieData));
       setIsAddMovieOpen(false);
-    }
+      try {
+        dispatch(fetchSearchMovies({
+          Query: "",
+          ReleaseDateFrom: "1900-01-01",
+          ReleaseDateTo: "2025-12-12",
+          PageSize: pageSize,
+          PageNumber: currentPage,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch movies", error);
+      }
+      
+    };
 
-    // Reset selected movie
-    setSelectedMovie(null);
-  };
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
