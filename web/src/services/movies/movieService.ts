@@ -18,11 +18,8 @@ const movieService = {
   createMovie: (movie: {
     Title: string;
     Description: string;
-    Photo: string;
-    IsFeatured: boolean;
     ReleaseDate: string;
-    PhotoUrlList: string[];
-    ActorIds: number[];
+    Photo: string;
     
   }) => request.post("/Movie/Create", movie),
 
