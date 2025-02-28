@@ -1,5 +1,5 @@
+import { request } from "../api";
 import { create } from "domain";
-import { request } from "../request";
 
 const movieService = {
   getMovie: (Id: string) => request.get(`/Movie/${Id}`),

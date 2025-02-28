@@ -1,7 +1,8 @@
 import Authentication from './auth';
 
 const agent = {
-  Authentication
+  Authentication,
+ 
 };
 
 export default agent;

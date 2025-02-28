@@ -2,9 +2,12 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import "./styles.scss";
-import type { AppDispatch, RootState } from "../../../store";
-import { useDispatch, useSelector } from "react-redux";
+//import { useAppDispatch, RootState,useAppSelector } from "../../../store";
+//import { useDispatch, useSelector } from "react-redux";
+<!-- import type { AppDispatch, RootState } from "../../../store";
+import { useDispatch, useSelector } from "react-redux"; -->
 import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
+import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
@@ -23,6 +26,11 @@ interface Movie {
 
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useAppDispatch();
+  const { searchMovies, searchStatus } = useAppSelector(
+         (state: RootState) => state.movies
+  );
+
   const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -33,13 +41,7 @@ const Movies: React.FC = () => {
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { searchMovies, searchStatus } = useSelector(
-    (state: RootState) => state.movies
-  );
-
+   
 
   //   const pageSize = 10;
 

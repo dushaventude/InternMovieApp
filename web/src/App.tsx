@@ -16,7 +16,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
-
+import Actors from "./components/templates/Actors";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
-      {path : "ResetPassword", element : <ResetPassword />},
+      { path: "ResetPassword", element: <ResetPassword /> }, // Added missing comma
       {
         path: "dashboard",
         element: <AdminDashboard />,
@@ -40,7 +40,6 @@ const router = createBrowserRouter([
           { path: "actors", element: <Actors /> },
         ],
       },
-
     ],
   },
 ]);
@@ -55,6 +54,4 @@ function App() {
 
 export default App;
 
-function Actors() {
-  return <div>Actors</div>;
-}
+
