@@ -23,10 +23,12 @@ interface Movie {
   releaseDate: string;
   photoUrl: string;
   actors: Actor[];
+  isFeatured: boolean;
 }
 
 interface MovieFormProps {
   movie?: Movie;
+  isFeatured: false;
   onSubmit: (movie: Movie) => void;
   onCancel: () => void;
 }
@@ -148,7 +150,12 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) onSubmit(formData);
+   
+
+    if (validate()) {
+      console.log(formData);
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -194,6 +201,22 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
         {errors.releaseDate && (
           <span className="error-message">{errors.releaseDate}</span>
         )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="isFeatured">Is Featured</label>
+        <input
+          type="checkbox"
+          id="isFeatured"
+          name="isFeatured"
+          checked={formData.isFeatured}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              isFeatured: e.target.checked,
+            }))
+          }
+        />
       </div>
 
       <ImageUpload

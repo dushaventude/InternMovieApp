@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 //import { useAppDispatch, RootState,useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-
-import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
+import { createMovie, fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
@@ -16,30 +15,41 @@ import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal"
 import { Import } from "lucide-react";
 
 interface Movie {
-  Id?: number;
-  Title: string;
-  Description: string;
-  ReleaseDate: string;
-  Photo: string;
+  id?: number;
+  title: string;
+  description: string;
+  releaseDate: string;
+  photoUrl: string;
+  actors: Actor[];
+  isFeatured: boolean;
+}
+
+interface Actor {
+  Id: number;
+  Name: string;
+  Gender: string;
+  Country: string;
 }
 
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const dispatch = useAppDispatch();
-  const { searchMovies, searchStatus } = useAppSelector(
-         (state: RootState) => state.movies
-  );
-
   const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
+  
   const [pageSize, setPageSize] = useState(10);
 //   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
-   
+
+  const dispatch = useAppDispatch();
+
+  const { searchMovies, searchStatus } = useAppSelector(
+    (state: RootState) => state.movies
+  );
+
 
   //   const pageSize = 10;
 
@@ -76,7 +86,6 @@ const Movies: React.FC = () => {
     );
 
 
-
   }, [dispatch, currentPage, pageSize]);
   console.log(searchMovies);
 
@@ -85,25 +94,41 @@ const Movies: React.FC = () => {
     setIsAddMovieOpen(true);
   };
 
-  const handleEditMovie = (movie: Movie) => {
-    setSelectedMovie(movie);
-    setIsEditMovieOpen(true);
-  };
+  // const handleEditMovie = (movie: Movie) => {
+  //   setSelectedMovie(movie);
+  //   setIsEditMovieOpen(true);
+  // };
 
-  const handleSubmitMovie = (movie: Movie) => {
-    // Here you would dispatch an action to add/update the movie
-    console.log("Submitting movie:", movie);
 
-    // Close the dialog
-    if (selectedMovie) {
-      setIsEditMovieOpen(false);
-    } else {
+  const  handleSubmitMovie = async(movie: Movie) => {
+      const movieData = {
+        Title: movie.title,
+        Description: movie.description,
+        Photo: movie.photoUrl,
+        IsFeatured: movie.isFeatured,
+        Actors: movie.actors,
+        ReleaseDate: movie.releaseDate,
+        PhotoUrlList: [movie.photoUrl], 
+        ActorIds: movie.actors.map(actor => actor.Id), 
+      };
+  
+      console.log("Creating movie:", movieData);
+      await dispatch(createMovie(movieData));
       setIsAddMovieOpen(false);
-    }
+      try {
+        dispatch(fetchSearchMovies({
+          Query: "",
+          ReleaseDateFrom: "1900-01-01",
+          ReleaseDateTo: "2025-12-12",
+          PageSize: pageSize,
+          PageNumber: currentPage,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch movies", error);
+      }
+      
+    };
 
-    // Reset selected movie
-    setSelectedMovie(null);
-  };
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -114,6 +139,8 @@ const Movies: React.FC = () => {
       }
     }
   };
+
+  
 
   if (searchStatus === "loading") return <div>Loading...</div>;
 
@@ -256,7 +283,7 @@ const Movies: React.FC = () => {
         />
       </Dialog>
 
-      {/* Edit Movie Dialog */}
+      {/* Edit Movie Dialog
       <Dialog
         isOpen={isEditMovieOpen}
         onClose={() => {
@@ -276,7 +303,7 @@ const Movies: React.FC = () => {
             }}
           />
         )}
-      </Dialog>
+      </Dialog> */}
 
 
 

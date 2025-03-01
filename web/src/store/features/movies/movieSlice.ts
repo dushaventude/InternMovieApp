@@ -15,6 +15,16 @@ interface Movie {
   PhotoUrlList: PhotoUrl[];
 }
 
+interface MovieData {
+  Title: string;
+  Description: string;
+  Photo: string;
+  IsFeatured: boolean;
+  ReleaseDate: string;
+  PhotoUrlList: string[];
+  ActorIds: number[];
+}
+
 interface MovieState {
   movie: Movie | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -26,7 +36,6 @@ interface MovieState {
   fetchMovies: Movie[];
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
   createStatus: "idle" | "loading" | "succeeded" | "failed";
-
 }
 
 const initialState: MovieState = {
@@ -39,18 +48,18 @@ const initialState: MovieState = {
   error: null as string | null,
   fetchMovies: [],
   fetchStatus: "idle",
-
 };
 
 export const createMovie = createAsyncThunk(
-  "movie/create",
-  async (movie: Movie, thunkAPI) => {
+  "movie/createMovie",
+  async (movieData: MovieData, thunkAPI) => {
     try {
-      const response = await movieService.createMovie(movie);
-      console.log(response);
+      console.log("Creating movieeeeee:", movieData);
+      const response = await movieService.createMovie(movieData);
+      // console.log("Created movie:", response);
       return response;
     } catch (error) {
-      console.error(error);
+      console.error("Create failed", error);
       return thunkAPI.rejectWithValue("Failed to create movie");
     }
   }
@@ -245,21 +254,17 @@ const movieSlice = createSlice({
       ];
     });
 
-
     builder.addCase(fetchAllMovies.pending, (state) => {
       state.fetchStatus = "loading";
     });
     builder.addCase(fetchAllMovies.fulfilled, (state, action) => {
       state.fetchStatus = "idle";
-      state.fetchMovies = action.payload; 
-    }
-    );
+      state.fetchMovies = action.payload;
+    });
     builder.addCase(fetchAllMovies.rejected, (state, action) => {
       state.fetchStatus = "idle";
       state.error = action.payload as string;
-    }
-    );
-
+    });
 
     builder.addCase(createMovie.pending, (state) => {
       state.createStatus = "loading";
@@ -273,9 +278,6 @@ const movieSlice = createSlice({
       state.createStatus = "failed";
       state.error = action.payload as string;
     });
-    
-
-
   },
 });
 

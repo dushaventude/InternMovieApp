@@ -3,6 +3,17 @@ import "./styles.scss";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
 import { fetchAllActors } from "../../../store/features/actors/actorSlice";
+import Button from "../../atoms/button/Button";
+import Dialog from "../../atoms/DialogBox/Dialog";
+import ActorForm from "../../molecules/ActorForm/ActorForm";
+import { createActor } from "../../../store/features/actors/actorSlice";
+
+interface Actor {
+  Id?: number;
+  Name: string;
+  Gender: string;
+  Country: string;
+}
 
 const Actors: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -12,10 +23,20 @@ const Actors: React.FC = () => {
   );
   const pageSize = 10;
   const totalPages = Math.ceil(fetchActors?.TotalCount / pageSize);
+    const [isAddActorModalOpen, setIsAddActorModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAllActors({ pageNumber: currentPage, pageSize }));
   }, [dispatch, currentPage]);
+
+   const handleAddActor = () => {
+     setIsAddActorModalOpen(true);
+   };
+
+   const handleSubmitActor = (actor: Actor) => {
+     dispatch(createActor(actor));
+     setIsAddActorModalOpen(false);
+   };
 
   if (fetchStatus === "loading") return <div>Loading...</div>;
 
@@ -39,7 +60,7 @@ const Actors: React.FC = () => {
         <p>/ Manage Actors</p>
       </div>
       <div className="create-pagination-wrapper">
-        <div className="add-new-movie">
+        <Button className="add-new-movie" onClick={handleAddActor}>
           <p>Add New Actor</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +76,7 @@ const Actors: React.FC = () => {
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-        </div>
+        </Button>
         {fetchActors.Response && (
           <div className="pagination">
             <p>Jump to</p>
@@ -107,6 +128,18 @@ const Actors: React.FC = () => {
           )}
         </tbody>
       </table>
+      {/*Add Actor Modal*/}
+      <Dialog
+        isOpen={isAddActorModalOpen}
+        onClose={() => setIsAddActorModalOpen(false)}
+        title="Add Actor"
+        size="medium"
+      >
+        <ActorForm
+          onSubmit={handleSubmitActor}
+          onCancel={() => setIsAddActorModalOpen(false)}
+        />
+      </Dialog>
     </div>
   );
 };
