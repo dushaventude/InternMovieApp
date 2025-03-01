@@ -4,7 +4,7 @@ import styles from "./smallCard.module.scss";
 interface SmallCardProps {
   title: string;
   image: string;
-  releaseDate?: string;
+  releaseDate?: number | string;
   rating?: number;
   actor?: {
     name: string;

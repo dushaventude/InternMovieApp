@@ -6,6 +6,11 @@
   font-family: "Roboto", serif;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .no-reviews {
+    text-align: center;
+    margin: 32px 0;
+  }
 }
 
 .review-grid {
@@ -31,4 +36,5 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 24px;
 }

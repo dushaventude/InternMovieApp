@@ -5,9 +5,9 @@ const movieService = {
 
   //removed IsFeatured from the query params because need to get all movies not only featured
   getAllMovies: (queryParams: {
-    Query: string;
-    ReleaseDateFrom: string;
-    ReleaseDateTo: string;
+    Query?: string;
+    ReleaseDateFrom?: string;
+    ReleaseDateTo?: string;
     IsFeatured?: boolean;
     PageSize: number;
     PageNumber: number;

@@ -17,7 +17,6 @@ import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,7 +29,7 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
-      {path : "ResetPassword", element : <ResetPassword />}
+      { path: "ResetPassword", element: <ResetPassword /> },
       {
         path: "dashboard",
         element: <AdminDashboard />,
@@ -40,7 +39,6 @@ const router = createBrowserRouter([
           { path: "actors", element: <Actors /> },
         ],
       },
-
     ],
   },
 ]);

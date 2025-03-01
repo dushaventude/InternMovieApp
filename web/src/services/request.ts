@@ -1,31 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 
-
 const BASE_URL = "http://localhost:5140/api/";
-
-// const BASE_URL = "https://localhost:7183/api/";
 
 const instance = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
-
-// instance.interceptors.request.use(
-//   (config) => {
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-// instance.interceptors.response.use(
-//   (response) => {
-//     return response.data;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
@@ -36,5 +16,4 @@ export const request = {
   put: <T>(url: string, body: Record<string, unknown>) =>
     instance.put<T>(url, body).then(responseBody),
   delete: <T>(url: string) => instance.delete<T>(url).then(responseBody),
-
 };
