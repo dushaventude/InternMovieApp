@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Typography from '../../components/atoms/Typography';
 import './styles.scss';
@@ -12,11 +13,16 @@ import logo from '../../../public/main_logo-removebg.png';
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // This is the route to redirect to after login
+  const from = location.state?.from || "/";
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     },
     validationSchema: LoginPageValidation,
     onSubmit: async (values) => {
@@ -24,10 +30,12 @@ const Login: React.FC = () => {
         await dispatch(
           loginUser({ username: values.username, password: values.password })
         );
+     //   navigate(from, { replace: true });
+
       } catch (e) {
-        console.error('There is an error', e);
+        console.error("There is an error", e);
       }
-    }
+    },
   });
 
   return (
@@ -77,6 +85,7 @@ const Login: React.FC = () => {
               {formik.touched.password && formik.errors.password ? (
                 <div className="error">{formik.errors.password}</div>
               ) : null}
+
             </div>
           </div>
         </form>

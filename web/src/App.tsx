@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
 import Actors from "./components/templates/Actors";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
       { path: "actors", element: <ActorPage /> },
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
-      { path: "ResetPassword", element: <ResetPassword /> }, // Added missing comma
+      { path: "ResetPassword", element: <ResetPassword /> },
+
       {
         path: "dashboard",
         element: <AdminDashboard />,

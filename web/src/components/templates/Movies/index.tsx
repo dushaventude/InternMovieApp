@@ -12,7 +12,7 @@ import Dialog from "../../atoms/DialogBox/Dialog";
 import MovieForm from "../../molecules/MovieForm/MovieForm";
 import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
 import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
-import { Import } from "lucide-react";
+import { Movie } from "../../../models/models";
 
 interface Movie {
   id?: number;
@@ -39,11 +39,9 @@ const Movies: React.FC = () => {
   const [jumpToPage, setJumpToPage] = useState("");
  
   const [pageSize, setPageSize] = useState(10);
-//   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-
-
   const dispatch = useAppDispatch();
 
   const { searchMovies, searchStatus } = useAppSelector(
@@ -53,12 +51,12 @@ const Movies: React.FC = () => {
 
   //   const pageSize = 10;
 
-  const openUpdateModal = (movieId) => {
-    setSelectedMovie(movieId);
+  const openUpdateModal = (movie: Movie) => {
+    setSelectedMovie(movie);
     setUpdateModalOpen(true);
   };
 
-  const openDeleteModal = (movie) => {
+  const openDeleteModal = (movie: Movie) => {
     console.log("Opening delete modal for movie:", movie); // Log full movie object
     if (!movie || typeof movie !== "object" || !movie.Id) {
       console.error("Error: movie object is invalid!", movie);
@@ -231,7 +229,7 @@ const Movies: React.FC = () => {
         </thead>
         <tbody>
           {searchMovies.Response?.length > 0 ? (
-            searchMovies.Response?.map((movie, index) => (
+            searchMovies.Response?.map((movie: Movie, index: number) => (
               <tr key={movie.Id}>
                 <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
                 <td>{movie.Id}</td>
@@ -270,6 +268,18 @@ const Movies: React.FC = () => {
         </tbody>
       </table>
 
+      {isUpdateModalOpen && (
+        <UpdateMovieModal
+          movie={selectedMovie}
+          onClose={() => setUpdateModalOpen(false)}
+        />
+      )}
+      {isDeleteModalOpen && selectedMovie && (
+        <DeleteMovieModal
+          movieId={selectedMovie.Id}
+          onClose={() => setDeleteModalOpen(false)}
+)}
+
       {/* Add Movie Dialog */}
       <Dialog
         isOpen={isAddMovieOpen}
@@ -280,6 +290,7 @@ const Movies: React.FC = () => {
         <MovieForm
           onSubmit={handleSubmitMovie}
           onCancel={() => setIsAddMovieOpen(false)}
+
         />
       </Dialog>
 

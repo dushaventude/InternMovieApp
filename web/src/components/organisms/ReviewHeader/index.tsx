@@ -1,12 +1,18 @@
 import React from "react";
 import "./styles.scss";
+import Button from "../../atoms/button/Button";
 
 interface ReviewHeaderProps {
   thumbnail: string;
   title: string;
+  onClick: () => void;
 }
 
-const ReviewHeader: React.FC<ReviewHeaderProps> = ({ thumbnail, title }) => {
+const ReviewHeader: React.FC<ReviewHeaderProps> = ({
+  thumbnail,
+  title,
+  onClick,
+}) => {
   return (
     <div className="reviewHeader">
       <div className="reviewHeaderLeft">
@@ -16,7 +22,10 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({ thumbnail, title }) => {
           <p>User Reviews</p>
         </div>
       </div>
-      <p className="addRating">Add My Rating</p>
+      {/* <p className="addRating">Add My Rating</p> */}
+      <Button variant="primary" size="small" onClick={onClick}>
+        Add My Rating
+      </Button>
     </div>
   );
 };
