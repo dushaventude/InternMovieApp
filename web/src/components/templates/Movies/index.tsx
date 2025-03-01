@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 //import { useAppDispatch, RootState,useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-<!-- import type { AppDispatch, RootState } from "../../../store";
-import { useDispatch, useSelector } from "react-redux"; -->
+
 import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { getFullYear } from "../../../utils/helpers";
@@ -35,7 +34,6 @@ const Movies: React.FC = () => {
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 //   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
@@ -77,7 +75,7 @@ const Movies: React.FC = () => {
       })
     );
 
-<!--   }, [dispatch, currentPage]); -->
+
 
   }, [dispatch, currentPage, pageSize]);
   console.log(searchMovies);
@@ -280,18 +278,7 @@ const Movies: React.FC = () => {
         )}
       </Dialog>
 
-<!--       {isUpdateModalOpen && (
-        <UpdateMovieModal
-          movie={selectedMovie}
-          onClose={() => setUpdateModalOpen(false)}
-        />
-      )}
-      {isDeleteModalOpen && (
-        <DeleteMovieModal
-          movieId={selectedMovie?.Id}
-          onClose={() => setDeleteModalOpen(false)}
-        />
-      )} -->
+
 
     </div>
   );
