@@ -4,14 +4,14 @@ import HeroSection from "../components/organisms/HeroSection";
 import { useParams } from "react-router-dom";
 import Review from "../components/templates/Review";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/index";
+import { AppDispatch, RootState, useAppDispatch ,useAppSelector} from "../store/index";
 import { fetchMovieById } from "../store/features/movies/movieSlice";
 
 const MoviePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { movie } = useSelector((state: RootState) => state.movies);
+  const { movie } = useAppSelector((state: RootState) => state.movies);
 
   useEffect(() => {
     if (id) dispatch(fetchMovieById(id));

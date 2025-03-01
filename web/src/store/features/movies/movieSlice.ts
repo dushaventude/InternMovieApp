@@ -15,6 +15,16 @@ interface Movie {
   PhotoUrlList: PhotoUrl[];
 }
 
+interface MovieData {
+  Title: string;
+  Description: string;
+  Photo: string;
+  IsFeatured: boolean;
+  ReleaseDate: string;
+  PhotoUrlList: string[];
+  ActorIds: number[];
+}
+
 interface MovieState {
   movie: Movie | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -27,6 +37,7 @@ interface MovieState {
   error: string | null;
   fetchMovies: Movie[];
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
+  createStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
 const initialState: MovieState = {
@@ -42,6 +53,21 @@ const initialState: MovieState = {
   fetchMovies: [],
   fetchStatus: "idle",
 };
+
+export const createMovie = createAsyncThunk(
+  "movie/createMovie",
+  async (movieData: MovieData, thunkAPI) => {
+    try {
+      console.log("Creating movieeeeee:", movieData);
+      const response = await movieService.createMovie(movieData);
+      // console.log("Created movie:", response);
+      return response;
+    } catch (error) {
+      console.error("Create failed", error);
+      return thunkAPI.rejectWithValue("Failed to create movie");
+    }
+  }
+);
 
 export const fetchMovieById = createAsyncThunk(
   "movie/id",
@@ -274,7 +300,7 @@ const movieSlice = createSlice({
       ];
     });
 
-    //Fetch all Movies
+
     builder.addCase(fetchAllMovies.pending, (state) => {
       state.fetchStatus = "loading";
     });
@@ -284,6 +310,19 @@ const movieSlice = createSlice({
     });
     builder.addCase(fetchAllMovies.rejected, (state, action) => {
       state.fetchStatus = "idle";
+      state.error = action.payload as string;
+    });
+
+    builder.addCase(createMovie.pending, (state) => {
+      state.createStatus = "loading";
+    });
+
+    builder.addCase(createMovie.fulfilled, (state) => {
+      state.createStatus = "succeeded";
+    });
+
+    builder.addCase(createMovie.rejected, (state, action) => {
+      state.createStatus = "failed";
       state.error = action.payload as string;
     });
   },

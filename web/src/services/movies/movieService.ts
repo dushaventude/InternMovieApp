@@ -1,4 +1,5 @@
-import { request } from "../request";
+import { request } from "../api";
+import { create } from "domain";
 
 const movieService = {
   getMovie: (Id: string) => request.get(`/Movie/${Id}`),
@@ -12,6 +13,18 @@ const movieService = {
     PageSize: number;
     PageNumber: number;
   }) => request.post("/Movie", queryParams),
+
+  createMovie: (movie: {
+    Title: string;
+    Description: string;
+    
+    Photo: string;
+    IsFeatured: boolean;
+    ReleaseDate: string;
+    PhotoUrlList: string[];
+    ActorIds: number[];
+
+  }) => request.post("/Movie/Create", movie),
 
   updateMovie: (Id: number, movieData: any) =>
     request.put(`/Movie/${Id}`, movieData),

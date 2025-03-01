@@ -1,25 +1,53 @@
-import React, { useEffect, useState } from "react";
+"use client";
+import type React from "react";
+import { useEffect, useState } from "react";
 import "./styles.scss";
-import { AppDispatch, RootState } from "../../../store";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchSearchMovies } from "../../../store/features/movies/movieSlice";
+//import { useAppDispatch, RootState,useAppSelector } from "../../../store";
+//import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
+import { createMovie, fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
+import Button from "../../atoms/button/Button";
+import Dialog from "../../atoms/DialogBox/Dialog";
+import MovieForm from "../../molecules/MovieForm/MovieForm";
 import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
 import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
 import { Movie } from "../../../models/models";
 
+interface Movie {
+  id?: number;
+  title: string;
+  description: string;
+  releaseDate: string;
+  photoUrl: string;
+  actors: Actor[];
+  isFeatured: boolean;
+}
+
+interface Actor {
+  Id: number;
+  Name: string;
+  Gender: string;
+  Country: string;
+}
+
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
+  const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [jumpToPage, setJumpToPage] = useState("");
+ 
   const [pageSize, setPageSize] = useState(10);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const dispatch = useDispatch<AppDispatch>();
-
-  const { searchMovies, searchStatus } = useSelector(
+  const { searchMovies, searchStatus } = useAppSelector(
     (state: RootState) => state.movies
   );
+
 
   //   const pageSize = 10;
 
@@ -39,9 +67,11 @@ const Movies: React.FC = () => {
     setDeleteModalOpen(true);
   };
 
+
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
   );
+
   useEffect(() => {
     dispatch(
       fetchSearchMovies({
@@ -52,10 +82,66 @@ const Movies: React.FC = () => {
         PageNumber: currentPage,
       })
     );
+
+
   }, [dispatch, currentPage, pageSize]);
   console.log(searchMovies);
 
-  if (searchStatus == "loading") return <div>Loading...</div>;
+
+  const handleAddMovie = () => {
+    setIsAddMovieOpen(true);
+  };
+
+  // const handleEditMovie = (movie: Movie) => {
+  //   setSelectedMovie(movie);
+  //   setIsEditMovieOpen(true);
+  // };
+
+
+  const  handleSubmitMovie = async(movie: Movie) => {
+      const movieData = {
+        Title: movie.title,
+        Description: movie.description,
+        Photo: movie.photoUrl,
+        IsFeatured: movie.isFeatured,
+        Actors: movie.actors,
+        ReleaseDate: movie.releaseDate,
+        PhotoUrlList: [movie.photoUrl], 
+        ActorIds: movie.actors.map(actor => actor.Id), 
+      };
+  
+      console.log("Creating movie:", movieData);
+      await dispatch(createMovie(movieData));
+      setIsAddMovieOpen(false);
+      try {
+        dispatch(fetchSearchMovies({
+          Query: "",
+          ReleaseDateFrom: "1900-01-01",
+          ReleaseDateTo: "2025-12-12",
+          PageSize: pageSize,
+          PageNumber: currentPage,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch movies", error);
+      }
+      
+    };
+
+
+  const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const page = Number.parseInt(jumpToPage);
+      if (!isNaN(page) && page > 0 && page <= totalPages) {
+        setCurrentPage(page);
+        setJumpToPage("");
+      }
+    }
+  };
+
+  
+
+  if (searchStatus === "loading") return <div>Loading...</div>;
+
   return (
     <div className="movies-container">
       <div className="current-navigation">
@@ -76,7 +162,7 @@ const Movies: React.FC = () => {
         <p>/ Manage Movies</p>
       </div>
       <div className="create-pagination-wrapper">
-        <div className="add-new-movie">
+        <Button className="add-new-movie" onClick={handleAddMovie}>
           <p>Add New Movie</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +178,8 @@ const Movies: React.FC = () => {
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-        </div>
+        </Button>
+
         {searchMovies.Response && (
           <div className="pagination">
             <select
@@ -108,12 +195,19 @@ const Movies: React.FC = () => {
               <option value="50">50 per page</option>
             </select>
             <p>Jump to</p>
-            <input type="text" className="jump-to-input" />
+            <input
+              type="text"
+              className="jump-to-input"
+              value={jumpToPage}
+              onChange={(e) => setJumpToPage(e.target.value)}
+              onKeyDown={handleJumpToPage}
+              placeholder="Enter page number"
+            />
             {[...Array(totalPages)].map((_, index) => (
               <p
                 key={index}
                 onClick={() => setCurrentPage(index + 1)}
-                className={`${currentPage == index + 1 ? "active-page" : ""}`}
+                className={`${currentPage === index + 1 ? "active-page" : ""}`}
               >
                 {index + 1}
               </p>
@@ -140,7 +234,10 @@ const Movies: React.FC = () => {
                 <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
                 <td>{movie.Id}</td>
                 <td>
-                  <img src={movie.Photo} />
+                  <img
+                    src={movie.Photo || "/placeholder.svg"}
+                    alt={movie.Title}
+                  />
                 </td>
                 <td>{movie.Title}</td>
                 <td>{movie.Description}</td>
@@ -170,6 +267,7 @@ const Movies: React.FC = () => {
           )}
         </tbody>
       </table>
+
       {isUpdateModalOpen && (
         <UpdateMovieModal
           movie={selectedMovie}
@@ -180,8 +278,46 @@ const Movies: React.FC = () => {
         <DeleteMovieModal
           movieId={selectedMovie.Id}
           onClose={() => setDeleteModalOpen(false)}
+)}
+
+      {/* Add Movie Dialog */}
+      <Dialog
+        isOpen={isAddMovieOpen}
+        onClose={() => setIsAddMovieOpen(false)}
+        title="Add New Movie"
+        size="medium"
+      >
+        <MovieForm
+          onSubmit={handleSubmitMovie}
+          onCancel={() => setIsAddMovieOpen(false)}
+
         />
-      )}
+      </Dialog>
+
+      {/* Edit Movie Dialog
+      <Dialog
+        isOpen={isEditMovieOpen}
+        onClose={() => {
+          setIsEditMovieOpen(false);
+          setSelectedMovie(null);
+        }}
+        title="Edit Movie"
+        size="medium"
+      >
+        {selectedMovie && (
+          <MovieForm
+            movie={selectedMovie}
+            onSubmit={handleSubmitMovie}
+            onCancel={() => {
+              setIsEditMovieOpen(false);
+              setSelectedMovie(null);
+            }}
+          />
+        )}
+      </Dialog> */}
+
+
+
     </div>
   );
 };

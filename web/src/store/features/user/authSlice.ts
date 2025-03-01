@@ -4,7 +4,9 @@ import { loadingStates } from "../../../models/enum";
 
 interface UserState {
   user: { id: string; email: string; firstName: string; lastName: string };
-  role: ["customer"];
+
+  role: string[];
+
   token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -53,8 +55,11 @@ export const loginUser = createAsyncThunk(
               "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
             ],
           token,
-          firstName: decodedPayload.firstName || "",
-          lastName: decodedPayload.lastName || "",
+
+          userRole,
+          firstName: decodedPayload.firstName || '',
+          lastName: decodedPayload.lastName || ''
+
         };
 
         return user;
@@ -101,7 +106,10 @@ export const registerUser = createAsyncThunk(
         window.location.href = "/login"; // Navigate to login page after successful registration
         return response.data;
       }
-      return rejectWithValue("Registration failed");
+
+      alert('You are already registered');
+      return rejectWithValue('Registration failed');
+
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Registration failed");
     }
@@ -162,7 +170,10 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = { id: "", email: "", firstName: "", lastName: "" };
       state.token = null;
-    },
+
+      state.role = ['customer'];
+    }
+
   },
   extraReducers: (builder) => {
     builder
@@ -176,6 +187,7 @@ const userSlice = createSlice({
           firstName: payload.firstName,
           lastName: payload.lastName,
         };
+        state.role = payload.userRole;
         state.token = payload.token;
         state.status = "succeeded";
       })
@@ -200,6 +212,7 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
+      
       .addCase(forgetPassword.pending, (state) => {
         state.status = "loading";
       })

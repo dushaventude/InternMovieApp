@@ -4,14 +4,14 @@ import actorService from "../../../services/actors/actorService";
 interface IActor {
   Id: number;
   Name: string;
-  Photo: string;
-  DOB: string;
+  Gender: string;
+  Country: string;
 }
 
 interface ActorState {
   actor: IActor | null;
   status: "idle" | "loading" | "succeeded" | "failed";
-  fetchActors: IActor[];
+  fetchActors: { TotalCount: number; Response: IActor[] };
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -19,10 +19,23 @@ interface ActorState {
 const initialState: ActorState = {
   actor: null,
   status: "idle",
-  fetchActors: [],
+  fetchActors: { TotalCount: 0, Response: [] },
   fetchStatus: "idle",
   error: null,
 };
+
+export const createActor = createAsyncThunk(
+  "actor/createActor",
+  async (actor: IActor, thunkAPI) => {
+    try {
+      const response = await actorService.createActor(actor);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to create actor");
+    }
+  }
+);
 
 export const fetchAllActors = createAsyncThunk(
   "actor/fetchAllActors",
@@ -40,11 +53,26 @@ export const fetchAllActors = createAsyncThunk(
   }
 );
 
+export const updateActor = createAsyncThunk(
+  "actor/updateActor",
+  async (actor: IActor, thunkAPI) => {
+    try {
+      const response = await actorService.updateActor(actor.Id, actor);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to update actor");
+    }
+  }
+);
+
 const actorSlice = createSlice({
   name: "actor",
   initialState,
   reducers: {},
+  // extraReducers: (builder) => {
   extraReducers: (builder) => {
+
     builder.addCase(fetchAllActors.pending, (state) => {
       state.fetchStatus = "loading";
     });
@@ -54,6 +82,29 @@ const actorSlice = createSlice({
     });
     builder.addCase(fetchAllActors.rejected, (state, action) => {
       state.fetchStatus = "failed";
+      state.error = action.payload as string;
+    });
+    builder.addCase(updateActor.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateActor.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.actor = action.payload;
+    });
+    builder.addCase(updateActor.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload as string;
+    });
+
+    builder.addCase(createActor.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(createActor.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.actor = action.payload;
+    });
+    builder.addCase(createActor.rejected, (state, action) => {
+      state.status = "failed";
       state.error = action.payload as string;
     });
   },
