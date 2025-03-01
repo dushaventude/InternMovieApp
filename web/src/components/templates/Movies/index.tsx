@@ -2,8 +2,9 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import "./styles.scss";
-import type { AppDispatch, RootState } from "../../../store";
-import { useDispatch, useSelector } from "react-redux";
+//import { useAppDispatch, RootState,useAppSelector } from "../../../store";
+//import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { createMovie, fetchSearchMovies } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
@@ -36,16 +37,16 @@ const Movies: React.FC = () => {
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
-  
+ 
   const [pageSize, setPageSize] = useState(10);
 //   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { searchMovies, searchStatus } = useSelector(
+  const { searchMovies, searchStatus } = useAppSelector(
     (state: RootState) => state.movies
   );
 

@@ -4,7 +4,7 @@ import { loadingStates } from '../../../models/enum';
 
 interface UserState {
   user: { id: string; email: string; firstName: string; lastName: string };
-  role: ['customer'];
+  role: string[];
   token: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
@@ -50,6 +50,7 @@ export const loginUser = createAsyncThunk(
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'
             ],
           token,
+          userRole,
           firstName: decodedPayload.firstName || '',
           lastName: decodedPayload.lastName || ''
         };
@@ -79,6 +80,7 @@ export const registerUser = createAsyncThunk(
         window.location.href = '/login'; // Navigate to login page after successful registration
         return response.data;
       }
+      alert('You are already registered');
       return rejectWithValue('Registration failed');
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Registration failed');
@@ -129,6 +131,7 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.user = { id: '', email: '', firstName: '', lastName: '' };
       state.token = null;
+      state.role = ['customer'];
     }
   },
   extraReducers: (builder) => {
@@ -143,6 +146,7 @@ const userSlice = createSlice({
           firstName: payload.firstName,
           lastName: payload.lastName
         };
+        state.role = payload.userRole;
         state.token = payload.token;
         state.status = 'succeeded';
       })

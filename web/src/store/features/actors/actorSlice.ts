@@ -57,7 +57,7 @@ export const updateActor = createAsyncThunk(
   "actor/updateActor",
   async (actor: IActor, thunkAPI) => {
     try {
-      const response = await actorService.updateActor(actor);
+      const response = await actorService.updateActor(actor.Id, actor);
       return response;
     } catch (error) {
       console.error(error);
