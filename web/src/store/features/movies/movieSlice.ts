@@ -74,7 +74,7 @@ export const fetchMovieById = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const response = await movieService.getMovie(id);
-      console.log(response);
+      console.log("Sup", response);
       return response;
     } catch (error) {
       console.error(error);
@@ -174,7 +174,7 @@ export const fetchSearchMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      console.log("Hi", response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -300,7 +300,6 @@ const movieSlice = createSlice({
       ];
     });
 
-
     builder.addCase(fetchAllMovies.pending, (state) => {
       state.fetchStatus = "loading";
     });
@@ -325,6 +324,7 @@ const movieSlice = createSlice({
       state.createStatus = "failed";
       state.error = action.payload as string;
     });
+
   },
 });
 

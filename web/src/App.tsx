@@ -18,7 +18,6 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
 import Actors from "./components/templates/Actors";
 
-
 const router = createBrowserRouter([
   {
     path: "/",

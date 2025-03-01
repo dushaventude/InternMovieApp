@@ -2,7 +2,14 @@ import { request } from "../api";
 import { create } from "domain";
 
 const movieService = {
-  getMovie: (Id: string) => request.get(`/Movie/${Id}`),
+  getMovie: (Id: string) => {
+    if (!Id) {
+      console.error("Invalid movie ID:", Id); // Debugging log
+      return Promise.reject("Invalid movie ID");
+    }
+    return request.get(`/Movie/${Id}`);
+  },
+  getAllActors: () => request.get(`/Actor`), // ✅ Fetch all actors
 
   //removed IsFeatured from the query params because need to get all movies not only featured
   getAllMovies: (queryParams: {

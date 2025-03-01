@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
 import {
@@ -36,7 +36,8 @@ const DeleteMovieModal = ({
         PageNumber: 1,
       })
     );
-
+    // Show alert after movie update
+    alert("Movie Deleted successfully!");
     onClose();
   };
 
