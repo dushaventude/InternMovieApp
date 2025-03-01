@@ -14,6 +14,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "./features/user/authSlice"; // Ensure this import is correct
 import moviesReducer from "./features/movies/movieSlice";
 import actorReducer from "./features/actors/actorSlice";
+import reviewReducer from "./features/reviews/reviewSlice";
 
 const persistConfig = {
   key: "root",
@@ -27,6 +28,7 @@ export const store = configureStore({
     user: persistedReducer,
     movies: moviesReducer,
     actors: actorReducer,
+    reviews: reviewReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

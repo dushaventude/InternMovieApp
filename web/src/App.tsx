@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
+import Actors from "./components/templates/Actors";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       { path: "movies", element: <MovieListPage /> },
       { path: "resetPw", element: <PwResetPage /> },
       { path: "ResetPassword", element: <ResetPassword /> },
+
       {
         path: "dashboard",
         element: <AdminDashboard />,
@@ -53,6 +55,4 @@ function App() {
 
 export default App;
 
-function Actors() {
-  return <div>Actors</div>;
-}
+

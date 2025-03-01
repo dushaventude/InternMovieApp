@@ -41,6 +41,10 @@
         margin: 0;
         color: #272727;
       }
+
+      &:hover {
+        background-color: #8e5f01;
+      }
     }
 
     .pagination {
@@ -49,6 +53,11 @@
       align-items: center;
 
       font-size: 12px;
+
+      select {
+        border-radius: 5px;
+        padding: 4px 8px;
+      }
 
       .jump-to-input {
         // height: 16px;

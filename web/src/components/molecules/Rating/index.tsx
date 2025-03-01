@@ -51,9 +51,9 @@ const Rating: React.FC<RatingProps> = ({
           {selectedRating || 0} / {stars}
         </Typography>
       </div>
-      <div className="clear" onClick={() => onRatingSelect(0)}>
-        Clear
-      </div>
+      {/* <div className="clear" onClick={() => onRatingSelect(0)}>
+        Clear Rating
+      </div> */}
     </div>
   );
 };

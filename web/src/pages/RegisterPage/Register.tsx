@@ -7,8 +7,8 @@ import { useFormik } from "formik";
 import { useAppDispatch } from '../../store';
 import { registerUser } from '../../store/features/user/authSlice';
 import { RegisterPageValidation } from "./RegisterPageValidation";
-
-// interface RegisterProps {}
+import { Link } from 'react-router-dom';
+import logo from '../../../public/main_logo-removebg.png';
 
 const Register: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -40,135 +40,105 @@ const Register: React.FC = () => {
   });
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card text-center">
-            <div
-              className="card-header"
-              style={{
-                fontFamily: "Bebas Neue, sans-serif",
-                fontSize: "32px",
-                color: "black",
-              }}
-            >
-              <center>Movie Hub</center>
+    <div
+      className="login-container"
+      style={{ backgroundImage: `url(${"https://img.freepik.com/free-photo/movie-background-collage_23-2149876010.jpg?t=st=1740803438~exp=1740807038~hmac=72bbcb46ad158a461a38ed036f068265fbcf89a119cf8375ebe17007f0505f65&w=1380"})` }}
+    >
+      <div className="login-header">
+        <Link to={"/"}>
+          <img src={logo} className="login-header-image" />
+        </Link>
+      </div>
+      <div className="login-section">
+        <div className="login-section-headers">
+          <img src={logo} className="login-section-image" style={{ marginBottom: '3px' }} />
+          <p className="login-section-headertext">Create Account</p>
+          <p className="login-section-headersubtext">
+            Sign up to explore and manage your favorite movies.
+          </p>
+        </div>
+        <form onSubmit={formik.handleSubmit}>
+          <div className="login-section-inputs">
+            <div className="login-section-input">
+              <input
+                type="email"
+                placeholder=" "
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              <label style={{ fontSize: '16px' }}>Email</label>
+              {formik.touched.email && formik.errors.email ? (
+                <div className="error">{formik.errors.email}</div>
+              ) : null}
             </div>
-            <div
-              className="card-header"
-              style={{
-                fontFamily: "Bebas Neue, sans-serif",
-                fontSize: "32px",
-                color: "black",
-                alignContent: "center",
-              }}
-            >
-              <center>Create Account</center>
+            <div className="login-section-input">
+              <input
+                type="text"
+                placeholder=" "
+                name="firstName"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.firstName}
+              />
+              <label style={{ fontSize: '16px' }}>First Name</label>
+              {formik.touched.firstName && formik.errors.firstName ? (
+                <div className="error">{formik.errors.firstName}</div>
+              ) : null}
             </div>
-            <div className="card-body">
-              <form onSubmit={formik.handleSubmit}>
-                <div className="form-group">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    className="input"
-                    style={{ opacity: 0.5, border: "2px solid #000000" }}
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <div className="error">{formik.errors.email}</div>
-                  ) : null}
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <Input
-                      type="text"
-                      placeholder="First Name"
-                      name="firstName"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.firstName}
-                      className="input"
-                      style={{ opacity: 0.5, border: "2px solid #000000" }}
-                    />
-                    {formik.touched.firstName && formik.errors.firstName ? (
-                      <div className="error">{formik.errors.firstName}</div>
-                    ) : null}
-                  </div>
-                  <div className="col">
-                    <Input
-                      type="text"
-                      placeholder="Last Name"
-                      name="lastName"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.lastName}
-                      className="input"
-                      style={{ opacity: 0.5, border: "2px solid #000000" }}
-                    />
-                    {formik.touched.lastName && formik.errors.lastName ? (
-                      <div className="error">{formik.errors.lastName}</div>
-                    ) : null}
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      name="password"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.password}
-                      className="input"
-                      style={{ opacity: 0.5, border: "2px solid #000000" }}
-                    />
-                    {formik.touched.password && formik.errors.password ? (
-                      <div className="error">{formik.errors.password}</div>
-                    ) : null}
-                  </div>
-                  <div className="col">
-                    <Input
-                      type="password"
-                      placeholder="Re-enter Password"
-                      name="rePassword"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.rePassword}
-                      className="input"
-                      style={{ opacity: 0.5, border: "2px solid #000000" }}
-                    />
-                    {formik.touched.rePassword && formik.errors.rePassword ? (
-                      <div className="error">{formik.errors.rePassword}</div>
-                    ) : null}
-                  </div>
-                </div>
-                <Typography className="xs">
-                  Already have an account?{" "}
-                  <a
-                    href="/login"
-                    className="text-primary"
-                    style={{ fontSize: "10px" }}
-                  >
-                    Sign In
-                  </a>
-                </Typography>
-                <center>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    size="large"
-                  >
-                    Sign Up
-                  </Button>
-                </center>
-              </form>
+            <div className="login-section-input">
+              <input
+                type="text"
+                placeholder=" "
+                name="lastName"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.lastName}
+              />
+              <label style={{ fontSize: '16px' }}>Last Name</label>
+              {formik.touched.lastName && formik.errors.lastName ? (
+                <div className="error">{formik.errors.lastName}</div>
+              ) : null}
+            </div>
+            <div className="login-section-input">
+              <input
+                type="password"
+                placeholder=" "
+                name="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              <label style={{ fontSize: '16px' }}>Password</label>
+              {formik.touched.password && formik.errors.password ? (
+                <div className="error">{formik.errors.password}</div>
+              ) : null}
+            </div>
+            <div className="login-section-input">
+              <input
+                type="password"
+                placeholder=" "
+                name="rePassword"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.rePassword}
+              />
+              <label style={{ fontSize: '16px' }}>Re-enter Password</label>
+              {formik.touched.rePassword && formik.errors.rePassword ? (
+                <div className="error">{formik.errors.rePassword}</div>
+              ) : null}
             </div>
           </div>
+        </form>
+        <div className="login-button" onClick={() => formik.handleSubmit()} style={{ marginTop: '16px' }}>
+          <p>Sign Up</p>
         </div>
+        <Link to={"/login"} className="create-account">
+          <p className="create-account">
+            Already have an account? Sign In
+          </p>
+        </Link>
       </div>
     </div>
   );

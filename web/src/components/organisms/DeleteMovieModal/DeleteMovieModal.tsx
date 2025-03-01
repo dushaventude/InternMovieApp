@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../store";
 import {
   deleteMovie,
   fetchSearchMovies,
 } from "../../../store/features/movies/movieSlice";
 import "./styles.scss";
-import { AppDispatch } from "../../../store";
 
 const DeleteMovieModal = ({
   movieId,

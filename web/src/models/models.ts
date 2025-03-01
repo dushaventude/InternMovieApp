@@ -18,16 +18,16 @@ export interface resetParms {
   NewPassword: string;
 }
 export interface registerParms {
-    username: string;
-    password: string;
-    roles:['customer'];
-    firstName: string;
-    lastName: string;
-    }
+  username: string;
+  password: string;
+  roles: ["customer"];
+  firstName: string;
+  lastName: string;
+}
 
 export interface AuthBK {
   userToken: string | null | undefined;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
@@ -37,4 +37,21 @@ export interface ResponseValidation {
   title?: string;
   responseMessage: string;
   responseMessageList: string[] | null | undefined;
+}
+
+export interface Movie {
+  Id: number;
+  Title: string;
+  Description: string;
+  Photo: string;
+  IsFeatured: boolean;
+  ReleaseDate: string;
+  PhotoUrlList: string[];
+}
+
+export interface PaginatedMovies {
+  PageNumber: number;
+  PageSize: number;
+  TotalCount: number;
+  Response: Movie[];
 }

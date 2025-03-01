@@ -1,0 +1,109 @@
+.all-movies-container {
+  //   display: flex;
+  //   flex-direction: row;
+  margin-top: 32px;
+  .movies-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 12px;
+    .movies-header-title {
+      margin: 0;
+      padding: 0 8px;
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-family: "Roboto", serif;
+    }
+
+    .movies-header-filter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      cursor: pointer;
+
+      .filter-icon {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    .filter-box {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      padding: 4px 8px;
+      background-color: #ccc;
+      border-radius: 5px;
+
+      .release-dates {
+        display: flex;
+        justify-content: space-around;
+        gap: 16px;
+        .release-year-select {
+          display: flex;
+          gap: 4px;
+        }
+        select {
+          padding: 6px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 14px;
+        }
+      }
+      .filter-featured {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 16px;
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+      }
+      label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+      }
+    }
+  }
+  //   .filter-movies {
+  //     flex: 1;
+  //     // background-color: antiquewhite;
+  //     margin-top: 32px;
+  //   }
+}
+
+.filter-movies {
+  gap: 12px;
+  align-items: center;
+  padding: 0 8px;
+  position: sticky;
+
+  .filter-header {
+    margin: 0;
+    font-size: 20px;
+  }
+  .filter-release-year {
+    margin: 20px 0 12px 0;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}

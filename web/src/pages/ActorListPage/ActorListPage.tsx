@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchAllActors } from "../../store/features/actors/actorSlice";
-import { RootState, AppDispatch } from "../../store/index";
+import { RootState, AppDispatch, useAppDispatch, useAppSelector } from "../../store/index";
 import styles from "./actorListPage.module.scss";
 import SmallCard from "../../components/molecules/smallCard";
 
@@ -17,8 +16,8 @@ interface IActor {
 }
 
 const ActorListPage: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { fetchActors, fetchStatus, error } = useSelector(
+  const dispatch: AppDispatch = useAppDispatch();
+  const { fetchActors, fetchStatus, error } = useAppSelector(
     (state: RootState) => state.actors
   );
 
