@@ -36,7 +36,7 @@ export const loginUser = createAsyncThunk(
           ];
 
         if (userRole === 'admin') {
-          window.location.href = '/dashboard';
+          window.location.href = '/';
         } 
         if(userRole==='customer'){
           window.location.href='/';
