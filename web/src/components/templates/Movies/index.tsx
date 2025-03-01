@@ -37,7 +37,7 @@ const Movies: React.FC = () => {
   const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
-  
+ 
   const [pageSize, setPageSize] = useState(10);
 //   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);

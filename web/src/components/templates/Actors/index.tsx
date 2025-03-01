@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-import { fetchAllActors } from "../../../store/features/actors/actorSlice";
+import { fetchAllActors, createActor, updateActor } from "../../../store/features/actors/actorSlice";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import ActorForm from "../../molecules/ActorForm/ActorForm";
-import { createActor } from "../../../store/features/actors/actorSlice";
 
 interface Actor {
   Id?: number;
@@ -23,20 +22,33 @@ const Actors: React.FC = () => {
   );
   const pageSize = 10;
   const totalPages = Math.ceil(fetchActors?.TotalCount / pageSize);
-    const [isAddActorModalOpen, setIsAddActorModalOpen] = useState(false);
+  const [isAddActorModalOpen, setIsAddActorModalOpen] = useState(false);
+  const [isEditActorModalOpen, setIsEditActorModalOpen] = useState(false);
+  const [selectedActor, setSelectedActor] = useState<Actor | null>(null);
 
   useEffect(() => {
     dispatch(fetchAllActors({ pageNumber: currentPage, pageSize }));
   }, [dispatch, currentPage]);
 
-   const handleAddActor = () => {
-     setIsAddActorModalOpen(true);
-   };
+  const handleAddActor = () => {
+    setSelectedActor(null);
+    setIsAddActorModalOpen(true);
+  };
 
-   const handleSubmitActor = (actor: Actor) => {
-     dispatch(createActor(actor));
-     setIsAddActorModalOpen(false);
-   };
+  const handleEditActor = (actor: Actor) => {
+    setSelectedActor(actor);
+    setIsEditActorModalOpen(true);
+  };
+
+  const handleSubmitActor = (actor: Actor) => {
+    if (selectedActor) {
+      dispatch(updateActor({ ...actor, Id: selectedActor.Id }));
+      setIsEditActorModalOpen(false);
+    } else {
+      dispatch(createActor(actor));
+      setIsAddActorModalOpen(false);
+    }
+  };
 
   if (fetchStatus === "loading") return <div>Loading...</div>;
 
@@ -114,7 +126,7 @@ const Actors: React.FC = () => {
                 <td>{actor.Gender}</td>
                 <td>{actor.Country}</td>
                 <td>
-                  <button className="edit-btn">Edit</button>
+                  <button className="edit-btn" onClick={() => handleEditActor(actor)}>Edit</button>
                   <button className="delete-btn">Delete</button>
                 </td>
               </tr>
@@ -128,7 +140,7 @@ const Actors: React.FC = () => {
           )}
         </tbody>
       </table>
-      {/*Add Actor Modal*/}
+      {/* Add Actor Modal */}
       <Dialog
         isOpen={isAddActorModalOpen}
         onClose={() => setIsAddActorModalOpen(false)}
@@ -138,6 +150,19 @@ const Actors: React.FC = () => {
         <ActorForm
           onSubmit={handleSubmitActor}
           onCancel={() => setIsAddActorModalOpen(false)}
+        />
+      </Dialog>
+      {/* Edit Actor Modal */}
+      <Dialog
+        isOpen={isEditActorModalOpen}
+        onClose={() => setIsEditActorModalOpen(false)}
+        title="Edit Actor"
+        size="medium"
+      >
+        <ActorForm
+          actor={selectedActor}
+          onSubmit={handleSubmitActor}
+          onCancel={() => setIsEditActorModalOpen(false)}
         />
       </Dialog>
     </div>
