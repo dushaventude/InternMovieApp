@@ -1,43 +1,68 @@
 import "./Footer.scss";
+// import logo from "../../../assets/main_logo-removebg.png";
+import logo from "../../../assets/WhiteLogo.png";
+import { Link } from "react-router-dom";
+import {
+  FaSquareFacebook,
+  FaSquareInstagram,
+  FaSquareXTwitter,
+  FaSquareYoutube,
+} from "react-icons/fa6";
 
 const Footer = () => {
+  const links = [
+    { name: "Home", path: "" },
+    { name: "Movies", path: "/movies" },
+    { name: "About Us", path: "" },
+    { name: "Contact", path: "" },
+  ];
+  const sociallinks = [
+    {
+      name: "X",
+      icon: <FaSquareXTwitter size={32} />,
+      link: "https://www.x.com",
+    },
+    {
+      name: "Instagram",
+      icon: <FaSquareInstagram size={32} />,
+      link: "https://www.instagram.com",
+    },
+    {
+      name: "Facebook",
+      icon: <FaSquareFacebook size={32} />,
+      link: "https://www.facebook.com",
+    },
+    {
+      name: "Youtube",
+      icon: <FaSquareYoutube size={32} />,
+      link: "https://www.youtube.com",
+    },
+  ];
   return (
     <footer className="footer">
       <div className="footer-content">
-        {/* Left Side: Quick Links */}
-        <div className="footer-section quick-links">
-          <h3 className="lg bold text-dark">Quick Links</h3>
-          <ul>
-            {["Home", "Movies", "About Us", "Contact"].map((link) => (
-              <li key={link}>
-                <span className="sm text-dark">
-                  <a href={`/${link.toLowerCase().replace(" ", "-")}`}>
-                    {link}
-                  </a>
-                </span>
-              </li>
+        <div className="footer-section site-logo">
+          <img src={logo} />
+        </div>
+        <div className="footer-section">
+          <h3 className="footer-header">Quick Links</h3>
+          <ul className="quick-links-list">
+            {links.map((link, i) => (
+              <Link to={`${link.path}`} key={i} className="quick-link">
+                <li>{link.name}</li>
+              </Link>
             ))}
           </ul>
         </div>
 
-        {/* Middle: MovieApp Title */}
-        <div className="footer-section movie-app-title">
-          <h1 className="xxl bold text-primary">MovieApp</h1>
-        </div>
-
         {/* Right Side: Follow Us on Social Media */}
-        <div className="footer-section social-media">
-          <h3 className="lg bold text-dark">Follow Us</h3>
+        <div className="footer-section">
+          <h3 className="footer-header">Follow Us on</h3>
           <div className="social-icons">
-            {["facebook", "twitter", "instagram", "youtube"].map((platform) => (
-              <a
-                key={platform}
-                href={`https://${platform}.com`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <i className={`fab fa-${platform}`}></i>
-              </a>
+            {sociallinks.map((sociallink) => (
+              <Link to={sociallink.link} className="social-link">
+                {sociallink.icon}
+              </Link>
             ))}
           </div>
         </div>
@@ -45,8 +70,8 @@ const Footer = () => {
 
       {/* Bottom: Copyright */}
       <div className="footer-bottom">
-        <p className="sm text-center text-secondary">
-          Design and Developed by movieapp {new Date().getFullYear()}.
+        <p className="">
+          Design and Developed by moviehub {new Date().getFullYear()}.
         </p>
       </div>
     </footer>
