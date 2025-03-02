@@ -3,7 +3,7 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import MoviePage from "./pages/MoviePage";
+import MoviePage from "./pages/MoviePage/MoviePage";
 import ActorPage from "./pages/ActorListPage/ActorListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import AppLayout from "./layouts/AppLayout";
@@ -15,6 +15,7 @@ import MovieListPage from "./pages/MovieListPage/MovieListPage";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ErrorBoundary from "./pages/ErrorBoundaryPage/ErrorBoundary";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import Movies from "./components/templates/Movies";
 import Actors from "./components/templates/Actors";
 
@@ -48,11 +49,12 @@ const router = createBrowserRouter([
 function App() {
   return (
     // <ErrorBoundary>
-    <RouterProvider router={router} />
+    <NotificationProvider>
+      <RouterProvider router={router} />
+    </NotificationProvider>
+
     // </ErrorBoundary>
   );
 }
 
 export default App;
-
-

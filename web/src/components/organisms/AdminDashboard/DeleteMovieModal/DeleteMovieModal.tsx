@@ -5,6 +5,8 @@ import {
   deleteMovie,
   fetchSearchMovies,
 } from "../../../../store/features/movies/movieSlice";
+import { useUserOptimizer } from "../../../../hooks/useUserOptimizer";
+import { useNotification } from "../../../../contexts/NotificationContext";
 import "./styles.scss";
 
 const DeleteMovieModal = ({
@@ -15,6 +17,9 @@ const DeleteMovieModal = ({
   onClose: () => void;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { refresh } = useUserOptimizer();
+  const { showNotification } = useNotification();
+
   useEffect(() => {
     console.log("Movie ID received in modal:", movieId); // Debugging log
   }, [movieId]);
@@ -26,18 +31,9 @@ const DeleteMovieModal = ({
     }
     console.log("Deleting movie with ID:", movieId);
     await dispatch(deleteMovie(movieId));
-    // Manually refresh movies after deletion
-    await dispatch(
-      fetchSearchMovies({
-        Query: "",
-        ReleaseDateFrom: "1900-01-01",
-        ReleaseDateTo: "2025-12-12",
-        PageSize: 10,
-        PageNumber: 1,
-      })
-    );
-    // Show alert after movie update
-    alert("Movie Deleted successfully!");
+    // Hook Refresh
+    await refresh();
+    showNotification("Movie deleted successfully!", "success");
     onClose();
   };
 
