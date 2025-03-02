@@ -1,16 +1,16 @@
 import * as React from "react";
 import { useEffect } from "react";
-import HeroSection from "../../components/organisms/HeroSection";
+import HeroSection from "../components/organisms/HeroSection";
 import { useParams } from "react-router-dom";
-import Review from "../..//components/templates/Review";
+import Review from "../components/templates/Review";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AppDispatch,
   RootState,
   useAppDispatch,
   useAppSelector,
-} from "../../store/index";
-import { fetchMovieById } from "../../store/features/movies/movieSlice";
+} from "../store/index";
+import { fetchMovieById } from "../store/features/movies/movieSlice";
 
 const MoviePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
