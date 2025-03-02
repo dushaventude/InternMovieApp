@@ -7,10 +7,17 @@ interface IActor {
   Gender: string;
   Country: string;
 }
+interface ActorApiResponse {
+  PageNumber: number;
+  PageSize: number;
+  TotalCount: number;
+  Response: IActor[];
+}
 
 interface ActorState {
   actor: IActor | null;
   status: "idle" | "loading" | "succeeded" | "failed";
+
   fetchActors: { TotalCount: number; Response: IActor[] };
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -19,7 +26,11 @@ interface ActorState {
 const initialState: ActorState = {
   actor: null,
   status: "idle",
+
+ // fetchActors: null, // Change to null to match API structure
+
   fetchActors: { TotalCount: 0, Response: [] },
+
   fetchStatus: "idle",
   error: null,
 };
@@ -45,7 +56,8 @@ export const fetchAllActors = createAsyncThunk(
   ) => {
     try {
       const response = await actorService.getAllActors(pageNumber, pageSize);
-      return response;
+      console.log("Burrrp", response);
+      return response; // Keep full API response
     } catch (error) {
       console.error(error);
       return thunkAPI.rejectWithValue("Failed to fetch actors");
@@ -78,7 +90,7 @@ const actorSlice = createSlice({
     });
     builder.addCase(fetchAllActors.fulfilled, (state, action) => {
       state.fetchStatus = "succeeded";
-      state.fetchActors = action.payload;
+      state.fetchActors = action.payload; // Store full API response
     });
     builder.addCase(fetchAllActors.rejected, (state, action) => {
       state.fetchStatus = "failed";
@@ -109,7 +121,6 @@ const actorSlice = createSlice({
     });
   },
 });
-
 export const selectActor = (state: { actors: ActorState }) =>
   state.actors.actor;
 

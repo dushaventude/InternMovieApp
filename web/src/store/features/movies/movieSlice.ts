@@ -52,6 +52,7 @@ const initialState: MovieState = {
   error: null as string | null,
   fetchMovies: [],
   fetchStatus: "idle",
+  createStatus: "idle",
 };
 
 export const createMovie = createAsyncThunk(
@@ -74,7 +75,6 @@ export const fetchMovieById = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const response = await movieService.getMovie(id);
-      // console.log(response);
       return response;
     } catch (error) {
       console.error(error);
@@ -174,7 +174,6 @@ export const fetchSearchMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      // console.log(response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(

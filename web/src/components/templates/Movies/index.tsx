@@ -42,8 +42,6 @@ interface Actor {
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
-  const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
 
   const [pageSize, setPageSize] = useState(10);
@@ -88,7 +86,6 @@ const Movies: React.FC = () => {
       })
     );
   }, [dispatch, currentPage, pageSize]);
-  // console.log(searchMovies);
 
   const handleAddMovie = () => {
     setIsAddMovieOpen(true);
@@ -110,8 +107,6 @@ const Movies: React.FC = () => {
       PhotoUrlList: [movie.photoUrl],
       ActorIds: movie.actors.map((actor) => actor.Id),
     };
-
-    // console.log("Creating movie:", movieData);
     await dispatch(createMovie(movieData));
     setIsAddMovieOpen(false);
     try {
