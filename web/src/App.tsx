@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
 	   {
         path: "dashboard",
-		//  element: <AdminRoute />,
+		 element: <AdminRoute />,
         children: [
           { index: true, element: <Navigate to="movies" replace /> },
 		            { path: "movies", element: <Movies /> },
