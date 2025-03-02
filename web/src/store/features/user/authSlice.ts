@@ -40,12 +40,14 @@ export const loginUser = createAsyncThunk(
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
           ];
 
-        // if (userRole === "admin") {
-        //   window.location.href = "/";
-        // }
-        // if (userRole === "customer") {
-        //   window.location.href = "/";
-        // }
+
+        if (userRole === 'admin') {
+          window.location.href = '/dashboard';
+        } 
+        if(userRole==='customer'){
+          window.location.href='/';
+        }
+
         const user = {
           id: decodedPayload[
             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
@@ -65,7 +67,10 @@ export const loginUser = createAsyncThunk(
       }
 
       //TODO:invalid login message
-      return rejectWithValue("Login failed");
+
+      
+      return rejectWithValue("Username or password incorrect");
+
     } catch (error: any) {
       return rejectWithValue(error || "Login failed");
     }
@@ -191,6 +196,7 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
+        alert('Username or password incorrect'); 
       })
       .addCase(registerUser.pending, (state) => {
         state.status = "loading";

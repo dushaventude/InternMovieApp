@@ -1,15 +1,22 @@
-import React from "react";
+import React, { Children } from "react";
 import "./styles.scss";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const AdminDashboard: React.FC = () => {
+interface AdminDashboardProps {
+  children: React.ReactNode;
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({children}) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const handleHeaderclick = () => {
+    navigate("/");
+  };
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <p className="dashboard-title">Movie Hub</p>
+        <p className="dashboard-title" onClick={handleHeaderclick}>Movie Hub</p>
         <div className="dashboard-header-center">
           <p>Movie Hub</p>
           <p>Admin Dashboard</p>
@@ -56,7 +63,8 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
         <div className="dashboard-content">
-          <Outlet />
+          {/* <Outlet /> */}
+          {children}
         </div>
       </div>
     </div>
