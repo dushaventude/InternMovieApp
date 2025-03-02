@@ -9,6 +9,7 @@ import {
   fetchSearchMovies,
 } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
+import { Avatar } from "../../atoms/avatar/Avatar";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,8 @@ const Header: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { searchMovies } = useSelector((state: RootState) => state.movies);
-
+  const { user, role } = useSelector((state: RootState) => state.user);
+  console.log(role);
   useEffect(() => {
     let isMounted = true;
 
@@ -160,13 +162,58 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className="header-right">
-          <Button variant="primary" type="submit" size="large" onClick={() => navigate("/login")}>
-            Sign In
-          </Button>
-        </div>{" "}
+          {user?.id ? (
+            <User admin={role} />
+          ) : (
+            <Button
+              variant="primary"
+              type="submit"
+              size="large"
+              onClick={() => navigate("/login")}
+            >
+              Sign In
+            </Button>
+          )}
+        </div>
       </div>
     </header>
   );
 };
 
 export default Header;
+
+function User({ admin }) {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <div
+      className="user-container"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="user-icon"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+        />
+      </svg>
+      {isHovered && (
+        <div className="user-controls">
+          {admin === "admin" && (
+            <Link to={"/dashboard"} className="link">
+              <p>Dashboard</p>
+            </Link>
+          )}
+          <p>Sign out</p>
+        </div>
+      )}
+    </div>
+  );
+}
