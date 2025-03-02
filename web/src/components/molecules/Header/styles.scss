@@ -1,3 +1,5 @@
+@use "../../../styles/colors" as colors;
+
 .header {
   position: sticky;
   // position: relative;
@@ -188,6 +190,40 @@
 .header-right {
   display: flex;
   align-items: center;
+
+  .user-container {
+    position: relative;
+    .user-icon {
+      height: 32px;
+      width: 32px;
+      stroke: colors.$gold-800;
+    }
+    .user-controls {
+      position: absolute;
+      background-color: colors.$gray-500;
+      padding: 4px 8px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .link {
+        color: colors.$gold-400;
+
+        p {
+          margin: 0;
+          padding: 2px 4px;
+        }
+      }
+
+      p {
+        color: colors.$gold-400;
+        margin: 0;
+        padding: 2px 4px;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .btn {

@@ -60,7 +60,11 @@ const Footer = () => {
           <h3 className="footer-header">Follow Us on</h3>
           <div className="social-icons">
             {sociallinks.map((sociallink) => (
-              <Link to={sociallink.link} className="social-link">
+              <Link
+                to={sociallink.link}
+                className="social-link"
+                target="_blank"
+              >
                 {sociallink.icon}
               </Link>
             ))}
