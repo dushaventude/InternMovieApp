@@ -52,6 +52,7 @@ const initialState: MovieState = {
   error: null as string | null,
   fetchMovies: [],
   fetchStatus: "idle",
+  createStatus: "idle",
 };
 
 export const createMovie = createAsyncThunk(
@@ -324,7 +325,6 @@ const movieSlice = createSlice({
       state.createStatus = "failed";
       state.error = action.payload as string;
     });
-
   },
 });
 
