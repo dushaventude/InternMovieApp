@@ -36,7 +36,7 @@ export const loginUser = createAsyncThunk(
           ];
 
         if (userRole === 'admin') {
-          window.location.href = '/';
+          window.location.href = '/dashboard';
         } 
         if(userRole==='customer'){
           window.location.href='/';
@@ -59,6 +59,7 @@ export const loginUser = createAsyncThunk(
       }
 
       //TODO:invalid login message
+      alert(response.data.message);
       return rejectWithValue('Login failed');
     } catch (error: any) {
       return rejectWithValue(error || 'Login failed');
