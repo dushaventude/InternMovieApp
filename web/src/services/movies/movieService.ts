@@ -1,5 +1,4 @@
-import { request } from "../api";
-import { create } from "domain";
+import { request } from "../api/index";
 
 const movieService = {
   getMovie: (Id: string) => request.get(`/Movie/${Id}`),
@@ -17,13 +16,12 @@ const movieService = {
   createMovie: (movie: {
     Title: string;
     Description: string;
-    
+
     Photo: string;
     IsFeatured: boolean;
     ReleaseDate: string;
     PhotoUrlList: string[];
     ActorIds: number[];
-
   }) => request.post("/Movie/Create", movie),
 
   updateMovie: (Id: number, movieData: any) =>

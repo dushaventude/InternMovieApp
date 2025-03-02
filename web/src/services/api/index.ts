@@ -21,7 +21,7 @@ instance.interceptors.request.use(
     return config;
   },
   () => {
-    console.log("error");
+    // console.log("error");
   }
 );
 

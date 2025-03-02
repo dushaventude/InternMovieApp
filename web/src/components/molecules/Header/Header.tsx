@@ -47,7 +47,7 @@ const Header: React.FC = () => {
     };
   }, [dispatch, query]);
 
-  console.log(searchMovies);
+  // console.log(searchMovies);
 
   useEffect(() => {
     const handleScroll = () => {

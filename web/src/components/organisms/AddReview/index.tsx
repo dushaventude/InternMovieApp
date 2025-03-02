@@ -33,7 +33,11 @@ const AddReview: React.FC<AddReviewProps> = ({ movieId }) => {
   }
 
   return (
-    <div className="add-review-container">
+    <div
+      className={`add-review-container ${
+        createStatus === "loading" ? "disabled" : ""
+      }`}
+    >
       {createStatus === "loading" && <span className="loader"></span>}
       <h3>Share your review</h3>
       <div className="rating-section">
@@ -47,14 +51,23 @@ const AddReview: React.FC<AddReviewProps> = ({ movieId }) => {
       </div>
       <textarea
         placeholder="Write your review here..."
+        disabled={createStatus === "loading"}
         value={reviewContent}
         onChange={(e) => setReviewContent(e.target.value)}
       />
       <div className="buttons">
-        <button className="cancel-btn" onClick={handleReset}>
+        <button
+          className="cancel-btn"
+          onClick={handleReset}
+          disabled={createStatus === "loading"}
+        >
           Reset
         </button>
-        <button className="submit-btn" onClick={handleSubmit}>
+        <button
+          className="submit-btn"
+          onClick={handleSubmit}
+          disabled={createStatus === "loading"}
+        >
           Submit Review
         </button>
       </div>

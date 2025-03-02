@@ -22,7 +22,7 @@ const UpdateMovieModal = ({
   };
 
   const handleSubmit = () => {
-    console.log("Updating movie:", movie);
+    // console.log("Updating movie:", movie);
     dispatch(updateMovie({ id: movie.Id, movieData: formData }));
     onClose();
   };

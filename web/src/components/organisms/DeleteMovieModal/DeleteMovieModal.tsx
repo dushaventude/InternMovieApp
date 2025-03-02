@@ -16,7 +16,7 @@ const DeleteMovieModal = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    console.log("Movie ID received in modal:", movieId); // Debugging log
+    // console.log("Movie ID received in modal:", movieId); // Debugging log
   }, [movieId]);
 
   const handleDelete = async () => {
@@ -24,7 +24,7 @@ const DeleteMovieModal = ({
       console.error("Error: movieId is undefined or null!");
       return;
     }
-    console.log("Deleting movie with ID:", movieId);
+    // console.log("Deleting movie with ID:", movieId);
     await dispatch(deleteMovie(movieId));
     // Manually refresh movies after deletion
     await dispatch(

@@ -12,26 +12,6 @@
   gap: 12px;
   font-family: "Roboto", serif;
 
-  .loader {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: inline-block;
-    border-top: 3px solid #fff;
-    border-right: 3px solid transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-  }
-
-  @keyframes rotation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
   h3 {
     font-size: 20px;
     margin-bottom: 8px;
@@ -92,4 +72,19 @@
       }
     }
   }
+}
+
+.add-review-container.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
