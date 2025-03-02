@@ -9,8 +9,10 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import AddReview from "../../organisms/AddReview";
 import { getAllReviews } from "../../../store/features/reviews/reviewSlice";
+import { getReviewSentimentCounts } from "../../../utils/helpers";
 interface Review {
   Id: string;
+  UserId: string;
   Username: string;
   Rate: number;
   CreatedDatetime: string;
@@ -31,7 +33,7 @@ const Review: React.FC<ReviewProps> = ({ photo, title }) => {
     useState<string>("Recently Added");
 
   const [showAddHere, setShowAddHere] = useState(false);
-  ///////////////////////////////////////////////////////////////
+
   const dispatch = useAppDispatch();
 
   const { token } = useAppSelector((state: RootState) => state.user);
@@ -40,11 +42,8 @@ const Review: React.FC<ReviewProps> = ({ photo, title }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const positive = reviewList.filter((review) => review.Rate > 7).length;
-  const mixed = reviewList.filter(
-    (review) => review.Rate >= 4 && review.Rate <= 7
-  ).length;
-  const negative = reviewList.filter((review) => review.Rate < 4).length;
+  const { positive, mixed, negative } = getReviewSentimentCounts(reviewList);
+
   const handleAddRating = () => {
     if (!token) {
       navigate("/login", { state: { from: location.pathname } });
@@ -74,7 +73,7 @@ const Review: React.FC<ReviewProps> = ({ photo, title }) => {
       {reviewList.length !== 0 && (
         <>
           <div className="review-grid">
-            <UserScore avgRating={5.7} />
+            <UserScore avgRating={5} />
             <RatingBar positive={positive} mixed={mixed} negative={negative} />
           </div>
 
@@ -103,7 +102,7 @@ const Review: React.FC<ReviewProps> = ({ photo, title }) => {
       {showAddHere && <AddReview movieId={id} />}
       {reviewList.length > 0 ? (
         <div className="review-list">
-          {reviewList.map((review) => (
+          {[...reviewList].reverse().map((review) => (
             <ReviewItem review={review} key={review.Id} />
           ))}
         </div>

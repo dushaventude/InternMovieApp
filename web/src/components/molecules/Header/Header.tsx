@@ -47,7 +47,7 @@ const Header: React.FC = () => {
     };
   }, [dispatch, query]);
 
-  console.log(searchMovies);
+  // console.log(searchMovies);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,7 +160,7 @@ const Header: React.FC = () => {
           </div>
         </div>
         <div className="header-right">
-          <Button variant="primary" type="submit" size="large">
+          <Button variant="primary" type="submit" size="large" onClick={() => navigate("/login")}>
             Sign In
           </Button>
         </div>{" "}

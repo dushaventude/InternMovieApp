@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import { fetchAllActors } from "../../store/features/actors/actorSlice";
-import { RootState, AppDispatch, useAppDispatch, useAppSelector } from "../../store/index";
+import {
+  RootState,
+  AppDispatch,
+  useAppDispatch,
+  useAppSelector,
+} from "../../store/index";
 import styles from "./actorListPage.module.scss";
 import SmallCard from "../../components/molecules/smallCard";
 
@@ -25,7 +30,7 @@ const ActorListPage: React.FC = () => {
     dispatch(fetchAllActors({ pageNumber: 1, pageSize: 10 }));
   }, [dispatch]);
 
-  console.log("Output", fetchActors);
+  // console.log("Output", fetchActors);
 
   if (fetchStatus === "loading") {
     return <div>Loading...</div>;
@@ -35,13 +40,14 @@ const ActorListPage: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  const actors : IActor[] = ((fetchActors as unknown) as IResponse)?.Response || [];
+  const actors: IActor[] =
+    (fetchActors as unknown as IResponse)?.Response || [];
 
   if (actors.length === 0) {
     return <div>No actors found.</div>;
   }
 
-  console.log("Actors", actors);
+  // console.log("Actors", actors);
 
   return (
     <div className={styles.container}>

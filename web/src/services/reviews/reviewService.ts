@@ -7,6 +7,7 @@ const reviewService = {
     Comment: string;
     Rate: number;
   }) => request.post("/Review", reviewContent),
+  deleteReview: (reviewId: number) => request.delete(`/Review/${reviewId}`),
 };
 
 export default reviewService;

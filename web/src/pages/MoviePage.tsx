@@ -36,7 +36,11 @@ const MoviePage: React.FC = () => {
         averageRating={movie.AverageRating}
         releaseDate={movie.ReleaseDate}
       />
-      <Review photo={movie.Photo} title={movie.Title} />
+      <Review
+        photo={movie.Photo}
+        title={movie.Title}
+        averageRating={movie.AverageRating}
+      />
     </div>
   );
 };

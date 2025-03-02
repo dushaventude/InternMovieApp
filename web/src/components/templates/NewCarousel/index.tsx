@@ -357,7 +357,7 @@ const Carousel: React.FC = () => {
         if (!data.Response || data.Response.length === 0) {
           setMovies([]);
         } else {
-          console.log(data.Response);
+          // console.log(data.Response);
           setMovies(data.Response);
         }
       } catch (error) {

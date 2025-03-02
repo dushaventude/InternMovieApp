@@ -12,7 +12,7 @@ const UserScore = ({ avgRating }: UserScoreProps) => {
         className="scoreCircle"
         style={{ backgroundColor: getBackgroundColor(avgRating) }}
       >
-        {avgRating.toFixed(1)}
+        {avgRating?.toFixed(1)}
       </p>
       <div className="scoreText">
         <p className="scoreLabel">User Score</p>

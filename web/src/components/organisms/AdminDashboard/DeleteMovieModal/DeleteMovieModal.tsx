@@ -21,7 +21,7 @@ const DeleteMovieModal = ({
   const { showNotification } = useNotification();
 
   useEffect(() => {
-    console.log("Movie ID received in modal:", movieId); // Debugging log
+    console.log("Movie ID received in modal:", movieId);
   }, [movieId]);
 
   const handleDelete = async () => {
@@ -29,11 +29,13 @@ const DeleteMovieModal = ({
       console.error("Error: movieId is undefined or null!");
       return;
     }
-    console.log("Deleting movie with ID:", movieId);
+
     await dispatch(deleteMovie(movieId));
+
     // Hook Refresh
     await refresh();
     showNotification("Movie deleted successfully!", "success");
+
     onClose();
   };
 

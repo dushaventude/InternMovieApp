@@ -13,12 +13,14 @@ const initialState: {
   review: Review | null;
   reviewList: Review[];
   createStatus: "idle" | "loading" | "succeeded" | "failed";
+  deleteStatus: "idle" | "loading" | "succeeded" | "failed";
   status: "idle" | "loading" | "succeeded" | "failed";
   error: unknown | null;
 } = {
   review: null,
   reviewList: [],
   createStatus: "idle",
+  deleteStatus: "idle",
   status: "idle",
   error: null,
 };
@@ -27,7 +29,7 @@ export const getAllReviews = createAsyncThunk(
   "review/allReviews",
   async (movieId: number, thunkAPI) => {
     try {
-      console.log(movieId);
+      // console.log(movieId);
       const response = await reviewService.getAllReviews(movieId);
       return response;
     } catch (error) {
@@ -53,7 +55,8 @@ export const createReview = createAsyncThunk(
         Comment,
         Rate,
       });
-      console.log("Review Created:", response);
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+      // console.log("Review Created:", response);
       return response;
     } catch (error) {
       console.error("Update failed", error);
@@ -62,10 +65,31 @@ export const createReview = createAsyncThunk(
   }
 );
 
+export const deleteReview = createAsyncThunk(
+  "review/deleteReview",
+  async (reviewId: number, thunkAPI) => {
+    try {
+      const response = await reviewService.deleteReview(reviewId);
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
+      return response;
+    } catch (error) {
+      console.error("Delete failed", error);
+      return thunkAPI.rejectWithValue("Failed to delete movie");
+    }
+  }
+);
+
 const reviewSlice = createSlice({
   name: "review",
   initialState,
-  reducers: {},
+  reducers: {
+    removeReview: (state, action) => {
+      state.reviewList = state.reviewList.filter(
+        (review) => review.Id !== action.payload
+      );
+    },
+  },
   extraReducers(builder) {
     builder.addCase(createReview.pending, (state) => {
       state.createStatus = "loading";
@@ -90,7 +114,20 @@ const reviewSlice = createSlice({
       state.status = "idle";
       state.error = action.payload;
     });
+
+    builder.addCase(deleteReview.pending, (state) => {
+      state.deleteStatus = "loading";
+    });
+    builder.addCase(deleteReview.fulfilled, (state) => {
+      state.deleteStatus = "idle";
+    });
+    builder.addCase(deleteReview.rejected, (state, action) => {
+      state.deleteStatus = "idle";
+      state.error = action.payload;
+    });
   },
 });
 
 export default reviewSlice.reducer;
+
+export const { removeReview } = reviewSlice.actions;
