@@ -19,7 +19,7 @@ import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import MovieForm from "../../molecules/MovieForm/MovieForm";
 import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
-import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
+import DeleteMovieModal from "../../organisms/AdminDashboard/DeleteMovieModal/DeleteMovieModal";
 import { Movie } from "../../../models/models";
 
 interface Movie {

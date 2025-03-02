@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../store";
+import { AppDispatch } from "../../../../store";
 import {
   deleteMovie,
   fetchSearchMovies,
-} from "../../../store/features/movies/movieSlice";
+} from "../../../../store/features/movies/movieSlice";
 import "./styles.scss";
 
 const DeleteMovieModal = ({
