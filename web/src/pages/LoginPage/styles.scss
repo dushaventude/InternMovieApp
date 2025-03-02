@@ -174,12 +174,23 @@
     }
  
     .login-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      background-color: #ccc;
+      padding: 4px 2px;
+      font-weight: 500;
+      margin: 16px 0;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+
+      &:hover {
+        background-color: #bbb;
+      }
+
       p {
-        text-align: center;
-        border-radius: 50px;
-        background-color: #ccc;
-        padding: 8px 16px;
-        font-weight: 500;
         margin: 0;
       }
     }

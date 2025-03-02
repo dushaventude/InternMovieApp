@@ -59,8 +59,8 @@ export const loginUser = createAsyncThunk(
       }
 
       //TODO:invalid login message
-      alert(response.data.message);
-      return rejectWithValue('Login failed');
+      
+      return rejectWithValue("Username or password incorrect");
     } catch (error: any) {
       return rejectWithValue(error || 'Login failed');
     }
@@ -154,6 +154,7 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
+        alert('Username or password incorrect'); 
       })
       .addCase(registerUser.pending, (state) => {
         state.status = 'loading';

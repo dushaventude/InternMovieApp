@@ -83,9 +83,9 @@ const Login: React.FC = () => {
         <Link to={"/resetPw"} className="forgot-password">
           <p className="forgot-password">Forgot Password</p>
         </Link>
-        <div className="login-button" onClick={() => formik.handleSubmit()}>
+        <Button className="login-button" onClick={() => formik.handleSubmit()}>
           <p>Sign In</p>
-        </div>
+        </Button>
         <Link to={"/register"} className="create-account">
           <p className="create-account">
             Don't have an account yet? Register now!

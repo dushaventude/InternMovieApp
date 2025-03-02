@@ -16,8 +16,6 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import Movies from "./components/templates/Movies";
 import Actors from "./components/templates/Actors";
 import PublicRoute from "./routes/PublicRoute";
-import ProtectedRoute from "./routes/PrivateRoute";
-import AdminRoute from "./routes/AdminRoute ";
 import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -25,43 +23,35 @@ const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-      { path: "", element: <HomePage /> },
-
-      {
-        element: <PublicRoute />,
-        children: [
-          { path: "login", element: <Login /> },
-          { path: "register", element: <Register /> },
-          { path: "resetPw", element: <PwResetPage /> },
-          { path: "resetPassword", element: <ResetPassword /> },
-          { path: "movies/:id", element: <MoviePage /> },
-          { path: "actors", element: <ActorPage /> },
-          { path: "movies", element: <MovieListPage /> },
-        ],
-      },
-
-      {
-        element: <PrivateRoute />,
-        children: [],
-      },
-
+      { path: "/", element: <HomePage /> },
+      { path: "login", element:<Login/>  },//<PublicRoute component={Login} />
+      { path: "register", element: <PublicRoute component={Register} /> },
+      { path: "movies/:id", element: <MoviePage /> },
+      { path: "actors", element: <ActorPage /> },
+      { path: "movies", element: <MovieListPage /> },
+      { path: "resetPw", element: <PublicRoute component={PwResetPage} /> },
+      { path: "ResetPassword", element: <PublicRoute component={ResetPassword} /> },
       {
         path: "dashboard",
-        element: <AdminRoute />,
+        element: <PrivateRoute component={AdminDashboard} />,
         children: [
           { index: true, element: <Navigate to="movies" replace /> },
-          { path: "movies", element: <Movies /> },
+          { path: "movies", element: <Movies />, index: true },
           { path: "actors", element: <Actors /> },
         ],
       },
-
-      { path: "*", element: <Navigate to="/" replace /> },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    // <ErrorBoundary>
+    <RouterProvider router={router} />
+    // </ErrorBoundary>
+  );
 }
 
 export default App;
+
+
