@@ -26,24 +26,24 @@ const Carousel: React.FC = () => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === carouselMovies.Response.length - 1 ? 0 : prevIndex + 1
+      prevIndex === carouselMovies.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? carouselMovies.Response.length - 1 : prevIndex - 1
+      prevIndex === 0 ? carouselMovies.length - 1 : prevIndex - 1
     );
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) =>
-        prevIndex === carouselMovies?.Response.length - 1 ? 0 : prevIndex + 1
+        prevIndex === carouselMovies.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000);
     return () => clearInterval(interval);
-  }, [carouselMovies.Response?.length]);
+  }, [carouselMovies.length]);
 
   return (
     <div className="carousel-container">
@@ -70,7 +70,7 @@ const Carousel: React.FC = () => {
             className="carousel-slider-movies"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {carouselMovies.Response?.map((movie, index: number) => (
+            {carouselMovies?.map((movie, index: number) => (
               <div
                 key={index}
                 className={`carousel-slide ${
@@ -128,7 +128,7 @@ const Carousel: React.FC = () => {
             </span>
           </p>
           <div className="upnext-cards">
-            {carouselMovies.Response?.map((movie) => (
+            {carouselMovies?.map((movie) => (
               <div className="upnext-card">
                 <img src={movie.Photo} />
                 <div className="upnext-card-info">
