@@ -13,6 +13,7 @@ import PwResetPage from "./pages/PwResetPage/PwResetPage";
 import MovieListPage from "./pages/MovieListPage/MovieListPage";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import Movies from "./components/templates/Movies";
 import Actors from "./components/templates/Actors";
 import PublicRoute from "./routes/PublicRoute";
@@ -63,9 +64,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-return <RouterProvider router={router} />;
-}
 
+  return (
+    // <ErrorBoundary>
+    <NotificationProvider>
+      <RouterProvider router={router} />
+    </NotificationProvider>
+
+    // </ErrorBoundary>
+  );
+}
 
 export default App;
 

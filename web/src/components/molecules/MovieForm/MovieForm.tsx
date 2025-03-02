@@ -41,6 +41,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
       releaseDate: "",
       photoUrl: "",
       actors: [],
+      isFeatured: false,
     }
   );
 
@@ -150,7 +151,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-   
 
     if (validate()) {
       // console.log(formData);
