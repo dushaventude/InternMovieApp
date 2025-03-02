@@ -2,6 +2,23 @@
   background-color: #f9f9f9;
   padding: 16px;
   border-radius: 5px;
+  position: relative;
+
+  .comment-edit {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    .review-icon {
+      height: 24px;
+      width: 24px;
+      cursor: pointer;
+    }
+
+    .review-icon.delete {
+      stroke: red;
+    }
+  }
 }
 
 .reviewItemHeader {

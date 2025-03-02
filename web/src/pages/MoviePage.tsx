@@ -4,7 +4,12 @@ import HeroSection from "../components/organisms/HeroSection";
 import { useParams } from "react-router-dom";
 import Review from "../components/templates/Review";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState, useAppDispatch ,useAppSelector} from "../store/index";
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../store/index";
 import { fetchMovieById } from "../store/features/movies/movieSlice";
 
 const MoviePage: React.FC = () => {
@@ -31,7 +36,11 @@ const MoviePage: React.FC = () => {
         averageRating={movie.AverageRating}
         releaseDate={movie.ReleaseDate}
       />
-      <Review photo={movie.Photo} title={movie.Title} />
+      <Review
+        photo={movie.Photo}
+        title={movie.Title}
+        averageRating={movie.AverageRating}
+      />
     </div>
   );
 };

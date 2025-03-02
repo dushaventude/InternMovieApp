@@ -26,7 +26,9 @@ const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
+
 	 { path: "", element: <HomePage /> },
+
 
       {
         element: <PublicRoute />,
@@ -64,4 +66,6 @@ function App() {
 return <RouterProvider router={router} />;
 }
 
+
 export default App;
+

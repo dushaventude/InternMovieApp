@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./styles.scss";
 import Button from "../../atoms/button/Button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/index";
 import {
@@ -14,15 +14,17 @@ const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { pathname } = useLocation();
-  const [query, setQuery] = useState<string | null>(null);
+  const [query, setQuery] = useState<string>("");
   const navigate = useNavigate();
-
+  const searchRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   const { searchMovies } = useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
-    if (query)
+    let isMounted = true;
+
+    if (query !== "") {
       dispatch(
         fetchSearchMovies({
           Query: query,
@@ -32,11 +34,20 @@ const Header: React.FC = () => {
           PageSize: 6,
           PageNumber: 1,
         })
-      );
-    console.log(query);
+      ).then(() => {
+        if (!isMounted) return;
+      });
+    }
+    if (query == "") {
+      clearSearchMovies();
+    }
+
+    return () => {
+      isMounted = false;
+    };
   }, [dispatch, query]);
 
-  console.log(searchMovies);
+  // console.log(searchMovies);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,6 +61,22 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setQuery("");
+        dispatch(clearSearchMovies());
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dispatch]);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -88,7 +115,7 @@ const Header: React.FC = () => {
               <a href="/movies">Movies</a>
             </nav>
           </div>
-          <div className="search-container">
+          <div className="search-container" ref={searchRef}>
             <input
               type="text"
               placeholder="🔍 Search for any movies"
@@ -114,6 +141,21 @@ const Header: React.FC = () => {
                     </div>
                   </div>
                 ))}
+              {Array.isArray(searchMovies.Response) &&
+                searchMovies.Response.length > 0 && (
+                  <Link
+                    to={`movies?query=${query}`}
+                    className="search-movies-count"
+                    onClick={() => {
+                      setQuery("");
+                      dispatch(clearSearchMovies());
+                    }}
+                  >
+                    <p className="search-movies-count">
+                      {searchMovies.TotalCount} Movies found
+                    </p>
+                  </Link>
+                )}
             </div>
           </div>
         </div>

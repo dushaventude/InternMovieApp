@@ -21,7 +21,7 @@ const PwResetPage: React.FC = () => {
     onSubmit: async (values) => {
       try {
         await dispatch(forgetPassword({ email: values.email }));
-        console.log("Password reset link sent to:", values.email);
+        // console.log("Password reset link sent to:", values.email);
       } catch (e) {
         console.error("There is an error", e);
       }

@@ -1,13 +1,15 @@
 // Button.module.scss
 
 .button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  // display: inline-flex;
+  // align-items: center;
+  // justify-content: center;
+  // gap: 0.5rem;
+  padding: 2px 4px;
+  // border: 1px solid transparent;
+  outline: none;
+  border: none;
+  border-radius: 5px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -20,11 +22,11 @@
 
   // Variants
   &--primary {
-    background-color: #3b82f6;
+    background-color: #a67102;
     color: #ffffff;
 
     &:hover:not(:disabled) {
-      background-color: #2563eb;
+      background-color: #875d04;
     }
   }
 
@@ -38,9 +40,9 @@
   }
 
   &--outline {
-    background-color: transparent;
-    border-color: #e5e7eb;
-    color: #1f2937;
+    // background-color: transparent;
+    // border-color: #e5e7eb;
+    // color: #1f2937;
 
     &:hover:not(:disabled) {
       background-color: #f3f4f6;
@@ -49,13 +51,15 @@
 
   // Sizes
   &--small {
-    padding: 0.25rem 0.5rem;
+    // padding: 0.25rem 0.5rem;
+    padding: 4px 8px;
     font-size: 12px;
+    // display: flex;
   }
 
   &--large {
-    padding: 0.75rem 1.5rem;
-    font-size: 16px;
+    padding: 8px 16px;
+    font-size: 14px;
   }
 
   &--icon {

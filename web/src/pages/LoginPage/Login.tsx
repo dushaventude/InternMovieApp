@@ -1,22 +1,27 @@
-import React from 'react';
-import Typography from '../../components/atoms/Typography';
-import './styles.scss';
-import Input from '../../components/atoms/input/Input';
-import Button from '../../components/atoms/button/Button';
-import { LoginPageValidation } from './LoginPageValidation';
-import { useFormik } from 'formik';
-import { useAppDispatch } from '../../store';
-import { loginUser } from '../../store/features/user/authSlice';
-import { Link } from 'react-router-dom';
-import logo from '../../../public/main_logo-removebg.png';
+import React from "react";
+import Typography from "../../components/atoms/Typography";
+import "./styles.scss";
+import Input from "../../components/atoms/input/Input";
+import Button from "../../components/atoms/button/Button";
+import { LoginPageValidation } from "./LoginPageValidation";
+import { useFormik } from "formik";
+import { useAppDispatch } from "../../store";
+import { loginUser } from "../../store/features/user/authSlice";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../../public/main_logo-removebg.png";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // This is the route to redirect to after login
+  const from = location.state?.from || "/";
 
   const formik = useFormik({
     initialValues: {
-      username: '',
-      password: ''
+      username: "",
+      password: "",
     },
     validationSchema: LoginPageValidation,
     onSubmit: async (values) => {
@@ -24,16 +29,19 @@ const Login: React.FC = () => {
         await dispatch(
           loginUser({ username: values.username, password: values.password })
         );
+        navigate(from, { replace: true });
       } catch (e) {
-        console.error('There is an error', e);
+        console.error("There is an error", e);
       }
-    }
+    },
   });
 
   return (
     <div
       className="login-container"
-      style={{ backgroundImage: `url(${"https://img.freepik.com/free-photo/movie-background-collage_23-2149876010.jpg?t=st=1740803438~exp=1740807038~hmac=72bbcb46ad158a461a38ed036f068265fbcf89a119cf8375ebe17007f0505f65&w=1380"})` }}
+      style={{
+        backgroundImage: `url(${"https://img.freepik.com/free-photo/movie-background-collage_23-2149876010.jpg?t=st=1740803438~exp=1740807038~hmac=72bbcb46ad158a461a38ed036f068265fbcf89a119cf8375ebe17007f0505f65&w=1380"})`,
+      }}
     >
       <div className="login-header">
         <Link to={"/"}>
@@ -42,7 +50,11 @@ const Login: React.FC = () => {
       </div>
       <div className="login-section">
         <div className="login-section-headers">
-          <img src={logo} className="login-section-image" style={{ marginBottom: '3px' }} />
+          <img
+            src={logo}
+            className="login-section-image"
+            style={{ marginBottom: "3px" }}
+          />
           <p className="login-section-headertext">Welcome Back!</p>
           <p className="login-section-headersubtext">
             Sign in to explore and manage your favorite movies.
@@ -59,7 +71,7 @@ const Login: React.FC = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.username}
               />
-              <label style={{ fontSize: '16px' }}>Email</label>
+              <label style={{ fontSize: "16px" }}>Email</label>
               {formik.touched.username && formik.errors.username ? (
                 <div className="error">{formik.errors.username}</div>
               ) : null}
@@ -73,7 +85,7 @@ const Login: React.FC = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.password}
               />
-              <label style={{ fontSize: '16px' }}>Password</label>
+              <label style={{ fontSize: "16px" }}>Password</label>
               {formik.touched.password && formik.errors.password ? (
                 <div className="error">{formik.errors.password}</div>
               ) : null}
@@ -97,6 +109,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
-
-

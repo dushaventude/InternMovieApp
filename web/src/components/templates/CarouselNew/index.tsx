@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { fetchMoviesCarousel } from "../../../store/features/movies/movieSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/index";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../../store/index";
 import { getFullYear } from "../../../utils/helpers";
 
 const Carousel: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { carouselMovies } = useSelector((state: RootState) => state.movies);

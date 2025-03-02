@@ -1,0 +1,90 @@
+.add-review-container {
+  position: relative;
+  background: #fff;
+  padding: 16px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  // width: 100%;
+  // margin: 20px auto;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: "Roboto", serif;
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .rating-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p {
+      margin: 0;
+      font-size: 16px;
+      color: #555;
+    }
+  }
+
+  textarea {
+    // width: 100%;
+    height: 100px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    .cancel-btn {
+      background: #ccc;
+      color: #333;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s ease;
+      &:hover {
+        background: #bbb;
+      }
+    }
+
+    .submit-btn {
+      background: #a67102;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      &:hover {
+        background: #89580a;
+      }
+    }
+  }
+}
+
+.add-review-container.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

@@ -1,18 +1,10 @@
-import "./styles.scss";
-// import Carousel from "../../components/templates/NewCarousel";
-import Review from "../../components/templates/Review";
 import Carousel from "../../components/templates/CarouselNew";
+import FeaturedMovies from "../../components/templates/FeaturedMovies";
 const HomePage: React.FC = () => {
   return (
     <>
-
-      {/* <Carousel />;
-      <Review /> */}
-
-      {/* <Carousel /> */}
-      {/* <Carousel /> */}
-      {/* <Review /> */}
-
+      <Carousel />
+      <FeaturedMovies />
     </>
   );
 };

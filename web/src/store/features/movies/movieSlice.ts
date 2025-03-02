@@ -32,6 +32,8 @@ interface MovieState {
   carouselStatus: "idle" | "loading" | "succeeded" | "failed";
   searchMovies: [];
   searchStatus: "idle" | "loading" | "succeeded" | "failed";
+  featuredMovies: [];
+  featuredMoviesStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   fetchMovies: Movie[];
   fetchStatus: "idle" | "loading" | "succeeded" | "failed";
@@ -45,16 +47,19 @@ const initialState: MovieState = {
   carouselStatus: "idle",
   searchMovies: [],
   searchStatus: "idle",
+  featuredMovies: [],
+  featuredMoviesStatus: "idle",
   error: null as string | null,
   fetchMovies: [],
   fetchStatus: "idle",
+  createStatus: "idle",
 };
 
 export const createMovie = createAsyncThunk(
   "movie/createMovie",
   async (movieData: MovieData, thunkAPI) => {
     try {
-      console.log("Creating movieeeeee:", movieData);
+      // console.log("Creating movieeeeee:", movieData);
       const response = await movieService.createMovie(movieData);
       // console.log("Created movie:", response);
       return response;
@@ -70,11 +75,35 @@ export const fetchMovieById = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const response = await movieService.getMovie(id);
-      console.log(response);
       return response;
     } catch (error) {
       console.error(error);
       return thunkAPI.rejectWithValue("Failed to fetch movie");
+    }
+  }
+);
+
+export const fetchMoviesFeatured = createAsyncThunk(
+  "movies/fetchFeatured",
+  async (
+    filters: {
+      Query?: string;
+      ReleaseDateFrom?: string;
+      ReleaseDateTo?: string;
+      IsFeatured?: boolean;
+      PageSize: number;
+      PageNumber: number;
+    },
+    thunkAPI
+  ) => {
+    try {
+      const response = await movieService.getAllMovies(filters);
+      // console.log(response);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to fetch movies"
+      );
     }
   }
 );
@@ -94,7 +123,7 @@ export const fetchMoviesCarousel = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      // console.log(response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -119,7 +148,7 @@ export const fetchAllMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      // console.log(response);
 
       return response;
     } catch (error) {
@@ -145,7 +174,6 @@ export const fetchSearchMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -159,7 +187,7 @@ export const updateMovie = createAsyncThunk(
   async ({ id, movieData }: { id: number; movieData: any }, thunkAPI) => {
     try {
       const response = await movieService.updateMovie(id, movieData);
-      console.log("Updated movie:", response);
+      // console.log("Updated movie:", response);
       return response;
     } catch (error) {
       console.error("Update failed", error);
@@ -173,7 +201,7 @@ export const deleteMovie = createAsyncThunk(
   async (id: number, thunkAPI) => {
     try {
       await movieService.deleteMovie(id);
-      console.log("Deleted movie:", id);
+      // console.log("Deleted movie:", id);
       return id;
     } catch (error) {
       console.error("Delete failed", error);
@@ -190,6 +218,7 @@ const movieSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    //Get By Id
     builder.addCase(fetchMovieById.pending, (state) => {
       state.status = "loading";
     });
@@ -202,6 +231,7 @@ const movieSlice = createSlice({
       state.error = action.payload as string;
     });
 
+    //Fetch Movies for carousel
     builder.addCase(fetchMoviesCarousel.pending, (state) => {
       state.carouselStatus = "loading";
     });
@@ -214,11 +244,12 @@ const movieSlice = createSlice({
       state.error = action.payload as string;
     });
 
+    //Fetch Movies for search
     builder.addCase(fetchSearchMovies.pending, (state) => {
       state.searchStatus = "loading";
     });
     builder.addCase(fetchSearchMovies.fulfilled, (state, action) => {
-      console.log("API Response for searchMovies:", action.payload);
+      // console.log("API Response for searchMovies:", action.payload);
       state.searchStatus = "idle";
       state.searchMovies = action.payload;
     });
@@ -226,15 +257,29 @@ const movieSlice = createSlice({
       state.searchStatus = "idle";
       state.error = action.payload as string;
     });
+    //Fetch Movies for Featured
+    builder.addCase(fetchMoviesFeatured.pending, (state) => {
+      state.featuredMoviesStatus = "loading";
+    });
+    builder.addCase(fetchMoviesFeatured.fulfilled, (state, action) => {
+      state.featuredMoviesStatus = "idle";
+      state.featuredMovies = action.payload;
+    });
+    builder.addCase(fetchMoviesFeatured.rejected, (state, action) => {
+      state.featuredMoviesStatus = "idle";
+      state.error = action.payload as string;
+    });
 
+    //Update movie by Id
     builder.addCase(updateMovie.fulfilled, (state, action) => {
-      console.log("Updated movie:", action.payload);
+      // console.log("Updated movie:", action.payload);
       state.movie = action.payload; // Store the updated movie
     });
 
+    //Delete Movie by Id
     builder.addCase(deleteMovie.fulfilled, (state, action) => {
-      console.log("Current searchMovies state:", state.searchMovies);
-      console.log("Type of searchMovies:", typeof state.searchMovies);
+      // console.log("Current searchMovies state:", state.searchMovies);
+      // console.log("Type of searchMovies:", typeof state.searchMovies);
       // Convert `searchMovies` to a plain array before filtering
       const searchMoviesArray = Array.isArray(state.searchMovies)
         ? state.searchMovies
@@ -246,8 +291,8 @@ const movieSlice = createSlice({
         );
         return;
       }
-      console.log("Converted searchMoviesArray:", searchMoviesArray);
-      console.log("Deleted movie:", action.payload);
+      // console.log("Converted searchMoviesArray:", searchMoviesArray);
+      // console.log("Deleted movie:", action.payload);
       // Create a new array to ensure Redux detects the state change
       state.searchMovies = [
         ...state.searchMovies.filter((movie) => movie.Id !== action.payload),

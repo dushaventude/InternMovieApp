@@ -4,15 +4,23 @@ import { useEffect, useState } from "react";
 import "./styles.scss";
 //import { useAppDispatch, RootState,useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
-import { createMovie, fetchSearchMovies } from "../../../store/features/movies/movieSlice";
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../../../store";
+import {
+  createMovie,
+  fetchSearchMovies,
+} from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import MovieForm from "../../molecules/MovieForm/MovieForm";
 import UpdateMovieModal from "../../organisms/AdminDashboard/UpdateMovieModal/UpdateMovieModal";
-import DeleteMovieModal from "../../organisms/DeleteMovieModal/DeleteMovieModal";
-import { Import } from "lucide-react";
+import DeleteMovieModal from "../../organisms/AdminDashboard/DeleteMovieModal/DeleteMovieModal";
+import { Movie } from "../../../models/models";
 
 interface Movie {
   id?: number;
@@ -34,32 +42,26 @@ interface Actor {
 const Movies: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddMovieOpen, setIsAddMovieOpen] = useState(false);
-  const [isEditMovieOpen, setIsEditMovieOpen] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [jumpToPage, setJumpToPage] = useState("");
- 
+
   const [pageSize, setPageSize] = useState(10);
-//   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-
-
   const dispatch = useAppDispatch();
 
   const { searchMovies, searchStatus } = useAppSelector(
     (state: RootState) => state.movies
   );
 
-
   //   const pageSize = 10;
 
-  const openUpdateModal = (movieId) => {
-    setSelectedMovie(movieId);
+  const openUpdateModal = (movie: Movie) => {
+    setSelectedMovie(movie);
     setUpdateModalOpen(true);
   };
 
-  const openDeleteModal = (movie) => {
-    console.log("Opening delete modal for movie:", movie); // Log full movie object
+  const openDeleteModal = (movie: Movie) => {
+    // console.log("Opening delete modal for movie:", movie); // Log full movie object
     if (!movie || typeof movie !== "object" || !movie.Id) {
       console.error("Error: movie object is invalid!", movie);
       return;
@@ -68,7 +70,6 @@ const Movies: React.FC = () => {
     setSelectedMovie(movie);
     setDeleteModalOpen(true);
   };
-
 
   const totalPages = Math.ceil(
     searchMovies?.TotalCount / searchMovies?.PageSize
@@ -84,11 +85,7 @@ const Movies: React.FC = () => {
         PageNumber: currentPage,
       })
     );
-
-
   }, [dispatch, currentPage, pageSize]);
-  console.log(searchMovies);
-
 
   const handleAddMovie = () => {
     setIsAddMovieOpen(true);
@@ -99,36 +96,33 @@ const Movies: React.FC = () => {
   //   setIsEditMovieOpen(true);
   // };
 
-
-  const  handleSubmitMovie = async(movie: Movie) => {
-      const movieData = {
-        Title: movie.title,
-        Description: movie.description,
-        Photo: movie.photoUrl,
-        IsFeatured: movie.isFeatured,
-        Actors: movie.actors,
-        ReleaseDate: movie.releaseDate,
-        PhotoUrlList: [movie.photoUrl], 
-        ActorIds: movie.actors.map(actor => actor.Id), 
-      };
-  
-      console.log("Creating movie:", movieData);
-      await dispatch(createMovie(movieData));
-      setIsAddMovieOpen(false);
-      try {
-        dispatch(fetchSearchMovies({
+  const handleSubmitMovie = async (movie: Movie) => {
+    const movieData = {
+      Title: movie.title,
+      Description: movie.description,
+      Photo: movie.photoUrl,
+      IsFeatured: movie.isFeatured,
+      Actors: movie.actors,
+      ReleaseDate: movie.releaseDate,
+      PhotoUrlList: [movie.photoUrl],
+      ActorIds: movie.actors.map((actor) => actor.Id),
+    };
+    await dispatch(createMovie(movieData));
+    setIsAddMovieOpen(false);
+    try {
+      dispatch(
+        fetchSearchMovies({
           Query: "",
           ReleaseDateFrom: "1900-01-01",
           ReleaseDateTo: "2025-12-12",
           PageSize: pageSize,
           PageNumber: currentPage,
-        }));
-      } catch (error) {
-        console.error("Failed to fetch movies", error);
-      }
-      
-    };
-
+        })
+      );
+    } catch (error) {
+      console.error("Failed to fetch movies", error);
+    }
+  };
 
   const handleJumpToPage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -139,8 +133,6 @@ const Movies: React.FC = () => {
       }
     }
   };
-
-  
 
   if (searchStatus === "loading") return <div>Loading...</div>;
 
@@ -231,7 +223,7 @@ const Movies: React.FC = () => {
         </thead>
         <tbody>
           {searchMovies.Response?.length > 0 ? (
-            searchMovies.Response?.map((movie, index) => (
+            searchMovies.Response?.map((movie: Movie, index: number) => (
               <tr key={movie.Id}>
                 <td>{(currentPage - 1) * pageSize + (index + 1)}</td>
                 <td>{movie.Id}</td>
@@ -270,6 +262,19 @@ const Movies: React.FC = () => {
         </tbody>
       </table>
 
+      {isUpdateModalOpen && (
+        <UpdateMovieModal
+          movie={selectedMovie}
+          onClose={() => setUpdateModalOpen(false)}
+        />
+      )}
+      {isDeleteModalOpen && selectedMovie && (
+        <DeleteMovieModal
+          movieId={selectedMovie.Id}
+          onClose={() => setDeleteModalOpen(false)}
+        />
+      )}
+
       {/* Add Movie Dialog */}
       <Dialog
         isOpen={isAddMovieOpen}
@@ -304,9 +309,6 @@ const Movies: React.FC = () => {
           />
         )}
       </Dialog> */}
-
-
-
     </div>
   );
 };
