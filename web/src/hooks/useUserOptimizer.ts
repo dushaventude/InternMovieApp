@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { fetchSearchMovies } from "../store/features/movies/movieSlice";
+import { fetchAllActors } from "../store/features/actors/actorSlice";
 
 export const useUserOptimizer = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +16,11 @@ export const useUserOptimizer = () => {
         PageNumber: 1,
       })
     );
+
+    await dispatch(fetchAllActors({ pageNumber: 1, pageSize: 20 }));
   };
+
+
 
   return { refresh };
 };
