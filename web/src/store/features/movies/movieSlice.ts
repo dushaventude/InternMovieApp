@@ -59,7 +59,7 @@ export const createMovie = createAsyncThunk(
   "movie/createMovie",
   async (movieData: MovieData, thunkAPI) => {
     try {
-      console.log("Creating movieeeeee:", movieData);
+      // console.log("Creating movieeeeee:", movieData);
       const response = await movieService.createMovie(movieData);
       // console.log("Created movie:", response);
       return response;
@@ -75,7 +75,6 @@ export const fetchMovieById = createAsyncThunk(
   async (id: string, thunkAPI) => {
     try {
       const response = await movieService.getMovie(id);
-      console.log("Sup", response);
       return response;
     } catch (error) {
       console.error(error);
@@ -99,7 +98,7 @@ export const fetchMoviesFeatured = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      // console.log(response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -124,7 +123,7 @@ export const fetchMoviesCarousel = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      // console.log(response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -149,7 +148,7 @@ export const fetchAllMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log(response);
+      // console.log(response);
 
       return response;
     } catch (error) {
@@ -175,7 +174,6 @@ export const fetchSearchMovies = createAsyncThunk(
   ) => {
     try {
       const response = await movieService.getAllMovies(filters);
-      console.log("Hi", response);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -189,7 +187,7 @@ export const updateMovie = createAsyncThunk(
   async ({ id, movieData }: { id: number; movieData: any }, thunkAPI) => {
     try {
       const response = await movieService.updateMovie(id, movieData);
-      console.log("Updated movie:", response);
+      // console.log("Updated movie:", response);
       return response;
     } catch (error) {
       console.error("Update failed", error);
@@ -203,7 +201,7 @@ export const deleteMovie = createAsyncThunk(
   async (id: number, thunkAPI) => {
     try {
       await movieService.deleteMovie(id);
-      console.log("Deleted movie:", id);
+      // console.log("Deleted movie:", id);
       return id;
     } catch (error) {
       console.error("Delete failed", error);
@@ -251,7 +249,7 @@ const movieSlice = createSlice({
       state.searchStatus = "loading";
     });
     builder.addCase(fetchSearchMovies.fulfilled, (state, action) => {
-      console.log("API Response for searchMovies:", action.payload);
+      // console.log("API Response for searchMovies:", action.payload);
       state.searchStatus = "idle";
       state.searchMovies = action.payload;
     });
@@ -274,14 +272,14 @@ const movieSlice = createSlice({
 
     //Update movie by Id
     builder.addCase(updateMovie.fulfilled, (state, action) => {
-      console.log("Updated movie:", action.payload);
+      // console.log("Updated movie:", action.payload);
       state.movie = action.payload; // Store the updated movie
     });
 
     //Delete Movie by Id
     builder.addCase(deleteMovie.fulfilled, (state, action) => {
-      console.log("Current searchMovies state:", state.searchMovies);
-      console.log("Type of searchMovies:", typeof state.searchMovies);
+      // console.log("Current searchMovies state:", state.searchMovies);
+      // console.log("Type of searchMovies:", typeof state.searchMovies);
       // Convert `searchMovies` to a plain array before filtering
       const searchMoviesArray = Array.isArray(state.searchMovies)
         ? state.searchMovies
@@ -293,8 +291,8 @@ const movieSlice = createSlice({
         );
         return;
       }
-      console.log("Converted searchMoviesArray:", searchMoviesArray);
-      console.log("Deleted movie:", action.payload);
+      // console.log("Converted searchMoviesArray:", searchMoviesArray);
+      // console.log("Deleted movie:", action.payload);
       // Create a new array to ensure Redux detects the state change
       state.searchMovies = [
         ...state.searchMovies.filter((movie) => movie.Id !== action.payload),

@@ -49,7 +49,7 @@ const MovieListPage: React.FC = () => {
     );
   }, [dispatch, queryFromURL, releaseYearFrom, releaseYearTo, isFeatured]);
 
-  console.log("Output", fetchMovies);
+  // console.log("Output", fetchMovies);
 
   if (fetchStatus === "loading") {
     return <div>Loading...</div>;
@@ -66,7 +66,7 @@ const MovieListPage: React.FC = () => {
     return <div>No movies found.</div>;
   }
 
-  console.log("Movies", movies);
+  // console.log("Movies", movies);
   const generateYearOptions = () => {
     const years = [];
     for (let year = 1900; year <= currentYear; year++) {

@@ -1,3 +1,5 @@
+import { formatDistance, formatDistanceToNow } from "date-fns";
+
 export function formatDate(dateString: string) {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
@@ -19,4 +21,18 @@ export function getFullYear(dateString: string) {
   const date = new Date(dateString);
   const year = date.getFullYear();
   return year;
+}
+
+export function getReviewSentimentCounts(reviewList: { Rate: number }[]) {
+  return {
+    positive: reviewList.filter((review) => review.Rate > 7).length,
+    mixed: reviewList.filter((review) => review.Rate >= 4 && review.Rate <= 7)
+      .length,
+    negative: reviewList.filter((review) => review.Rate < 4).length,
+  };
+}
+
+export function getTimeAgo(date: string) {
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
+  // return formatDistance(new Date(dat);
 }

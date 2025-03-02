@@ -93,6 +93,7 @@ const UpdateMovieModal = ({
     e.target.value = "";
   };
 
+
   // Handler to remove an actor from the selected list.
   const handleRemoveActor = (actorId: number) => {
     setSelectedActors((prev) => prev.filter((id) => id !== actorId));

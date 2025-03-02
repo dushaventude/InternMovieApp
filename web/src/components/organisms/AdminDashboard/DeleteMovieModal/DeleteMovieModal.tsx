@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../store";
@@ -16,7 +17,7 @@ const DeleteMovieModal = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    console.log("Movie ID received in modal:", movieId); // Debugging log
+    console.log("Movie ID received in modal:", movieId);
   }, [movieId]);
 
   const handleDelete = async () => {
@@ -24,7 +25,7 @@ const DeleteMovieModal = ({
       console.error("Error: movieId is undefined or null!");
       return;
     }
-    console.log("Deleting movie with ID:", movieId);
+    
     await dispatch(deleteMovie(movieId));
     // Manually refresh movies after deletion
     await dispatch(
@@ -36,7 +37,6 @@ const DeleteMovieModal = ({
         PageNumber: 1,
       })
     );
-    // Show alert after movie update
     alert("Movie Deleted successfully!");
     onClose();
   };

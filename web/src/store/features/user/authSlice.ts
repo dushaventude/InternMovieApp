@@ -31,7 +31,7 @@ export const loginUser = createAsyncThunk(
       const token = (await response.JwtToken) as string;
 
       if (token) {
-        console.log(token);
+        // console.log(token);
         const tokenParts = token.split(".");
         const encodedPayload = tokenParts[1];
         const decodedPayload = JSON.parse(atob(encodedPayload));
@@ -57,9 +57,8 @@ export const loginUser = createAsyncThunk(
           token,
 
           userRole,
-          firstName: decodedPayload.firstName || '',
-          lastName: decodedPayload.lastName || ''
-
+          firstName: decodedPayload.firstName || "",
+          lastName: decodedPayload.lastName || "",
         };
 
         return user;
@@ -101,15 +100,14 @@ export const registerUser = createAsyncThunk(
       });
 
       if (response) {
-        console.log(response.data);
+        // console.log(response.data);
         alert("User created successfully");
         window.location.href = "/login"; // Navigate to login page after successful registration
         return response.data;
       }
 
-      alert('You are already registered');
-      return rejectWithValue('Registration failed');
-
+      alert("You are already registered");
+      return rejectWithValue("Registration failed");
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Registration failed");
     }
@@ -122,7 +120,7 @@ export const forgetPassword = createAsyncThunk(
     try {
       const response = await agent.Authentication.forgetPassword({ email });
       if (response) {
-        console.log(response.data);
+        // console.log(response.data);
         alert("Password reset link sent to your email");
         window.location.href = "/login";
         return response.data;
@@ -151,7 +149,7 @@ export const resetpasswored = createAsyncThunk(
         NewPassword,
       });
       if (response) {
-        console.log(response.data);
+        // console.log(response.data);
         alert("Password reset successfully");
         window.location.href = "/login";
         return response.data;
@@ -171,9 +169,8 @@ const userSlice = createSlice({
       state.user = { id: "", email: "", firstName: "", lastName: "" };
       state.token = null;
 
-      state.role = ['customer'];
-    }
-
+      state.role = ["customer"];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -212,7 +209,7 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-      
+
       .addCase(forgetPassword.pending, (state) => {
         state.status = "loading";
       })

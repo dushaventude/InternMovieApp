@@ -153,7 +153,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
    
 
     if (validate()) {
-      console.log(formData);
+      // console.log(formData);
       onSubmit(formData);
     }
   };

@@ -45,7 +45,6 @@ const Movies: React.FC = () => {
   const [jumpToPage, setJumpToPage] = useState("");
 
   const [pageSize, setPageSize] = useState(10);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -62,7 +61,7 @@ const Movies: React.FC = () => {
   };
 
   const openDeleteModal = (movie: Movie) => {
-    console.log("Opening delete modal for movie:", movie); // Log full movie object
+    // console.log("Opening delete modal for movie:", movie); // Log full movie object
     if (!movie || typeof movie !== "object" || !movie.Id) {
       console.error("Error: movie object is invalid!", movie);
       return;
@@ -87,7 +86,6 @@ const Movies: React.FC = () => {
       })
     );
   }, [dispatch, currentPage, pageSize]);
-  console.log(searchMovies);
 
   const handleAddMovie = () => {
     setIsAddMovieOpen(true);
@@ -109,8 +107,6 @@ const Movies: React.FC = () => {
       PhotoUrlList: [movie.photoUrl],
       ActorIds: movie.actors.map((actor) => actor.Id),
     };
-
-    console.log("Creating movie:", movieData);
     await dispatch(createMovie(movieData));
     setIsAddMovieOpen(false);
     try {
