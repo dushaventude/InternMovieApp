@@ -78,6 +78,19 @@ export const updateActor = createAsyncThunk(
   }
 );
 
+export const deleteActor = createAsyncThunk(
+  "actor/deleteActor",
+  async (id: number, thunkAPI) => {
+    try {
+      const response = await actorService.deleteActor(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to delete actor");
+    }
+  }
+);
+
 const actorSlice = createSlice({
   name: "actor",
   initialState,
@@ -119,6 +132,21 @@ const actorSlice = createSlice({
       state.status = "failed";
       state.error = action.payload as string;
     });
+
+    builder.addCase(deleteActor.pending, (state) => {
+      state.status = "loading";
+    });
+
+    builder.addCase(deleteActor.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.actor = action.payload;
+    });
+
+    builder.addCase(deleteActor.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload as string;
+    });
+    
   },
 });
 export const selectActor = (state: { actors: ActorState }) =>
