@@ -214,6 +214,7 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
+        alert('You are already registered');
       })
 
       .addCase(forgetPassword.pending, (state) => {
