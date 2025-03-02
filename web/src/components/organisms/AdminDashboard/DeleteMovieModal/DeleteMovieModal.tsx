@@ -24,7 +24,7 @@ const DeleteMovieModal = ({
       console.error("Error: movieId is undefined or null!");
       return;
     }
-    
+
     await dispatch(deleteMovie(movieId));
     // Manually refresh movies after deletion
     await dispatch(

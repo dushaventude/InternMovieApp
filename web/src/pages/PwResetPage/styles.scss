@@ -46,8 +46,6 @@ body {
     font-family: "Poppins", serif;
     width: fit-content;
     margin: 0 auto;
-   
-    
 
     .login-section-headers {
       text-align: center;
@@ -284,12 +282,12 @@ body {
 // Ensure responsiveness
 @media (max-width: 768px) {
   body {
-    font-size: 24px;
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
   body {
-    font-size: 18px;
+    font-size: 14px;
   }
 }
