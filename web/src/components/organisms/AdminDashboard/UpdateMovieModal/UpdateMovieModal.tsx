@@ -10,6 +10,7 @@ import { useUserOptimizer } from "../../../../hooks/useUserOptimizer";
 import "./styles.scss";
 import Dialog from "../../../../components/atoms/DialogBox/Dialog";
 import { useNotification } from "../../../../contexts/NotificationContext";
+import ImageUpload from "../../../../components/molecules/ImageUpload/ImageUpload";
 
 const UpdateMovieModal = ({
   movie,
@@ -177,6 +178,13 @@ const UpdateMovieModal = ({
 
         <div className="form-group">
           <h4>Additional Photo URL</h4>
+          <div className="image-upload-wrapper">
+            <ImageUpload
+              value={formData.url}
+              onChange={(newUrl: string) => handlePhotoUrlChange(0, newUrl)}
+              label="Movie Poster"
+            />
+          </div>
           {formData.PhotoUrlList.length > 0 ? (
             formData.PhotoUrlList.map((url: string, index: number) => (
               <div key={index}>
