@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useState } from "react";
 import {
   formatDate,
   getBackgroundColor,
@@ -28,6 +28,8 @@ interface ReviewItemProps {
 
 const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   const { user } = useAppSelector((state: RootState) => state.user);
+  const [reviewContent, setReviewContent] = useState(review.Comment);
+  const [edit, setEdit] = useState(false);
   const dispatch = useAppDispatch();
   const { deleteStatus } = useAppSelector((state: RootState) => state.reviews);
 
@@ -41,6 +43,10 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
         console.error("Failed to delete review:", error);
         alert("Failed to delete review. Please try again.");
       });
+  }
+
+  function handleEdit() {
+    setEdit(() => true);
   }
 
   return (
@@ -61,7 +67,16 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
         {/* <p>{formatDate(review.CreatedDatetime)}</p> */}
         <p>{getTimeAgo(review.CreatedDatetime)}</p>
       </div>
-      <p className="comment">{review.Comment}</p>
+      {edit ? (
+        <textarea
+          placeholder="Write your review here..."
+          // disabled={createStatus === "loading"}
+          value={reviewContent}
+          onChange={(e) => setReviewContent(e.target.value)}
+        />
+      ) : (
+        <p className="comment">{review.Comment}</p>
+      )}
       {user?.id === review.UserId && (
         <div className="comment-edit">
           <svg
@@ -71,6 +86,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
             strokeWidth={1.5}
             stroke="currentColor"
             className="review-icon edit"
+            onClick={handleEdit}
           >
             <path
               strokeLinecap="round"
