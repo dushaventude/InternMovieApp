@@ -21,7 +21,6 @@ const initialState: UserState = {
   status: loadingStates.IDLE,
   error: null,
 };
-
 export const loginUser = createAsyncThunk(
   
   "user/loginUser",
@@ -173,6 +172,7 @@ export const resetpasswored = createAsyncThunk(
 
 const userSlice = createSlice({
   
+  
   name: "user",
   initialState,
   reducers: {
@@ -202,7 +202,9 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
-        alert('Username or password incorrect'); 
+        // alert('Username or password incorrect'); 
+        showNotification("user name or password incorrect", "error");
+
        
       
       
