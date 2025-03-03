@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
-import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
+import {
+  AppDispatch,
+  RootState,
+  useAppDispatch,
+  useAppSelector,
+} from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-import { fetchAllActors, createActor, updateActor, deleteActor } from "../../../store/features/actors/actorSlice";
+import {
+  fetchAllActors,
+  createActor,
+  updateActor,
+  deleteActor,
+} from "../../../store/features/actors/actorSlice";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import ActorForm from "../../molecules/ActorForm/ActorForm";
 import { useNotification } from "../../../contexts/NotificationContext";
-import {  useUserOptimizer } from "../../../hooks/useUserOptimizer";
+import { useUserOptimizer } from "../../../hooks/useUserOptimizer";
 
 interface Actor {
   Id?: number;
@@ -19,7 +29,7 @@ interface Actor {
 const Actors: React.FC = () => {
   const { showNotification } = useNotification();
   const { refresh } = useUserOptimizer();
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const { fetchActors, fetchStatus } = useAppSelector(
@@ -52,14 +62,14 @@ const Actors: React.FC = () => {
       } else {
         console.error("Selected actor ID is undefined");
       }
-      await refresh();
-      showNotification("Actor updated successfully!", "success");
-      
+
       setIsEditActorModalOpen(false);
     } else {
       dispatch(createActor(actor));
       setIsAddActorModalOpen(false);
     }
+    await refresh();
+    showNotification("Actor Added successfully!", "success");
   };
 
   const handleDeleteActor = async (actor: Actor) => {
@@ -73,7 +83,6 @@ const Actors: React.FC = () => {
         console.error("Actor ID is undefined");
       }
     }
-    
   };
 
   if (fetchStatus === "loading") return <div>Loading...</div>;
@@ -152,8 +161,18 @@ const Actors: React.FC = () => {
                 <td>{actor.Gender}</td>
                 <td>{actor.Country}</td>
                 <td>
-                  <button className="edit-btn" onClick={() => handleEditActor(actor)}>Edit</button>
-                  <button className="delete-btn" onClick={() => handleDeleteActor(actor)}>Delete</button>
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEditActor(actor)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteActor(actor)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))

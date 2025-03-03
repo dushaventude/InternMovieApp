@@ -42,7 +42,7 @@ const Header: React.FC = () => {
       });
     }
     if (query == "") {
-      clearSearchMovies();
+      dispatch(clearSearchMovies());
     }
 
     return () => {
