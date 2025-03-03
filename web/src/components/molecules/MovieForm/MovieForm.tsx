@@ -21,6 +21,7 @@ interface Movie {
   title: string;
   description: string;
   releaseDate: string;
+  photo: string;
   photoUrl: string;
   actors: Actor[];
   isFeatured: boolean;
@@ -39,6 +40,7 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
       title: "",
       description: "",
       releaseDate: "",
+      photo: "",
       photoUrl: "",
       actors: [],
       isFeatured: false,
@@ -89,6 +91,10 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
   // Handle image upload
   const handleImageChange = (url: string) => {
     setFormData((prev) => ({ ...prev, photoUrl: url }));
+  };
+
+  const handleImageChangePhoto = (url: string) => {
+    setFormData((prev) => ({ ...prev, photo: url }));
   };
 
   // Debounced actor search
@@ -223,6 +229,12 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSubmit, onCancel }) => {
         value={formData.photoUrl}
         onChange={handleImageChange}
         label="Movie Poster"
+      />
+
+      <ImageUpload 
+        value={formData.photo}
+        onChange={handleImageChangePhoto}
+        label="Main Photo"
       />
 
       <ActorSearch
