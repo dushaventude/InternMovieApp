@@ -32,7 +32,7 @@ const Login: React.FC = () => {
           loginUser({ username: values.username, password: values.password })
         );
 
-        showNotification("Login successful!", "success");
+        // showNotification("Login successful!", "success");
         // navigate(from, { replace: true });
       } catch (e) {
         showNotification("user name or password incorrect", "error");

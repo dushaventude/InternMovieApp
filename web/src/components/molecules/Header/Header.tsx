@@ -213,7 +213,7 @@ function User({ admin }) {
               <p>Dashboard</p>
             </Link>
           )}
-          <p>Sign out</p>
+          <LogoutButton/>
         </div>
       )}
     </div>

@@ -21,6 +21,21 @@
   color: #007700;
 }
 
+.notification-success {
+  background-color: green;
+  color: white;
+}
+
+.notification-error {
+  background-color: red;
+  color: white;
+}
+
+.notification-info {
+  background-color: blue;
+  color: white;
+}
+
 .notification.show {
   opacity: 1;
 }

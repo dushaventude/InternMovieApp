@@ -13,7 +13,9 @@ const Notification: React.FC<NotificationProps> = ({
 }) => {
   return (
     <div className={`notification notification-${type} show`}>
-      {type === "success"}
+      {type === "success" && <span>✔️</span>}
+      {type === "error" && <span>❌</span>}
+      {type === "info" && <span>ℹ️</span>}
       {message}
     </div>
   );
