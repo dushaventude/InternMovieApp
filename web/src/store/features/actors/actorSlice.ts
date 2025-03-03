@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import actorService from "../../../services/actors/actorService";
+import { ReactNode } from "react";
 
 interface IActor {
+  DOB: ReactNode;
+  Photo: string | undefined;
   Id: number;
   Name: string;
   Gender: string;
@@ -44,6 +47,19 @@ export const createActor = createAsyncThunk(
     } catch (error) {
       console.error(error);
       return thunkAPI.rejectWithValue("Failed to create actor");
+    }
+  }
+);
+
+export const fetchActorById = createAsyncThunk(
+  "actor/id",
+  async (id: number, thunkAPI) => {
+    try {
+      const response = await actorService.getActorById(id);
+      return response;
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue("Failed to fetch actor");
     }
   }
 );
@@ -146,6 +162,20 @@ const actorSlice = createSlice({
       state.status = "failed";
       state.error = action.payload as string;
     });
+
+    builder.addCase(fetchActorById.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchActorById.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.actor = action.payload;
+    });
+    builder.addCase(fetchActorById.rejected, ( state, action) => {
+      state.status = "failed";
+      state.error = action.payload as string;
+    });
+    
+    
     
   },
 });

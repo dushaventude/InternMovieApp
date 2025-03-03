@@ -201,6 +201,7 @@ const MovieListPage: React.FC = () => {
               id={movie.Id}
               title={movie.Title}
               image={movie.Photo}
+              type="movies"
               releaseDate={
                 movie.ReleaseDate ? getFullYear(movie.ReleaseDate) : "Unknown"
               }

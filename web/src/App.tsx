@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import MoviePage from "./pages/MoviePage";
-import ActorPage from "./pages/ActorListPage/ActorListPage";
+import ActorListPage from "./pages/ActorListPage/ActorListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import AppLayout from "./layouts/AppLayout";
 import Login from "./pages/LoginPage/Login";
@@ -20,6 +20,7 @@ import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/PrivateRoute";
 import AdminRoute from "./routes/AdminRoute ";
 import PrivateRoute from "./routes/PrivateRoute";
+import ActorPage from "./pages/ActorPage";
 
 
 const router = createBrowserRouter([
@@ -27,9 +28,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <AppLayout />,
     children: [
-
-	 { path: "", element: <HomePage /> },
-
+      { path: "", element: <HomePage /> },
 
       {
         element: <PublicRoute />,
@@ -39,7 +38,8 @@ const router = createBrowserRouter([
           { path: "resetPw", element: <PwResetPage /> },
           { path: "resetPassword", element: <ResetPassword /> },
           { path: "movies/:id", element: <MoviePage /> },
-          { path: "actors", element: <ActorPage /> },
+          { path: "actors/:id", element: <ActorPage /> },
+          { path: "actors", element: <ActorListPage /> },
           { path: "movies", element: <MovieListPage /> },
         ],
       },
@@ -48,12 +48,12 @@ const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [],
       },
-	   {
+      {
         path: "dashboard",
-		 element: <AdminRoute />,
+        element: <AdminRoute />,
         children: [
           { index: true, element: <Navigate to="movies" replace /> },
-		            { path: "movies", element: <Movies /> },
+          { path: "movies", element: <Movies /> },
           { path: "actors", element: <Actors /> },
         ],
       },

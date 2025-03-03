@@ -12,6 +12,9 @@ const actorService = {
     request.post<any>(`https://localhost:7183/api/Actor`, actor),
   deleteActor: (id: number) =>
     request.delete<any>(`https://localhost:7183/api/Actor?id=${id}`),
+  getActorById: (id: number) =>
+    request.get<any>(`https://localhost:7183/api/Actor/${id}`),
+  
 };
 
 export default actorService;

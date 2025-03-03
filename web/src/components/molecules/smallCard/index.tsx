@@ -6,6 +6,7 @@ import SmallCardSkeleton from "../Skeleton/SmallCardSkeleton"; // Import the ske
 interface SmallCardProps {
   id: number;
   title: string;
+  type: string
   image: string;
   releaseDate?: number | string;
   rating?: number;
@@ -25,13 +26,19 @@ const SmallCard: React.FC<SmallCardProps> = ({
   rating,
   actor,
   isLoading, // Destructure the loading prop
+  type,
 }) => {
   if (isLoading) {
     return <SmallCardSkeleton />; // Render the skeleton if loading
   }
+  
 
+  // Determine the link based on whether it's an actor or a movie
+  // const linkTo = actor ? `/actors/${id}` : `/movies/${id}`;
+
+  console.log(type)
   return (
-    <Link to={`/movies/${id}`} className="link">
+    <Link to={`/${type}/${id}`} className="link">
       <div className={`${styles.card} ${actor ? styles.actorCard : ""}`}>
         {actor ? (
           <div className={styles.actorContainer}>
