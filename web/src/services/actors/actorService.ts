@@ -3,7 +3,7 @@ import { request } from "../api";
 const actorService = {
   getAllActors: (pageNumber: number, pageSize: number) =>
     request.get<any>(
-      `http://localhost:5140/api/Actor?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `https://localhost:7183/api/Actor?pageNumber=${pageNumber}&pageSize=${pageSize}`
     ),
 
   updateActor: (id: number, actor: any) =>
