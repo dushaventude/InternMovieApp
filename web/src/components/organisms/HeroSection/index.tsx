@@ -43,9 +43,9 @@ import styles from "./styles.module.scss";
 interface HeroSectionProps {
   title: string;
   description: string;
-  imageUrl: string;
+  imageUrl: string[];
   photo: string;
-  averageRating: number;
+  averageRating: number | null;
   releaseDate: string;
 }
 
@@ -66,7 +66,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
       {/* Background Image */}
       <div className={styles.heroImage}>
-        <img src={imageUrl} alt={title} />
+        <img src={imageUrl?.at(0)} alt={title} />
       </div>
 
       {/* Small IMDb-Style Card */}

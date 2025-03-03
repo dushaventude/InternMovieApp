@@ -7,6 +7,7 @@ import { RootState, AppDispatch } from "../../store/index";
 import { useLocation } from "react-router-dom";
 import "./styles.scss";
 import { getFullYear } from "../../utils/helpers";
+import Pagination from "../../components/organisms/Pagination";
 
 interface IMovie {
   Id: number;
@@ -22,6 +23,7 @@ interface IResponse {
 const MovieListPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const currentYear = new Date().getFullYear();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [releaseYearFrom, setReleaseYearFrom] = useState("1900");
   const [releaseYearTo, setReleaseYearTo] = useState(currentYear.toString());
@@ -30,6 +32,7 @@ const MovieListPage: React.FC = () => {
   const { fetchMovies, fetchStatus, error } = useSelector(
     (state: RootState) => state.movies
   );
+  console.log(fetchMovies);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -44,10 +47,17 @@ const MovieListPage: React.FC = () => {
         ReleaseDateTo: `${releaseYearTo}-12-31`,
         IsFeatured: isFeatured,
         PageSize: 10,
-        PageNumber: 1,
+        PageNumber: currentPage,
       })
     );
-  }, [dispatch, queryFromURL, releaseYearFrom, releaseYearTo, isFeatured]);
+  }, [
+    dispatch,
+    queryFromURL,
+    releaseYearFrom,
+    releaseYearTo,
+    isFeatured,
+    currentPage,
+  ]);
 
   // console.log("Output", fetchMovies);
 
@@ -162,6 +172,14 @@ const MovieListPage: React.FC = () => {
           ))}
         </div>
       </div>
+      {fetchMovies.Response && (
+        <Pagination
+          movies={fetchMovies.Response}
+          totalCount={fetchMovies.TotalCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      )}
     </div>
   );
 };

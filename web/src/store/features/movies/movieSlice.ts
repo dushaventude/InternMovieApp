@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import movieService from "../../../services/movies/movieService";
+import { PaginatedMovies } from "../../../models/models";
 
 interface PhotoUrl {
   Url: string;
@@ -23,12 +24,14 @@ interface MovieData {
   ReleaseDate: string;
   PhotoUrlList: string[];
   ActorIds: number[];
+  AverageRating: number | null;
 }
 
 interface MovieState {
-  movie: Movie | null;
+  movie: MovieData | null;
   status: "idle" | "loading" | "succeeded" | "failed";
-  carouselMovies: Movie[];
+  // carouselMovies: Movie[];
+  carouselMovies: PaginatedMovies;
   carouselStatus: "idle" | "loading" | "succeeded" | "failed";
   searchMovies: [];
   searchStatus: "idle" | "loading" | "succeeded" | "failed";
@@ -43,7 +46,12 @@ interface MovieState {
 const initialState: MovieState = {
   movie: null,
   status: "idle",
-  carouselMovies: [],
+  carouselMovies: {
+    PageNumber: 1,
+    PageSize: 5,
+    TotalCount: 5,
+    Response: [],
+  },
   carouselStatus: "idle",
   searchMovies: [],
   searchStatus: "idle",
@@ -237,7 +245,7 @@ const movieSlice = createSlice({
     });
     builder.addCase(fetchMoviesCarousel.fulfilled, (state, action) => {
       state.carouselStatus = "idle";
-      state.carouselMovies = action.payload;
+      state.carouselMovies = action.payload as PaginatedMovies;
     });
     builder.addCase(fetchMoviesCarousel.rejected, (state, action) => {
       state.carouselStatus = "idle";

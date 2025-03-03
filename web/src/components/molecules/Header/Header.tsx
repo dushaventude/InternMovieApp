@@ -9,6 +9,7 @@ import {
   fetchSearchMovies,
 } from "../../../store/features/movies/movieSlice";
 import { getFullYear } from "../../../utils/helpers";
+import logo from "../../../assets/WhiteLogo.png";
 import LogoutButton from "../../atoms/button/LogoutButton";
 
 const Header: React.FC = () => {
@@ -90,9 +91,10 @@ const Header: React.FC = () => {
     <header className={`header ${isScrolled ? "scrolled" : ""}`}>
       <div className="header-container">
         <Link to={"/"} className="link">
-        <div className="header-left">
-          <h1 className="logo">Movie Hub</h1>
-        </div>
+          {/* <div className="header-left">
+            <h1 className="logo">Movie Hub</h1>
+          </div> */}
+          <img src={logo} style={{ height: "50px" }} />
         </Link>
         <div className="header-center">
           <div className="menu-container">
@@ -213,7 +215,7 @@ function User({ admin }) {
               <p>Dashboard</p>
             </Link>
           )}
-          <p>Sign out</p>
+          <LogoutButton />
         </div>
       )}
     </div>
