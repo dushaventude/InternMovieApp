@@ -184,7 +184,6 @@ const Header: React.FC = () => {
 
 export default Header;
 
-
 function User({ admin }) {
   const [isHovered, setIsHovered] = useState(false);
   return (
@@ -214,8 +213,7 @@ function User({ admin }) {
               <p>Dashboard</p>
             </Link>
           )}
-          <LogoutButton />
-          {/* <p>Sign out</p> */}
+          <p>Sign out</p>
         </div>
       )}
     </div>

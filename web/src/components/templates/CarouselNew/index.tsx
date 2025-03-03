@@ -176,6 +176,7 @@ const Carousel: React.FC = () => {
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === carouselMovies.Response.length - 1 ? 0 : prevIndex + 1
+      
     );
   };
  
@@ -192,8 +193,8 @@ const Carousel: React.FC = () => {
       );
     }, 3000);
     return () => clearInterval(interval);
-  }, [carouselMovies?.Response?.length]);
- 
+  }, [carouselMovies.length]);
+
   return (
     <div className="carousel-container">
       <div className="carousel-flexbox">
@@ -277,6 +278,7 @@ const Carousel: React.FC = () => {
             </span>
           </p>
           <div className="upnext-cards">
+           
             {carouselMovies.Response?.map((movie) => (
               <div className="upnext-card">
                 <img src={movie.Photo} />

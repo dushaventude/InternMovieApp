@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import { AppDispatch, RootState, useAppDispatch, useAppSelector } from "../../../store";
 //import { useDispatch, useSelector } from "react-redux";
-import { fetchAllActors, createActor, updateActor } from "../../../store/features/actors/actorSlice";
+import { fetchAllActors, createActor, updateActor, deleteActor } from "../../../store/features/actors/actorSlice";
 import Button from "../../atoms/button/Button";
 import Dialog from "../../atoms/DialogBox/Dialog";
 import ActorForm from "../../molecules/ActorForm/ActorForm";
+import { useNotification } from "../../../contexts/NotificationContext";
+import {  useUserOptimizer } from "../../../hooks/useUserOptimizer";
 
 interface Actor {
   Id?: number;
@@ -15,6 +17,9 @@ interface Actor {
 }
 
 const Actors: React.FC = () => {
+  const { showNotification } = useNotification();
+  const { refresh } = useUserOptimizer();
+  
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useAppDispatch();
   const { fetchActors, fetchStatus } = useAppSelector(
@@ -40,14 +45,35 @@ const Actors: React.FC = () => {
     setIsEditActorModalOpen(true);
   };
 
-  const handleSubmitActor = (actor: Actor) => {
+  const handleSubmitActor = async (actor: Actor) => {
     if (selectedActor) {
-      dispatch(updateActor({ ...actor, Id: selectedActor.Id }));
+      if (selectedActor.Id !== undefined) {
+        dispatch(updateActor({ ...actor, Id: selectedActor.Id }));
+      } else {
+        console.error("Selected actor ID is undefined");
+      }
+      await refresh();
+      showNotification("Actor updated successfully!", "success");
+      
       setIsEditActorModalOpen(false);
     } else {
       dispatch(createActor(actor));
       setIsAddActorModalOpen(false);
     }
+  };
+
+  const handleDeleteActor = async (actor: Actor) => {
+    if (window.confirm("Are you sure you want to delete this actor?")) {
+      if (actor.Id !== undefined) {
+        dispatch(deleteActor(actor.Id));
+        // Hook Refresh
+        await refresh();
+        showNotification("Movie deleted successfully!", "success");
+      } else {
+        console.error("Actor ID is undefined");
+      }
+    }
+    
   };
 
   if (fetchStatus === "loading") return <div>Loading...</div>;
@@ -127,7 +153,7 @@ const Actors: React.FC = () => {
                 <td>{actor.Country}</td>
                 <td>
                   <button className="edit-btn" onClick={() => handleEditActor(actor)}>Edit</button>
-                  <button className="delete-btn">Delete</button>
+                  <button className="delete-btn" onClick={() => handleDeleteActor(actor)}>Delete</button>
                 </td>
               </tr>
             ))

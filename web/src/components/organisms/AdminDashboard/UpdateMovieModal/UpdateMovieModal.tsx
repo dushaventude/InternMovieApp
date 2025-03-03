@@ -266,7 +266,8 @@ import "./styles.scss";
 import Dialog from "../../../../components/atoms/DialogBox/Dialog";
 import { useNotification } from "../../../../contexts/NotificationContext";
 import ImageUpload from "../../../../components/molecules/ImageUpload/ImageUpload";
- 
+
+
 const UpdateMovieModal = ({
   movie,
   onClose,
