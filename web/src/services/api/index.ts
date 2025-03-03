@@ -3,8 +3,8 @@ import { store } from "../../store";
 
 export const instance = axios.create({
   //   baseURL: `${process.env.VITE_BASE_URL}`
-  baseURL: `https://localhost:7183/api`
-  // baseURL: `http://localhost:5140/api`,
+  // baseURL: `https://localhost:7183/api`
+  baseURL: `http://localhost:5140/api`,
 });
 
 instance.interceptors.request.use(
@@ -34,6 +34,5 @@ export const request = {
     instance.post<T>(url, body, config).then(responseBody),
   put: <T>(url: string, body: {}) =>
     instance.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => instance.delete<T>(url).then(responseBody)
+  delete: <T>(url: string) => instance.delete<T>(url).then(responseBody),
 };
-

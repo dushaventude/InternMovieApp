@@ -1,0 +1,36 @@
+.movies-pagination {
+  .pagination {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    font-size: 12px;
+
+    select {
+      border-radius: 5px;
+      padding: 4px 8px;
+    }
+
+    .jump-to-input {
+      // height: 16px;
+      width: 16px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .jump-to-input:focus {
+      border: none;
+      outline: none;
+    }
+
+    p {
+      padding: 8px;
+      border-radius: 5pxw;
+    }
+
+    .active-page {
+      background-color: #a67102;
+      border-radius: 5px;
+    }
+  }
+}

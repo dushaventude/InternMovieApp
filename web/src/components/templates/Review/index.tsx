@@ -24,9 +24,10 @@ interface Review {
 interface ReviewProps {
   photo: string;
   title: string;
+  averageRating: number | null;
 }
 
-const Review: React.FC<ReviewProps> = ({ photo, title }) => {
+const Review: React.FC<ReviewProps> = ({ photo, title, averageRating }) => {
   const [selectedReviewType, setSelectedReviewType] =
     useState<string>("All Reviews");
   const [selectedSortOrder, setSelectedSortOrder] =

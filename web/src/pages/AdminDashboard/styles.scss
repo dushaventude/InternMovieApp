@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
+  position: fixed; // Keeps the container fixed
+
   //   overflow: hidden;
 
   .dashboard-header {
@@ -40,10 +43,13 @@
   .dashboard-body {
     display: flex;
     flex: 1;
+    overflow: hidden;
 
     .dashboard-sidebar {
       flex: 1;
       background-color: #121212e8;
+      display: flex;
+      flex-direction: column;
 
       .sidebar-header {
         p {
@@ -58,6 +64,7 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
+        height: 100%;
 
         p {
           color: #6d6d6d;
@@ -73,6 +80,9 @@
     .dashboard-content {
       flex: 6;
       background-color: #f6f6f6;
+      overflow-y: auto; // Enables scrolling
+      max-height: calc(100vh - 50px); // Adjust height dynamically
+      padding: 16px;
     }
   }
 }
