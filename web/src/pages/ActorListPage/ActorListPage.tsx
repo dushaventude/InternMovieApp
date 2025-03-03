@@ -42,7 +42,8 @@ const ActorListPage: React.FC = () => {
               isLoading={true} 
               id={index} 
               title="Loading..." 
-              image={defaultProfileIcon} 
+              image={defaultProfileIcon}
+              type="actors"
             />
           ))}
         </div>
@@ -71,6 +72,7 @@ const ActorListPage: React.FC = () => {
             key={actor.Id}
             title={actor.Name}
             image={actor.Photo || defaultProfileIcon}
+            type="actors"
           />
         ))}
       </div>

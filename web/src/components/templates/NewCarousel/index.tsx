@@ -333,7 +333,7 @@ const Carousel: React.FC = () => {
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const response = await fetch("http://localhost:5140/api/Movie", {
+        const response = await fetch("http://localhost:7183/api/Movie", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

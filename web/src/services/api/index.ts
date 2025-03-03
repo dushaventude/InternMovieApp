@@ -4,7 +4,7 @@ import { store } from "../../store";
 export const instance = axios.create({
   //   baseURL: `${process.env.VITE_BASE_URL}`
   // baseURL: `https://localhost:7183/api`
-  baseURL: `http://localhost:5140/api`,
+  baseURL: `https://localhost:7183/api`,
 });
 
 instance.interceptors.request.use(
