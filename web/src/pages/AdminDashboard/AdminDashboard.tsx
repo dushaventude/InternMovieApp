@@ -1,6 +1,7 @@
 import React, { Children } from "react";
 import "./styles.scss";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import LogoutButton from "../../components/atoms/button/LogoutButton";
 
 interface AdminDashboardProps {
   children: React.ReactNode;
@@ -44,12 +45,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({children}) => {
             <p>Admin Panel</p>
           </div>
           <div className="sidebar-navigation">
+          
+
             <p
               onClick={() => navigate("movies")}
               style={{
                 backgroundColor: pathname.includes("movies") ? "#333" : "",
               }}
-            >
+              >
               Manage Movies
             </p>
             <p
@@ -57,9 +60,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({children}) => {
               style={{
                 backgroundColor: pathname.includes("actors") ? "#333" : "",
               }}
-            >
+              >
               Manage Actors
             </p>
+             
+            <LogoutButton/>
           </div>
         </div>
         <div className="dashboard-content">

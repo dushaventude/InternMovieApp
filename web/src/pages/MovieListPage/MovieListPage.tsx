@@ -152,6 +152,7 @@ const MovieListPage: React.FC = () => {
           {movies.map((movie: IMovie) => (
             <SmallCard
               key={movie.Id}
+              id={movie.Id}
               title={movie.Title}
               image={movie.Photo}
               releaseDate={

@@ -51,7 +51,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useNotification = (): NotificationContextProps => {
+export const useNotification = (p0: string, p1: string): NotificationContextProps => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(

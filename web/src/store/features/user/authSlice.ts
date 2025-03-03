@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import agent from "../../../services";
 import { loadingStates } from "../../../models/enum";
+import { useUserOptimizer } from "../../../hooks/useUserOptimizer";
+import { useNotification } from "../../../contexts/NotificationContext";
 
 interface UserState {
   user: { id: string; email: string; firstName: string; lastName: string };
@@ -21,6 +23,7 @@ const initialState: UserState = {
 };
 
 export const loginUser = createAsyncThunk(
+  
   "user/loginUser",
   async (
     { username, password }: { username: string; password: string },
@@ -138,6 +141,7 @@ export const forgetPassword = createAsyncThunk(
 );
 
 export const resetpasswored = createAsyncThunk(
+  
   "user/reset-password",
   async (
     {
@@ -165,8 +169,10 @@ export const resetpasswored = createAsyncThunk(
     }
   }
 );
+//const { showNotification } = useNotification("default", "default");
 
 const userSlice = createSlice({
+  
   name: "user",
   initialState,
   reducers: {
@@ -197,6 +203,9 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
         alert('Username or password incorrect'); 
+       
+      
+      
       })
       .addCase(registerUser.pending, (state) => {
         state.status = "loading";
@@ -214,7 +223,9 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
-        alert('You are already registered');
+       alert('You are already registered');
+       
+  
       })
 
       .addCase(forgetPassword.pending, (state) => {

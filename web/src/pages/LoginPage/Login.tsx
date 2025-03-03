@@ -9,11 +9,13 @@ import { useAppDispatch } from "../../store";
 import { loginUser } from "../../store/features/user/authSlice";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../public/main_logo-removebg.png";
+import { useNotification } from "../../contexts/NotificationContext";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { showNotification } = useNotification();
 
   // This is the route to redirect to after login
   const from = location.state?.from || "/";
@@ -29,9 +31,12 @@ const Login: React.FC = () => {
         await dispatch(
           loginUser({ username: values.username, password: values.password })
         );
-        navigate(from, { replace: true });
+
+        showNotification("Login successful!", "success");
+        // navigate(from, { replace: true });
       } catch (e) {
-        console.error("There is an error", e);
+        showNotification("user name or password incorrect", "error");
+          console.error("There is an error", e);
       }
     },
   });

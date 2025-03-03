@@ -47,6 +47,7 @@ const Movies: React.FC = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const dispatch = useAppDispatch();
 
   const { searchMovies, searchStatus } = useAppSelector(

@@ -1,7 +1,9 @@
 import React from "react";
 import styles from "./smallCard.module.scss";
+import { Link } from "react-router-dom";
 
 interface SmallCardProps {
+  id:number;
   title: string;
   image: string;
   releaseDate?: number | string;
@@ -14,6 +16,7 @@ interface SmallCardProps {
 }
 
 const SmallCard: React.FC<SmallCardProps> = ({
+  id,
   title,
   image,
   releaseDate,
@@ -21,6 +24,7 @@ const SmallCard: React.FC<SmallCardProps> = ({
   actor,
 }) => {
   return (
+    <Link to={`/movies/${id}`} className="link">
     <div className={`${styles.card} ${actor ? styles.actorCard : ""}`}>
       {actor ? (
         <div className={styles.actorContainer}>
@@ -28,7 +32,7 @@ const SmallCard: React.FC<SmallCardProps> = ({
             src={actor.profilePhoto}
             alt={actor.name}
             className={styles.roundedImage}
-          />
+            />
           <h3 className={styles.actorName}>{actor.name}</h3>
           {actor.knownFor && (
             <div className={styles.knownFor}>
@@ -50,6 +54,7 @@ const SmallCard: React.FC<SmallCardProps> = ({
         </>
       )}
     </div>
+      </Link>
   );
 };
 

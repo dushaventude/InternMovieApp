@@ -121,9 +121,7 @@ const ResetPassword: React.FC = () => {
           <p className="create-account">Remember your password? Sign In</p>
         </Link>
       </div>
-      <div className="footer" style={{ marginTop: "32px" }}>
-        <p>Footer content goes here</p>
-      </div>
+    
     </div>
   );
 };
