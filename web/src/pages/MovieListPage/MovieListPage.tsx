@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SmallCard from "../../components/molecules/smallCard";
+import SmallCardSkeleton from "../../components/molecules/Skeleton/SmallCardSkeleton"; 
 import styles from "./movieListPage.module.scss";
 import { fetchAllMovies } from "../../store/features/movies/movieSlice";
 import { RootState, AppDispatch } from "../../store/index";
@@ -59,10 +60,46 @@ const MovieListPage: React.FC = () => {
     currentPage,
   ]);
 
-  // console.log("Output", fetchMovies);
-
   if (fetchStatus === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className="all-movies-container">
+        <div className="movies-header">
+          <h1 className="movies-header-title">
+            {queryFromURL
+              ? `Search results for "${queryFromURL}"`
+              : "All Movies"}
+          </h1>
+          <div
+            className="movies-header-filter"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="filter-icon"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+              />
+            </svg>
+            <p>Filter Movies</p>
+          </div>
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.grid}>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <SmallCardSkeleton key={index} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (fetchStatus === "failed") {
@@ -76,7 +113,6 @@ const MovieListPage: React.FC = () => {
     return <div>No movies found.</div>;
   }
 
-  // console.log("Movies", movies);
   const generateYearOptions = () => {
     const years = [];
     for (let year = 1900; year <= currentYear; year++) {

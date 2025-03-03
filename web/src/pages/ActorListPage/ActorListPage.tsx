@@ -8,6 +8,7 @@ import {
 } from "../../store/index";
 import styles from "./actorListPage.module.scss";
 import SmallCard from "../../components/molecules/smallCard";
+import defaultProfileIcon from "../../assets/profile-icon.jpg"; // Import profile icon
 
 interface IResponse {
   Response: IActor[];
@@ -30,10 +31,23 @@ const ActorListPage: React.FC = () => {
     dispatch(fetchAllActors({ pageNumber: 1, pageSize: 10 }));
   }, [dispatch]);
 
-  // console.log("Output", fetchActors);
-
   if (fetchStatus === "loading") {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <h1>All Actors</h1>
+        <div className={styles.grid}>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SmallCard 
+              key={index} 
+              isLoading={true} 
+              id={index} 
+              title="Loading..." 
+              image={defaultProfileIcon} 
+            />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (fetchStatus === "failed") {
@@ -47,14 +61,17 @@ const ActorListPage: React.FC = () => {
     return <div>No actors found.</div>;
   }
 
-  // console.log("Actors", actors);
-
   return (
     <div className={styles.container}>
       <h1>All Actors</h1>
       <div className={styles.grid}>
         {actors.map((actor) => (
-          <SmallCard key={actor.Id} title={actor.Name} image={actor.Photo} />
+          <SmallCard
+            id={actor.Id}
+            key={actor.Id}
+            title={actor.Name}
+            image={actor.Photo || defaultProfileIcon}
+          />
         ))}
       </div>
     </div>
