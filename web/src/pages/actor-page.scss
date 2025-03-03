@@ -1,0 +1,152 @@
+// Variables
+$primary-color: #6366f1; // indigo-500
+$text-dark: #111827; // gray-900
+$text-medium: #4b5563; // gray-600
+$text-light: #9ca3af; // gray-400
+$bg-light: #f9fafb; // gray-50
+$bg-medium: #e5e7eb; // gray-200
+$shadow-color: rgba(0, 0, 0, 0.1);
+$border-radius: 0.5rem;
+$transition-speed: 0.3s;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Actor Page Styles
+.actor-page {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.actor-card {
+  max-width: 42rem;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px $shadow-color, 0 1px 3px $shadow-color;
+  overflow: hidden;
+
+  &__content {
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  }
+
+  &__image-container {
+    @media (min-width: 768px) {
+      flex-shrink: 0;
+      width: 12rem;
+    }
+  }
+
+  &__image {
+    height: 16rem;
+    width: 100%;
+    object-fit: cover;
+    
+    @media (min-width: 768px) {
+      height: 100%;
+      width: 12rem;
+    }
+  }
+
+  &__placeholder {
+    height: 16rem;
+    width: 100%;
+    background-color: $bg-medium;
+    @include flex-center;
+    
+    @media (min-width: 768px) {
+      height: 100%;
+      width: 12rem;
+    }
+  }
+
+  &__placeholder-icon {
+    height: 6rem;
+    width: 6rem;
+    color: $text-light;
+  }
+
+  &__details {
+    padding: 2rem;
+  }
+
+  &__label {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $primary-color;
+  }
+
+  &__name {
+    margin-top: 0.25rem;
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: $text-dark;
+  }
+
+  &__info {
+    margin-top: 1rem;
+  }
+
+  &__info-item {
+    color: $text-medium;
+    margin-top: 0.5rem;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  &__info-label {
+    font-weight: 500;
+  }
+
+  &__bio {
+    margin-top: 1.5rem;
+  }
+
+  &__bio-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: $text-dark;
+  }
+
+  &__bio-text {
+    margin-top: 0.5rem;
+    color: $text-medium;
+  }
+}
+
+// Loading Spinner
+.loading-container {
+  min-height: 100vh;
+  @include flex-center;
+}
+
+.loading-spinner {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: $primary-color;
+  border-bottom-color: $primary-color;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
