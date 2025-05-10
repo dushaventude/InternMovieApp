@@ -25,5 +25,19 @@ namespace MovieApp.Data.Repositories
             var actor = await _movieDbContext.Actors.FirstOrDefaultAsync(u => u.Id == id);
             return actor;
         }
+
+        public async Task<bool> DeleteActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Remove(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<Actor> UpdateActorAsync(Actor actor)
+        {
+            _movieDbContext.Actors.Update(actor);
+            await _movieDbContext.SaveChangesAsync();
+            return actor;
+        }
     }
 }
