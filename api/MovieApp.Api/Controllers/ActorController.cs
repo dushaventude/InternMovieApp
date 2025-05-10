@@ -16,10 +16,15 @@ namespace MovieApp.Api.Controllers
             this._actorService = actorService;
         }
 
-        [HttpGet]
-        public async Task<ActorInfo> GetActorById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ActorInfo>> GetActorById(int id)
         {
-            return await _actorService.GetActorById(id);
+            var actor = await _actorService.GetActorById(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+            return Ok(actor);
         }
     }
 }

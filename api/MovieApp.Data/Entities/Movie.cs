@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace MovieApp.Data.Entities
 {
-    public class Actor
+    public class Movie
     {
         [Key]
         public int Id { get; set; }
-
-        public string Name { get; set; }
-        public string? Gender { get; set; }
-        public string? Country { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Photo { get; set; } = string.Empty;
+        public bool IsFeatured { get; set; }
+        public DateOnly ReleaseDate { get; set; }
         public List<MovieActor> MovieActors { get; set; } = new List<MovieActor>();
-
     }
-
 }
